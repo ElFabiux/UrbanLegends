@@ -4,4 +4,5 @@ module com.mycompany.urbanlegends {
 
     opens com.mycompany.urbanlegends to javafx.fxml;
     exports com.mycompany.urbanlegends;
+  
 }
