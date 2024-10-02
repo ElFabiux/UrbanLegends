@@ -1,4 +1,13 @@
+model\Character\Character.class
+controllers\MapController.class
+model\Character\Hunter.class
+model\Character\Witch.class
+model\game\Player.class
 com\mycompany\urbanlegends\App.class
+model\legends\Legend.class
 module-info.class
-com\mycompany\urbanlegends\PrimaryController.class
-com\mycompany\urbanlegends\SecondaryController.class
+model\Character\Researcher.class
+model\game\Game.class
+model\server\Flow.class
+model\game\Client.class
+model\server\Server.class
