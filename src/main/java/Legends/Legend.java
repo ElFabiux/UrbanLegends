@@ -10,9 +10,10 @@ import characters.Character;
  *
  * @author joxan
  */
-abstract public class Legend {// interfaz o  abstracta 
+public abstract class Legend {
+
     private String name;
-    private String location; 
+    private String location;
 
     public Legend(String name, String location) {
         this.name = name;
@@ -28,4 +29,3 @@ abstract public class Legend {// interfaz o  abstracta
         }
     }
 }
-

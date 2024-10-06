@@ -1,4 +1,4 @@
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -9,7 +9,7 @@ package characters;
  *
  * @author joxan
  */
-abstract public class Character {
+public abstract class Character{
 
     private String name;
     private int energy;
@@ -19,7 +19,7 @@ abstract public class Character {
     private int positionY;
 
     public Character(String name, int energy, int mentalHealth, int superstition,
-            int positionX, int positionY) {
+        int positionX, int positionY) {
         this.name = name;
         this.energy = energy;
         this.mentalHealth = mentalHealth;
