@@ -15,37 +15,19 @@ abstract public class Character {
     private int energy;
     private int mentalHealth;
     private int superstition;
-    private int positionX;
-    private int positionY;
+   
 
-    public Character(String name, int energy, int mentalHealth, int superstition,
-            int positionX, int positionY) {
+    public Character(String name, int energy, int mentalHealth, int superstition) {
         this.name = name;
         this.energy = energy;
         this.mentalHealth = mentalHealth;
         this.superstition = superstition;
-        this.positionX = positionX;
-        this.positionY = positionY;
+  
     }
 
     public Character() {
     }
 
-    public int getPositionX() {
-        return positionX;
-    }
-
-    public void setPositionX(int positionX) {
-        this.positionX = positionX;
-    }
-
-    public int getPositionY() {
-        return positionY;
-    }
-
-    public void setPositionY(int positionY) {
-        this.positionY = positionY;
-    }
 
     public String getName() {
         return name;
@@ -91,26 +73,7 @@ abstract public class Character {
         this.superstition = superstition;
     }
 
-    public void moveUp() {
-        this.positionY += 1;
-    }
-
-    public void moveDown() {
-        this.positionY -= 1;
-    }
-
-    public void moveLeft() {
-        this.positionX -= 1;
-    }
-
-    public void moveRight() {
-        this.positionX += 1;
-    }
-
-    public String getPosition() {
-        return "(" + positionX + ", " + positionY + ")";
-    }
-
+ 
     @Override
     public String toString() {
         return "Character{" + "name=" + name + ", energy=" + energy

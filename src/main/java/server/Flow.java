@@ -2,6 +2,7 @@ package server;
 
 import game.Game;
 import characters.Character;
+import game.Player;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -11,15 +12,15 @@ import java.net.Socket;
 
 public class Flow extends Thread {
     private Socket socket;
-    private Character character;
+    private Player player;
     private Game game;
     private Interpreter interpreter;
     private DataInputStream input;
     private DataOutputStream output;
 
-    public Flow(Socket socket, Character character, Game game) {
+    public Flow(Socket socket, Player player, Game game) {
         this.socket = socket;
-        this.character = character;
+        this.player = player;
         this.game = game;
         this.interpreter = new Interpreter(game);
         try {
@@ -43,7 +44,7 @@ public class Flow extends Thread {
 
                 
                 String response = interpreter.interpret(command, 
-                        secondParameter, character);
+                        secondParameter, player);
 
                 
                 output.writeUTF(response);

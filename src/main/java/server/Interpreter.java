@@ -4,6 +4,7 @@ import server.actions.Attack;
 import server.actions.Move;
 import game.Game;
 import characters.Character;
+import game.Player;
 
 public class Interpreter {
 
@@ -14,15 +15,15 @@ public class Interpreter {
     }
 
     public String interpret(String command, String direction,
-            Character character) {
+            Player player) {
         switch (command) {
             case "move":
                 Move moveCommand = new Move(direction);
-                return moveCommand.execute(character, game);
+                return moveCommand.execute(player, game);
 
             case "attack":
                 Attack attackCommand = new Attack();
-                return attackCommand.execute(character, game);
+                return attackCommand.execute(player, game);
 
             default:
                 // Comando desconocido

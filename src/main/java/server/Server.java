@@ -48,15 +48,18 @@ public class Server extends Thread {
                 System.out.println("Connection accepted from: " + name);
 
                 Character character = new Witch(name, 100, 0,
-                        0, 0, 0);
+                        0);
 
                
                 Player player = new Player(name, clientSocket.getInetAddress()
-                        .getHostAddress(), character);
+                        .getHostAddress(), 0,0,character);
+                
+                
+                
                 players.add(player);  
 
            
-                Flow flow = new Flow(clientSocket, character, game);
+                Flow flow = new Flow(clientSocket, player, game);
                 flow.start();
 
             } catch (IOException ioe) {

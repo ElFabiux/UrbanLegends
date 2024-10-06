@@ -6,6 +6,7 @@ package server.actions;
 
 import game.Game;
 import characters.Character;
+import game.Player;
 
 /**
  *
@@ -28,34 +29,34 @@ public class Move implements Command {
     }
 
     @Override
-    public String execute(Character character, Game game) {
+    public String execute(Player player, Game game) {
 
-        if (character.getEnergy() < 10) {
+        if (player.character.getEnergy() < 10) {
             return "Move failed. Not enough energy.";
         }
 
-        character.modifyEnergy(-10);
+        player.character.modifyEnergy(-10);
 
         switch (direction) {
             case "up":
-                character.moveUp();
+                player.moveUp();
                 break;
             case "down":
-                character.moveDown();
+                player.moveDown();
                 break;
             case "left":
-                character.moveLeft();
+                player.moveLeft();
                 break;
             case "right":
-                character.moveRight();
+                player.moveRight();
                 break;
             default:
                 return "Invalid direction. Use up, down, left, or right.";
         }
 
         // Retornar un mensaje que indica éxito del movimiento
-        return "Move successful. " + character.getPosition()
-                + ". Current energy: " + character.getEnergy();
+        return "Move successful. " + player.getPosition()
+                + ". Current energy: " + player.character.getEnergy();
     }
 
 }
