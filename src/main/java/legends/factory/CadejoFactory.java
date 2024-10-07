@@ -15,7 +15,7 @@ public class CadejoFactory implements LegendFactory {
 
     @Override
     public Legend createLegend() {
-        return new Cadejo("Cadejin", "Nose");
+        return new Cadejo("Cadejin", 3,6);
     }
     
 }

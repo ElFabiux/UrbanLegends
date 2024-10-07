@@ -15,7 +15,7 @@ public class LloronaFactory  implements LegendFactory {
 
     @Override
     public Legend createLegend() {
-        return new Llorona("maricona", "Nose");
+        return new Llorona("maricona",7,9);
     }
     
 }

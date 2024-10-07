@@ -4,14 +4,22 @@
  */
 package legends;
 
+import characters.Character;
+
 /**
  *
  * @author jorge
  */
-public class Sombreron extends Legend{
-    
-    public Sombreron(String name, String location) {
-        super(name, location);
+public class Sombreron extends Legend {
+
+    public Sombreron(String name, int positionX, int positionY) {
+        super(name, positionX, positionY);
     }
-    
+
+  
+    @Override
+    public void attack(Character character) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

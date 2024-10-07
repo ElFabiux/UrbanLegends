@@ -15,7 +15,7 @@ public class SeguaFactory  implements LegendFactory {
 
     @Override
     public Legend createLegend() {
-        return new Segua("Mula", "Nose");
+        return new Segua("Mula", 5,7);
     }
     
 }

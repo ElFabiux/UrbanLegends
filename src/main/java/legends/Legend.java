@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package legends;
+
 import characters.Character;
 
 /**
@@ -10,22 +11,41 @@ import characters.Character;
  * @author jorge
  */
 public abstract class Legend {
-    
-      private String name;
-    private String location;
 
-    public Legend(String name, String location) {
+    private String name;
+    private int positionX;
+    private int positionY;
+
+    public Legend(String name, int positionX, int positionY) {
         this.name = name;
-        this.location = location;
+        this.positionX = positionX;
+        this.positionY = positionY;
     }
 
-    public void interactWithCharacter(Character character) {
-        if (character.getSuperstition() > 50) {
-            character.modifyMentalHealth(-20);
-            System.out.println(character.getName() + " was affected by " + name);
-        } else {
-            System.out.println(character.getName() + " escaped from " + name);
-        }
+    public String getName() {
+        return name;
     }
-    
+
+    public int getPositionX() {
+        return positionX;
+    }
+
+    public int getPositionY() {
+        return positionY;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
+    }
+
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
+    }
+
+    public abstract void attack(Character character);
+
 }

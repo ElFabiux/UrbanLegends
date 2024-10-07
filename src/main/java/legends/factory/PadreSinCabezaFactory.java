@@ -15,7 +15,7 @@ public class PadreSinCabezaFactory implements LegendFactory {
 
     @Override
     public Legend createLegend() {
-        return new PadreSinCabeza("Father", "Nose");
+        return new PadreSinCabeza("Father", 8,3);
     }
     
 }

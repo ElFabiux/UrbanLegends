@@ -15,7 +15,7 @@ public class SombreronFactory  implements LegendFactory {
 
     @Override
     public Legend createLegend() {
-        return new Sombreron("Ajua", "Nose");
+        return new Sombreron("Ajua", 8,1);
     }
     
 }

@@ -15,7 +15,7 @@ public class DuendeFactory  implements LegendFactory {
 
     @Override
     public Legend createLegend() {
-        return new Duende("Duendin", "Nose");
+        return new Duende("Duendin", 6,8);
     }
     
 }

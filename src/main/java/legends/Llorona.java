@@ -4,10 +4,22 @@
  */
 package legends;
 
+import characters.Character;
+
 /**
  *
  * @author jorge
  */
-public class Llorona {
-    
+public class Llorona extends Legend {
+
+    public Llorona(String name, int positionX, int positionY) {
+        super(name, positionX, positionY);
+    }
+
+
+    @Override
+    public void attack(Character character) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
