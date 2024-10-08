@@ -10,22 +10,23 @@ package server.actions;
  */
 import game.Game;
 import characters.Character;
+import game.Player;
 
 public class Attack implements Command {
 
     @Override
-    public String execute(Character character, Game game) {
-        if (character.getEnergy() < 5) {
+    public String execute(Player player, Game game) {
+        if (player.getCharacter().getEnergy() < 5) {
             return "Attack failed. Not enough energy.";
         }
 
-        character.modifyEnergy(-5);
-        character.modifyMentalHealth(-10);
-        character.modifySuperstition(5);
+        player.getCharacter().modifyEnergy(-5);
+        player.getCharacter().modifyMentalHealth(-10);
+        player.getCharacter().modifySuperstition(5);
 
         return "Attack successful. Current stats: Energy: "
-                + character.getEnergy()
-                + ", Mental Health: " + character.getMentalHealth()
-                + ", Superstition: " + character.getSuperstition();
+                + player.getCharacter().getEnergy()
+                + ", Mental Health: " + player.getCharacter().getMentalHealth()
+                + ", Superstition: " + player.getCharacter().getSuperstition();
     }
 }
