@@ -16,17 +16,17 @@ public class Attack implements Command {
 
     @Override
     public String execute(Player player, Game game) {
-        if (player.character.getEnergy() < 5) {
+        if (player.getCharacter().getEnergy() < 5) {
             return "Attack failed. Not enough energy.";
         }
 
-        player.character.modifyEnergy(-5);
-        player.character.modifyMentalHealth(-10);
-        player.character.modifySuperstition(5);
+        player.getCharacter().modifyEnergy(-5);
+        player.getCharacter().modifyMentalHealth(-10);
+        player.getCharacter().modifySuperstition(5);
 
         return "Attack successful. Current stats: Energy: "
-                + player.character.getEnergy()
-                + ", Mental Health: " + player.character.getMentalHealth()
-                + ", Superstition: " + player.character.getSuperstition();
+                + player.getCharacter().getEnergy()
+                + ", Mental Health: " + player.getCharacter().getMentalHealth()
+                + ", Superstition: " + player.getCharacter().getSuperstition();
     }
 }

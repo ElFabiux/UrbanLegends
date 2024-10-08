@@ -16,13 +16,54 @@ public class Player {
    private String ip;
    private int positionX;
    private int positionY;
-   public Character character;
+   private Character character;
 
-    public Player(String name, String ip, int positionX, int positionY, Character character) {
+    public Player(String name, String ip, int positionX, int positionY, 
+            Character character) {
         this.name = name;
         this.ip = ip;
         this.positionX = positionX;
         this.positionY = positionY;
+        this.character = character;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public int getPositionX() {
+        return positionX;
+    }
+
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
+    }
+
+    public int getPositionY() {
+        return positionY;
+    }
+
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
+    }
+
+    public Character getCharacter() {
+        return character;
+    }
+
+    public void setCharacter(Character character) {
         this.character = character;
     }
    
@@ -30,19 +71,19 @@ public class Player {
     
    
     public void moveUp() {
-        this.positionY += 1;
+        this.positionY --;
     }
 
     public void moveDown() {
-        this.positionY -= 1;
+        this.positionY ++;
     }
 
     public void moveLeft() {
-        this.positionX -= 1;
+        this.positionX --;
     }
 
     public void moveRight() {
-        this.positionX += 1;
+        this.positionX ++;
     }
 
     public String getPosition() {

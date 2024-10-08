@@ -31,11 +31,11 @@ public class Move implements Command {
     @Override
     public String execute(Player player, Game game) {
 
-        if (player.character.getEnergy() < 10) {
+        if (player.getCharacter().getEnergy() < 10) {
             return "Move failed. Not enough energy.";
         }
 
-        player.character.modifyEnergy(-10);
+        player.getCharacter().modifyEnergy(-10);
 
         switch (direction) {
             case "up":
@@ -54,9 +54,9 @@ public class Move implements Command {
                 return "Invalid direction. Use up, down, left, or right.";
         }
 
-        // Retornar un mensaje que indica éxito del movimiento
+        
         return "Move successful. " + player.getPosition()
-                + ". Current energy: " + player.character.getEnergy();
+                + ". Current energy: " + player.getCharacter().getEnergy();
     }
 
 }

@@ -1,79 +1,57 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package server;
 
+import game.Game;
+import game.Player;
 import characters.Witch;
 import characters.Character;
+
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Vector;
-import game.Game;
-import game.Player;
 
 /**
  *
  * @author joxan
  */
-public class Server extends Thread {
+public class Server {
 
-    public static Vector<Player> players = new Vector<>(3);
-
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         ServerSocket serverSocket = null;
-        Game game = Game.getInstance();
         try {
-            serverSocket = new ServerSocket(8000);
+            serverSocket = new ServerSocket(8000); 
             System.out.println("Server has started... waiting for players.");
 
-        } catch (IOException ioe) {
-            System.out.println("Connection rejected: " + ioe);
-            System.exit(1);
-        }
+            Game game = Game.getInstance();  
 
-        while (true) {
-            Socket clientSocket = null;
-            try {
-
-                clientSocket = serverSocket.accept();
+            while (true) {
+                Socket clientSocket = serverSocket.accept();  
                 DataInputStream input = new DataInputStream(
-                        new BufferedInputStream(
-                                clientSocket.getInputStream()));
+                        new BufferedInputStream(clientSocket.getInputStream()));
 
-                String name = input.readUTF();
-                System.out.println("Connection accepted from: " + name);
+                
+                String playerName = input.readUTF();
+                System.out.println("Connection accepted from: " + playerName);
 
-                Character character = new Witch(name, 100, 0,
-                        0);
+              
+                Character character = new Witch(playerName, 100,
+                        100, 0);
 
                
-                Player player = new Player(name, clientSocket.getInetAddress()
-                        .getHostAddress(), 0,0,character);
-                
-                
-                
-                players.add(player);  
+                Player player = new Player(playerName, 
+                        clientSocket.getInetAddress().getHostAddress(),
+                        0,0, character);
 
-           
+             
+                game.addPlayer(player, 0, 0);
+
+              
                 Flow flow = new Flow(clientSocket, player, game);
                 flow.start();
-
-            } catch (IOException ioe) {
-                System.out.println("Error: " + ioe);
-            } finally {
-                
-                if (clientSocket != null && clientSocket.isClosed()) {
-                    try {
-                        clientSocket.close();
-                    } catch (IOException e) {
-                        System.out.println("Failed to close client socket: " + e);
-                    }
-                }
             }
+        } catch (IOException e) {
+            System.out.println("Server error: " + e.getMessage());
         }
     }
 }

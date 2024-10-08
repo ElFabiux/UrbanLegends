@@ -12,9 +12,8 @@ package characters;
  */
 public class Witch extends Character {
 
-    public Witch(String name, int energy, int mentalHealth, int superstition,
-            int positionX, int positionY) {
-        super(name, energy, mentalHealth, superstition, positionX, positionY);
+    public Witch(String name, int energy, int mentalHealth, int superstition) {
+        super(name, energy, mentalHealth, superstition);
     }
 
     public Witch() {

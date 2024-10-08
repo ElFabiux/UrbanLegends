@@ -26,7 +26,7 @@ public class Interpreter {
                 return attackCommand.execute(player, game);
 
             default:
-                // Comando desconocido
+
                 return "Unknown command.";
         }
     }
