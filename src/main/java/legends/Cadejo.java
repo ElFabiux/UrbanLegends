@@ -28,7 +28,7 @@ public class Cadejo extends Legend {
         }else{
             character.modifyMentalHealth(-30);
         }
-
+ 
     }
 
 }

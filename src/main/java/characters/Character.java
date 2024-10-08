@@ -1,15 +1,16 @@
- /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package characters;
 
+import legends.Legend;
+
 /**
- * is a mold of a character like witch, hunter or researcherm, will be methods
  *
- * @author joxan
+ * @author jorge
  */
-public abstract class Character{
+public abstract class Character {
 
     private String name;
     private int energy;
@@ -18,8 +19,7 @@ public abstract class Character{
     private int positionX;
     private int positionY;
 
-    public Character(String name, int energy, int mentalHealth, int superstition,
-        int positionX, int positionY) {
+    public Character(String name, int energy, int mentalHealth, int superstition, int positionX, int positionY) {
         this.name = name;
         this.energy = energy;
         this.mentalHealth = mentalHealth;
@@ -31,22 +31,83 @@ public abstract class Character{
     public Character() {
     }
 
-    public int getPositionX() {
-        return positionX;
+    /**
+     * Modifies the player energy
+     *
+     * @param value value that modifies energy
+     */
+    public void modifyEnergy(int value) {
+        this.energy += value;
+        if (this.energy < 0) this.energy = 0;
     }
 
-    public void setPositionX(int positionX) {
-        this.positionX = positionX;
+    /**
+     * Modifies the player mental health
+     *
+     * @param value value that modifies mental health
+     */
+    public void modifyMentalHealth(int value) {
+        this.mentalHealth += value;
+        if (this.mentalHealth < 0) this.mentalHealth = 0;
     }
 
-    public int getPositionY() {
-        return positionY;
+    /**
+     * Modifies the player superstition
+     *
+     * @param value value that modifies supertition
+     */
+    public void modifySuperstition(int value) {
+        this.superstition += value;
+        if (this.superstition < 0) this.superstition = 0;
     }
 
-    public void setPositionY(int positionY) {
-        this.positionY = positionY;
+    public boolean encounterWithLegend(Legend legend) {
+        return this.positionX == legend.getPositionX() 
+                && this.positionY == legend.getPositionY();
     }
 
+    //Movements //No deberian estas en el jugador?
+    /**
+     * Move player up
+     */
+    public void moveUp() {
+        this.positionY += 1;
+    }
+
+    /**
+     * Mode player down
+     */
+    public void moveDown() {
+        this.positionY -= 1;
+    }
+
+    /**
+     * Move player left
+     */
+    public void moveLeft() {
+        this.positionX -= 1;
+    }
+
+    /**
+     * Move player right
+     */
+    public void moveRight() {
+        this.positionX += 1;
+    }
+
+    // Verify the position
+    /**
+     * Check the player's position
+     *
+     * @param x x axis position
+     * @param y y axis position
+     * @return
+     */
+    public boolean isAtPosition(int x, int y) {
+        return this.positionX == x && this.positionY == y;
+    }
+
+    // getters and setters
     public String getName() {
         return name;
     }
@@ -55,56 +116,20 @@ public abstract class Character{
         return energy;
     }
 
-    public void modifyEnergy(int value) {
-        this.energy += value;
-    }
-
     public int getMentalHealth() {
         return mentalHealth;
-    }
-
-    public void modifyMentalHealth(int value) {
-        this.mentalHealth += value;
     }
 
     public int getSuperstition() {
         return superstition;
     }
 
-    public void modifySuperstition(int value) {
-        this.superstition += value;
+    public int getPositionX() {
+        return positionX;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEnergy(int energy) {
-        this.energy = energy;
-    }
-
-    public void setMentalHealth(int mentalHealth) {
-        this.mentalHealth = mentalHealth;
-    }
-
-    public void setSuperstition(int superstition) {
-        this.superstition = superstition;
-    }
-
-    public void moveUp() {
-        this.positionY += 1;
-    }
-
-    public void moveDown() {
-        this.positionY -= 1;
-    }
-
-    public void moveLeft() {
-        this.positionX -= 1;
-    }
-
-    public void moveRight() {
-        this.positionX += 1;
+    public int getPositionY() {
+        return positionY;
     }
 
     public String getPosition() {
@@ -114,8 +139,7 @@ public abstract class Character{
     @Override
     public String toString() {
         return "Character{" + "name=" + name + ", energy=" + energy
-                + ", mentalHealth=" + mentalHealth + ", superstition="
-                + superstition + '}';
+                + ", mentalHealth=" + mentalHealth + ", superstition=" + superstition
+                + ", position=" + getPosition() + '}';
     }
-
 }
