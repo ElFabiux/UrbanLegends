@@ -1,19 +1,19 @@
-<<<<<<< HEAD
-model\Character\Character.class
+game\Game.class
+server\Interpreter.class
+characters\Character.class
 controllers\MapController.class
-model\Character\Hunter.class
-model\Character\Witch.class
-model\game\Player.class
+Legends\Legend.class
+game\Mision.class
+server\actions\Move.class
+server\actions\Command.class
+game\Client.class
+game\Npc.class
 com\mycompany\urbanlegends\App.class
-model\legends\Legend.class
+server\actions\Attack.class
 module-info.class
-model\Character\Researcher.class
-model\game\Game.class
-model\server\Flow.class
-model\game\Client.class
-model\server\Server.class
-=======
-com\mycompany\urbanlegends\PrimaryController.class
-module-info.class
-com\mycompany\urbanlegends\SecondaryController.class
->>>>>>> 9f25178a6c7e789e15558733e0a3da5537351428
+game\Player.class
+server\Flow.class
+characters\Researcher.class
+server\Server.class
+characters\Hunter.class
+characters\Witch.class
