@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package model.Character;
+package characters;
 
 /**
- * is a mold of a character like witch, hunter or researcherm, will be methods 
+ * is a mold of a character like witch, hunter or researcherm, will be methods
  *
  * @author joxan
  */
@@ -15,19 +15,19 @@ abstract public class Character {
     private int energy;
     private int mentalHealth;
     private int superstition;
+   
 
-
-
-    public Character(String name, int energy, int mentalHealth,
-            int superstition) {
+    public Character(String name, int energy, int mentalHealth, int superstition) {
         this.name = name;
         this.energy = energy;
         this.mentalHealth = mentalHealth;
         this.superstition = superstition;
+  
     }
 
     public Character() {
     }
+
 
     public String getName() {
         return name;
@@ -73,6 +73,7 @@ abstract public class Character {
         this.superstition = superstition;
     }
 
+ 
     @Override
     public String toString() {
         return "Character{" + "name=" + name + ", energy=" + energy

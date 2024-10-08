@@ -1,0 +1,33 @@
+package server;
+
+import server.actions.Attack;
+import server.actions.Move;
+import game.Game;
+import characters.Character;
+import game.Player;
+
+public class Interpreter {
+
+    private Game game;
+
+    public Interpreter(Game game) {
+        this.game = game;
+    }
+
+    public String interpret(String command, String direction,
+            Player player) {
+        switch (command) {
+            case "move":
+                Move moveCommand = new Move(direction);
+                return moveCommand.execute(player, game);
+
+            case "attack":
+                Attack attackCommand = new Attack();
+                return attackCommand.execute(player, game);
+
+            default:
+
+                return "Unknown command.";
+        }
+    }
+}

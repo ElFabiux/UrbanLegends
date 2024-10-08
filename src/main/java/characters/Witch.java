@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package model.Character;
+package characters;
 
-import model.Character.Character;
+
 
 /**
  *
@@ -12,13 +12,11 @@ import model.Character.Character;
  */
 public class Witch extends Character {
 
-    public Witch( int energy, int mentalHealth, int superstition) {
-        super("WITCH", energy, mentalHealth, superstition);
+    public Witch(String name, int energy, int mentalHealth, int superstition) {
+        super(name, energy, mentalHealth, superstition);
     }
-    
-    
-    
-    
-    
-    
+
+    public Witch() {
+    }
+
 }

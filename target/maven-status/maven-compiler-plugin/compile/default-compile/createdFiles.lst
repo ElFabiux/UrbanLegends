@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 model\Character\Character.class
 controllers\MapController.class
 model\Character\Hunter.class
@@ -11,3 +12,8 @@ model\game\Game.class
 model\server\Flow.class
 model\game\Client.class
 model\server\Server.class
+=======
+com\mycompany\urbanlegends\PrimaryController.class
+module-info.class
+com\mycompany\urbanlegends\SecondaryController.class
+>>>>>>> 9f25178a6c7e789e15558733e0a3da5537351428
