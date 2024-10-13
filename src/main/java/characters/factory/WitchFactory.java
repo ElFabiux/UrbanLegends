@@ -15,6 +15,6 @@ public class WitchFactory implements CharacterFactory {
 
     @Override
     public Character createCharacter() {
-        return new Witch("Matilda", 80, 90, 70, 1, 1);
+        return new Witch("Matilda", 80, 90, 70);
     }
 }

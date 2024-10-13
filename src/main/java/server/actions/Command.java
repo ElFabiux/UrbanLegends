@@ -5,13 +5,13 @@
 package server.actions;
 
 import game.Game;
-import characters.Character;
+import game.Player;
 
 /**
  *
  * @author joxan
  */
 public interface Command {
-    String execute(Character character, Game game);
+    String execute(Player player, Game game);
 }
 

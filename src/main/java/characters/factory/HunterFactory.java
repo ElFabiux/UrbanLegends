@@ -15,7 +15,7 @@ public class HunterFactory implements CharacterFactory {
 
       @Override
     public Character createCharacter() {
-        return new Hunter("Fabian manco", 100, 80, 50, 0, 0);
+        return new Hunter("Fabian manco", 100, 80, 50);
     }
 
 

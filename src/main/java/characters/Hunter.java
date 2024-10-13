@@ -13,9 +13,8 @@ public class Hunter extends Character {
     
     
 
-    public Hunter(String name, int energy, int mentalHealth, int superstition,
-            int positionX, int positionY) {
-        super(name, energy, mentalHealth, superstition, positionX, positionY);
+    public Hunter(String name, int energy, int mentalHealth, int superstition) {
+        super(name, energy, mentalHealth, superstition);
     }
 
     public Hunter() {

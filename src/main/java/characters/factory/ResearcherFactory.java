@@ -15,6 +15,6 @@ public class ResearcherFactory implements CharacterFactory {
 
     @Override
     public Character createCharacter() {
-        return new Researcher("Isma Pelon", 70, 100, 40, 2, 2);
+        return new Researcher("Isma Pelon", 70, 100, 40);
     }
 }

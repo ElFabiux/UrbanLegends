@@ -11,8 +11,8 @@ package characters;
 public class Researcher extends Character {
 
     public Researcher(String name, int energy, int mentalHealth,
-            int superstition, int positionX, int positionY) {
-        super(name, energy, mentalHealth, superstition, positionX, positionY);
+            int superstition) {
+        super(name, energy, mentalHealth, superstition);
     }
 
     public Researcher() {
