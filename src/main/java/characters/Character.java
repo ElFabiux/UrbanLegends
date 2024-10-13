@@ -19,7 +19,8 @@ public abstract class Character {
     private int positionX;
     private int positionY;
 
-    public Character(String name, int energy, int mentalHealth, int superstition, int positionX, int positionY) {
+    public Character(String name, int energy, int mentalHealth, 
+            int superstition, int positionX, int positionY) {
         this.name = name;
         this.energy = energy;
         this.mentalHealth = mentalHealth;
@@ -139,7 +140,8 @@ public abstract class Character {
     @Override
     public String toString() {
         return "Character{" + "name=" + name + ", energy=" + energy
-                + ", mentalHealth=" + mentalHealth + ", superstition=" + superstition
+                + ", mentalHealth=" + mentalHealth + ", superstition=" + 
+                superstition
                 + ", position=" + getPosition() + '}';
     }
 }

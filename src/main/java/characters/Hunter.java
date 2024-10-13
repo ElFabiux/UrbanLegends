@@ -9,6 +9,9 @@ package characters;
  * @author joxan
  */
 public class Hunter extends Character {
+    
+    
+    
 
     public Hunter(String name, int energy, int mentalHealth, int superstition,
             int positionX, int positionY) {
