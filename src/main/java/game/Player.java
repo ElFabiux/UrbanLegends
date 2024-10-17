@@ -71,18 +71,22 @@ public class Player {
     
    
     public void moveUp() {
+        if(this.positionY<=0) return;
         this.positionY --;
     }
 
     public void moveDown() {
+        if(this.positionY >10) return;
         this.positionY ++;
     }
 
     public void moveLeft() {
+        if (this.positionX<=0)return;
         this.positionX --;
     }
 
     public void moveRight() {
+        if(this.positionX>10)return;
         this.positionX ++;
     }
 

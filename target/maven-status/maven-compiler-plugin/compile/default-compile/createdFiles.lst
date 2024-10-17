@@ -3,7 +3,9 @@ server\Interpreter.class
 characters\Character.class
 controllers\MapController.class
 Legends\Legend.class
+controllers\MapController$1.class
 game\Mision.class
+controllers\LogInController.class
 server\actions\Move.class
 server\actions\Command.class
 game\Client.class
