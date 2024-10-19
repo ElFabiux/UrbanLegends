@@ -1,13 +1,12 @@
 package com.mycompany.urbanlegends;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import game.Client;
 
 /**
  * JavaFX App
@@ -18,13 +17,19 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("Map"), 1080, 720);
+        scene = new Scene(loadFXML("LogIn"));
         stage.setScene(scene);
         stage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+    public static void setRoot(String fxml) {
+        try {
+            scene.setRoot(loadFXML(fxml));
+            Stage stage = (Stage) scene.getWindow();
+            stage.sizeToScene(); // Ajusta el tamaño del Stage al nuevo root
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
@@ -33,10 +38,9 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+
         launch();
 
-        Client cliente = new Client(); 
-        
     }
 
 }

@@ -15,18 +15,19 @@ public class Client {
     private DataOutputStream output;
     private DataInputStream input;
     private Socket socket;
+    private static String playerName;
 
     public Client() {
         // Inicializar el mapa local del cliente
         initializeMap();
     }
 
-    public static void main(String[] args) {
+    public static Client main(String[] args) {
         Client client = new Client();
-        client.connectToServer("localhost", 8000);  // Conectar al servidor en localhost, puerto 8000
-        client.listenForCommands();  // Escuchar comandos de flechas
+        Client.playerName = args[0];
+        client.connectToServer("localhost", 8000);
+        return client;
     }
-
     // Método para conectar al servidor
     private void connectToServer(String host, int port) {
         try {
@@ -35,11 +36,6 @@ public class Client {
             input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
 
             System.out.println("Connected to server.");
-
-            // Enviar el nombre del jugador al servidor
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Enter your player name: ");
-            String playerName = scanner.nextLine();
             output.writeUTF(playerName);
             output.flush();
 
@@ -49,31 +45,35 @@ public class Client {
     }
 
     // Método para escuchar comandos y enviar movimientos al servidor
-    private void listenForCommands() {
-        Scanner scanner = new Scanner(System.in);
-
+    public char[][] listenForCommands(String command) {
         try {
-            while (true) {
-                System.out.println("Use arrow keys to move (up, down, left, right): ");
-                String command = scanner.nextLine();
-                sendMoveCommand(command);
-                String response = input.readUTF();  // Recibir respuesta del servidor
-                System.out.println(response);
-                String mapState = input.readUTF();  // Estado actualizado del mapa
-                System.out.println(mapState);
-                updateLocalMap(mapState);  // Actualizar el mapa local
-            }
+            sendMoveCommand(command);
+            String response = input.readUTF();  // Recibir respuesta del servidor
+            System.out.println(response);
+            String mapState = input.readUTF();  // Estado actualizado del mapa
+            System.out.println(mapState);
+            updateLocalMap(mapState);  // Actualizar el mapa local
+            
         } catch (IOException e) {
             System.out.println("Connection closed.");
-        } finally {
-            // Cerrar los recursos
-            try {
-                if (input != null) input.close();
-                if (output != null) output.close();
-                if (socket != null) socket.close();
-            } catch (IOException e) {
-                System.out.println("Error closing client resources: " + e.getMessage());
+        }
+        return this.map;
+    }
+
+    public void closeResources() {
+        // Cerrar los recursos
+        try {
+            if (input != null) {
+                input.close();
             }
+            if (output != null) {
+                output.close();
+            }
+            if (socket != null) {
+                socket.close();
+            }
+        } catch (IOException e) {
+            System.out.println("Error closing client resources: " + e.getMessage());
         }
     }
 
@@ -129,8 +129,6 @@ public class Client {
                 map[i - 1][j] = columns[j].charAt(0);  // Actualiza el mapa local
             }
         }
-
-        printLocalMap();  // Imprimir el mapa actualizado
     }
 
     // Mostrar el mapa local del cliente
@@ -142,5 +140,9 @@ public class Client {
             }
             System.out.println();
         }
+    }
+    
+    public char[][] getMap(){
+        return this.map;
     }
 }

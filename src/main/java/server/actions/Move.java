@@ -35,7 +35,7 @@ public class Move implements Command {
             return "Move failed. Not enough energy.";
         }
 
-        player.getCharacter().modifyEnergy(-10);
+        player.getCharacter().modifyEnergy(-1);
 
         switch (direction) {
             case "up":
