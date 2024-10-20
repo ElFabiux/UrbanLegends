@@ -11,7 +11,7 @@ public class Game {
     private Vector<Player> players = new Vector<>(3);
     private final int MAP_WIDTH = 10;
     private final int MAP_HEIGHT = 10;
-    private char[][] map = new char[MAP_WIDTH][MAP_HEIGHT];
+    public char[][] map = new char[MAP_WIDTH][MAP_HEIGHT];
 
     private MovementsLogic movementsLogic;
 
@@ -54,7 +54,7 @@ public class Game {
         if (isValidPosition(oldX, oldY) && isValidPosition(
                 player.getPositionX(), player.getPositionY())) {
             //  checkMovements(player, oldX, oldY);
-            movementsLogic.checkMovements(map, player, oldX, oldY, 'P');
+          //  movementsLogic.checkMovements(map, player, oldX, oldY, 'P');
 
         } else {
             System.out.println("Error: La nueva posición está fuera del mapa.");

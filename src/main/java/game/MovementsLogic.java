@@ -4,37 +4,71 @@
  */
 package game;
 
+import controllers.MapController;
+
 /**
  *
  * @author jorge
  */
 public class MovementsLogic {
 
-    private final char house = 'H';
-    private final char river = 'R';
-    private final char tree = 'T';
-    private final char grass = 'G';
+    private final char[] blockedGrids = {'R', 'T', 'H', 'O', 'C', 'S', 'W', 'P', 'L'};
 
     public MovementsLogic() {
     }
 
-    public void checkMovements(char[][] map, Player player, int oldX, int oldY,
-            char character) {
-
-        char playerMovement = map[player.getPositionX()][player.getPositionY()];
-
-        //Esto donde si puede pisar, que no seria necesaria cuando se verifique lo lugares en que no se puede
-        if (playerMovement == grass) {
-            map[oldY][oldX] = grass;
-            map[player.getPositionY()][player.getPositionX()] = character;
+    public boolean checkMovements(String[][] map, Player player, String direction) {
+        int oldX = player.getPositionX();
+        int oldY = player.getPositionY();
+        int posX = oldX;
+        int posY = oldY;
+        System.out.println("dire: " + direction);
+        if ("up".equals(direction)) {
+            posY--;
+        }
+        if ("down".equals(direction)) {
+            posY++;
+        }
+        if ("right".equals(direction)) {
+            posX++;
+        }
+        if ("left".equals(direction)) {
+            posX--;
         }
 
-        //Esto es que choque con cualquier cosa que no se deba
-        if (playerMovement == river || playerMovement == house
-                || playerMovement == tree) {
-            map[oldY][oldX] = character;
+        System.out.println("width:" + map.length);
+        System.out.println("height:" + map[0].length);
+        System.out.println("stoy en:" + map[oldY][oldX]);
+        //eSTE Dentro de los limites del mapa
+        if (posX >= map.length || posX < 0) {
+            return false;
+        }
+        if (posY >= map[0].length || posY < 0) {
+            return false;
         }
 
+        System.out.println("newPos: " + posX + " : " + posY);
+        System.out.println("newPos: " + map[oldY][posX]);
+
+        if (isBlocked(map[posY][oldX], 0)
+                || isBlocked(map[oldY][posX], 0)) {
+            return false;
+        }
+
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        return true;
     }
 
+    //veificacion con cosas del mapa que no puede pisar
+    private boolean isBlocked(String grid, int index) {
+        if (index >= blockedGrids.length) {
+            return false;
+        }
+
+        if (grid.charAt(0) == blockedGrids[index]) {
+            return true;
+        }
+
+        return isBlocked(grid, index + 1);
+    }
 }

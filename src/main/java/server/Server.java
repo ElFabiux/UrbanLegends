@@ -1,4 +1,4 @@
-
+ 
 package server;
 
 import game.Game;
@@ -42,10 +42,10 @@ public class Server {
                
                 Player player = new Player(playerName, 
                         clientSocket.getInetAddress().getHostAddress(),
-                        0,0, character);
+                        0,1, character);
 
              
-                game.addPlayer(player, 0, 0);
+                game.addPlayer(player, 1, 0);
 
               
                 Flow flow = new Flow(clientSocket, player, game);
