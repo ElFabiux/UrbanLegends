@@ -383,6 +383,15 @@ public class MapController implements Initializable {
             case "O": return "6_5";
             case "R": return "6_6";
             case "W": return "6_7";
+            case "P1": return "7_1";
+            case "P2": return "7_2";
+            case "P3": return "7_3";
+            case "L1": return "8_1";
+            case "L2": return "8_2";
+            case "L3": return "8_3";
+            case "L4": return "8_4";
+            case "L5": return "8_5";
+            case "L6": return "8_6";
             default: return "1_1";
         }
     }
@@ -427,7 +436,16 @@ public class MapController implements Initializable {
             case "6_4": return "/Church/6_4.png";
             case "6_5": return "/Church/6_5.png";
             case "6_6": return "/Church/6_6.png";
-            case "6_7": return "/Church/6_7.png";
+            case "6_7": return "/Characters/6_7.png";
+            case "7_1": return "/Characters/7_1.png";
+            case "7_2": return "/Characters/7_2.png";
+            case "7_3": return "/Characters/7_3.png";
+            case "8_1": return "/Legends/8_1.png";
+            case "8_2": return "/Legends/8_2.png";
+            case "8_3": return "/Legends/8_3.png";
+            case "8_4": return "/Legends/8_4.png";
+            case "8_5": return "/Legends/8_5.png";
+            case "8_6": return "/Legends/8_6.png";
             default: return "/Grass/1_1.jpg";
         }
     }

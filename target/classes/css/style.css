@@ -1,0 +1,95 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+ */
+
+/* Estilo para el VBox que contiene el menú inicial */
+.startMenuContainer {
+    -fx-spacing: 10px;
+    -fx-background-color: #2b3d3b;  /* Fondo verde suave */
+    -fx-padding: 20px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+/* Estilo general para los botones */
+.button {
+    -fx-background-color: #5f9487;  /* Verde suave */
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #4d7a6e;  /* Verde más oscuro al pasar el ratón */
+}
+
+/* Estilo para los RadioButtons */
+.radioButton {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.radioButton .radio {
+    -fx-background-color: #81b3a0;  /* Celeste como color secundario */
+}
+
+.radioButton:armed .radio {
+    -fx-background-color: #639883;  /* Celeste oscuro al activarse */
+}
+
+/* Estilo para los ImageViews dentro de los RadioButtons */
+.radioButton ImageView {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 10, 0, 0, 0);
+}
+
+.radioButton:hover ImageView {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+/* Estilo para el AnchorPane que contiene el menú de creación de jugador */
+.createPlayerMenuContainer {
+    -fx-background-color: #2b3d3b;  /* Fondo verde suave */
+    -fx-border-color: #81b3a0;      /* Borde celeste suave */
+    -fx-border-width: 2px;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-padding: 20px;
+}
+
+/* Estilo para el TextField del nombre del jugador */
+.playerName {
+    -fx-background-color: #3e5654;  /* Verde suave para los campos de texto */
+    -fx-text-fill: white;
+    -fx-border-color: #81b3a0;      /* Borde celeste */
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.playerName:focused {
+    -fx-border-color: #639883;  /* Borde más oscuro al enfocarse */
+}
+
+/* Estilo para los Labels */
+.label {
+    -fx-text-fill: #c7d8d4;  /* Texto blanco suave */
+    -fx-font-weight: bold;
+}
+
+/* Estilo para los botones dentro del menú de creación de jugador */
+.start, .back {
+    -fx-background-color: #81b3a0;  /* Celeste para los botones */
+    -fx-text-fill: white;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+}
+
+.start:hover, .back:hover {
+    -fx-background-color: #639883;  /* Celeste más oscuro al pasar el ratón */
+}

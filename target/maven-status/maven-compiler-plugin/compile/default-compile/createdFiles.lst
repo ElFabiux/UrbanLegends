@@ -18,15 +18,9 @@ game\Player.class
 characters\Witch.class
 game\Game.class
 controllers\MapController.class
-Legends\Legend.class
-controllers\MapController$1.class
 game\Mision.class
-controllers\LogInController.class
-server\actions\Move.class
-server\actions\Command.class
-game\Client.class
-game\Npc.class
 legends\factory\SombreronFactory.class
+controllers\LogInController.class
 legends\Llorona.class
 com\mycompany\urbanlegends\App.class
 module-info.class
@@ -36,6 +30,7 @@ server\Server.class
 characters\Hunter.class
 legends\factory\DuendeFactory.class
 server\Interpreter.class
+controllers\MapController$1.class
 server\actions\Command.class
 characters\factory\HunterFactory.class
 legends\factory\PadreSinCabezaFactory.class
