@@ -1,5 +1,6 @@
 package game;
 
+import controllers.MapController;
 import java.util.Vector;
 
 public class Game {
@@ -54,6 +55,10 @@ public class Game {
         } else {
             System.out.println("Error: La nueva posición está fuera del mapa.");
         }
+        //Despues de actualzar el mapa llamar a esa función para renderizar el view de cada jugador
+//        for (Player player1 : players) {
+//            MapController.requestRender(map);
+//        }
     }
 
     

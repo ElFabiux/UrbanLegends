@@ -84,13 +84,13 @@ public class LogInController implements Initializable {
         String value = selectedRadioButton.getText();
         switch (value) {
             case "Witch":
-                this.character = new Witch(name, 0, 0, 0);
+                this.character = new Witch("Witch", 0, 0, 0);
                 break;
             case "Hunter":
-                this.character = new Hunter(name, 0, 0, 0);
+                this.character = new Hunter("Hunter", 0, 0, 0);
                 break;
             case "Researcher":
-                this.character = new Researcher(name, 0, 0, 0);
+                this.character = new Researcher("Researcher", 0, 0, 0);
                 break;
             default:
                 throw new AssertionError();

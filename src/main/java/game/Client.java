@@ -1,5 +1,6 @@
 package game;
 
+import controllers.MapController;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -129,6 +130,7 @@ public class Client {
                 map[i - 1][j] = columns[j].charAt(0);  // Actualiza el mapa local
             }
         }
+        MapController.requestRender(map);
     }
 
     // Mostrar el mapa local del cliente
