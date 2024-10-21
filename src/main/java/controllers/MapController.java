@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import game.Client;
+import game.GameMap;
 import game.Tile;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -46,6 +47,8 @@ public class MapController implements Initializable {
     private static char[][] map;
     private static Client client;
     private static MapController instance; 
+    
+    GameMap gameMap;
 
     /**
      * Initializes the controller class and add focus to the map for the player
@@ -59,7 +62,10 @@ public class MapController implements Initializable {
         this.playerView.getChildren().add(view);
         MapController.view.setFocusTraversable(true);
         MapController.view.addEventHandler(KeyEvent.KEY_PRESSED, this::movePlayer);
-        loadMap(villageMap);
+        
+        gameMap = new GameMap();
+        gameMap.loadTileMatrix();
+        loadMap(gameMap.getCemeteryMap());
     }
 
     /**
@@ -208,254 +214,73 @@ public class MapController implements Initializable {
             }
         }
     }
-
-        private static final String[][] villageMap = {
-        {"R1", "G", "G", "G", "G", "G", "G", "G", "G", "T2", "G", "G", "G", "G", "G", "G", "G", "G"},
-        {"R1", "T1", "T1", "G", "G", "G", "G", "G", "T2", "G", "G", "G", "H6", "H4", "G", "G", "T3", "T3"},
-        {"R1", "G", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L"},
-        {"R1", "G", "L", "G", "G", "H5", "T", "H5", "G", "G", "T3", "T3", "T3", "T3", "T3", "T3", "T3", "G"},
-        {"R1", "G", "L", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G"},
-        {"R1", "G", "L", "G", "G", "G", "T2", "G", "G", "T1", "G", "G", "G", "G", "G", "G", "G", "G"},
-        {"R1", "G", "L", "H3", "G", "G", "G", "G", "G", "G", "G", "G", "H5", "H5", "G", "G", "G", "G"},
-        {"R1", "T2", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "G", "G"},
-        {"R1", "G", "L", "T3", "T3", "G", "G", "H4", "L", "H1", "G", "T3", "T3", "H2", "G", "H3", "G", "G"},
-        {"R1", "G", "L", "T3", "G", "G", "G", "T3", "L", "H5", "G", "T3", "T3", "G", "G", "G", "G", "G"},
-        {"R1", "G", "L", "H1", "G", "G", "G", "H6", "L", "G", "G", "T3", "G", "G", "T1", "G", "G", "G"},
-        {"R1", "G", "L", "T1", "G", "G", "G", "T3", "L", "T3", "G", "G", "T2", "G", "G", "G", "G", "G"},
-        {"R1", "G", "L", "G", "G", "G", "G", "G", "L", "H6", "G", "G", "G", "G", "G", "T1", "G", "G"},
-        {"R1", "G", "L", "H4", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G"},
-        {"R5", "R3", "L", "R3", "R3", "R3", "R3", "R3", "R3", "R3", "R3", "R3", "R3", "R3", "R3", "R3", "R3", "R3"},
-        {"R4", "R2", "L", "R2", "R2", "R2", "R2", "R2", "R2", "R2", "R2", "R2", "R2", "R2", "R2", "R2", "R2", "R2"},
-        {"R1", "G", "L", "T", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G"},
-        {"R1", "G", "L", "G", "G", "G", "T1", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G"}
-    };
-    
-    private static final String[][] forestMap = {
-        {"R1", "G", "G", "T6", "G", "G", "T3", "G", "T7", "G", "G", "T2", "G", "G", "G", "G", "G", "T5"},
-        {"R1", "T1", "G", "G", "G", "G", "T4", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G"},
-        {"R1", "T1", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "T4", "G", "G", "G"},
-        {"R1", "G", "G", "G", "G", "G", "G", "G", "T2", "G", "T1", "G", "G", "G", "T3", "G", "G", "G"},
-        {"R1", "G", "G", "G", "G", "T5", "G", "G", "G", "G", "G", "T1", "G", "G", "G", "T3", "T6", "G"},
-        {"R1", "G", "G", "G", "G", "G", "G", "T3", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G"},
-        {"R1", "G", "G", "G", "G", "G", "G", "T3", "T3", "G", "G", "G", "G", "T7", "G", "G", "G", "G"},
-        {"R1", "G", "T2", "G", "G", "T6", "G", "G", "G", "T1", "G", "G", "G", "G", "T5", "G", "G", "G"},
-        {"R1", "G", "G", "T2", "G", "G", "G", "G", "G", "G", "G", "G", "T6", "G", "G", "G", "G", "G"},
-        {"R1", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G"},
-        {"R1", "G", "G", "G", "G", "T7", "G", "G", "T2", "G", "G", "G", "G", "G", "T3", "G", "T2", "G"},
-        {"R1", "G", "T4", "G", "G", "G", "G", "G", "G", "G", "G", "G", "T1", "G", "G", "G", "G", "G"},
-        {"R1", "T3", "T3", "G", "G", "G", "T7", "G", "G", "G", "G", "G", "G", "T3", "G", "G", "G", "G"},
-        {"R1", "T3", "T3", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "T5", "G", "G", "G"},
-        {"R1", "G", "G", "G", "G", "G", "G", "T4", "G", "G", "T3", "T3", "T3", "G", "G", "G", "G", "G"},
-        {"R1", "T5", "G", "G", "G", "G", "G", "G", "G", "G", "T4", "G", "G", "G", "G", "T2", "G", "G"},
-        {"R1", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "T6", "G"},
-        {"R1", "G", "G", "T7", "G", "T1", "G", "G", "G", "G", "G", "G", "G", "T5", "G", "G", "G", "G"}
-    };
-
-    private static final String[][] cemeteryMap = {
-        {"O5", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "O5", "G", "G", "T3", "T3", "T3"},
-        {"O5", "G", "G", "G", "G", "G", "O5", "G", "T3", "G", "G", "G", "G", "G", "G", "G", "G", "G"},
-        {"O5", "G", "O5", "G", "G", "G", "G", "T3", "C", "T3", "G", "G", "G", "G", "G", "G", "G", "T3"},
-        {"O5", "O5", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "O5", "G", "G", "G", "G"},
-        {"O5", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "O5"},
-        {"O5", "G", "G", "G", "G", "G", "O5", "G", "G", "G", "T3", "G", "G", "G", "G", "G", "G", "G"},
-        {"O5", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "O5", "G", "G"},
-        {"O5", "T3", "T3", "G", "G", "G", "G", "G", "G", "G", "G", "G", "O2", "G", "T3", "G", "G", "G"},
-        {"G", "G", "G", "G", "O5", "G", "G", "G", "G", "O5", "G", "G", "G", "G", "G", "T3", "G", "O2"},
-        {"G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "O2", "G", "O1", "G", "G", "G", "G"},
-        {"O5", "G", "G", "G", "G", "G", "G", "G", "T3", "T3", "G", "G", "G", "T3", "G", "O1", "G", "G"},
-        {"O5", "G", "G", "G", "G", "G", "G", "G", "G", "T3", "G", "O3", "G", "G", "G", "O3", "G", "T3"},
-        {"O5", "G", "G", "G", "G", "G", "O5", "G", "G", "O3", "G", "G", "G", "T3", "G", "G", "G", "G"},
-        {"O5", "G", "G", "G", "O3", "G", "G", "G", "G", "G", "G", "G", "G", "O3", "G", "O5", "G", "O1"},
-        {"O5", "O5", "G", "G", "G", "G", "G", "O5", "G", "O2", "G", "O1", "G", "G", "G", "G", "G", "O3"},
-        {"O5", "G", "G", "O5", "G", "G", "G", "G", "G", "G", "G", "O3", "G", "G", "G", "O1", "G", "O1"},
-        {"O5", "G", "G", "G", "G", "G", "G", "G", "G", "G", "T3", "O5", "G", "O2", "G", "G", "G", "O5"},
-        {"O5", "G", "T3", "T3", "G", "T3", "G", "G", "O1", "G", "G", "G", "G", "O3", "G", "O2", "O5", "O5"}
-    };
-    
-    private static final String[][] churchMap = {
-        {"W", "W", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"},
-        {"F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "W"},
-        {"F", "F", "F", "F", "F", "F", "F", "F", "O", "O", "F", "F", "F", "F", "F", "F", "F", "F"},
-        {"F", "F", "F", "F", "F", "F", "F", "F", "R", "R", "F", "F", "F", "F", "F", "F", "F", "F"},
-        {"F", "F", "F", "F", "F", "F", "F", "F", "R", "R", "F", "F", "F", "F", "F", "F", "F", "F"},
-        {"F", "S4", "S2", "S2", "S2", "S2", "S3", "F", "R", "R", "F", "S4", "S2", "S2", "S2", "S2", "S3", "F"},
-        {"F", "F", "F", "W", "F", "F", "F", "F", "R", "R", "F", "F", "F", "F", "F", "F", "F", "W"},
-        {"F", "S4", "S2", "S2", "S2", "S2", "S3", "F", "R", "R", "F", "S4", "S2", "S2", "S2", "S2", "S3", "F"},
-        {"F", "F", "F", "F", "F", "F", "F", "F", "R", "R", "W", "F", "F", "F", "F", "F", "F", "F"},
-        {"F", "S4", "S2", "S2", "S2", "S2", "S3", "F", "R", "R", "F", "S4", "S2", "S2", "S2", "S2", "S3", "F"},
-        {"F", "F", "F", "F", "F", "F", "F", "F", "R", "R", "F", "F", "W", "F", "F", "F", "F", "F"},
-        {"F", "S4", "S2", "S2", "S2", "S2", "S3", "F", "R", "R", "F", "S4", "S2", "S2", "S2", "S2", "S3", "F"},
-        {"W", "F", "F", "F", "F", "F", "F", "F", "R", "R", "F", "F", "F", "F", "F", "F", "F", "F"},
-        {"F", "S4", "S2", "S2", "S2", "S2", "S3", "F", "R", "R", "F", "S4", "S2", "S2", "S2", "S2", "S3", "F"},
-        {"F", "F", "F", "F", "F", "F", "F", "F", "R", "R", "F", "F", "F", "F", "F", "F", "F", "F"},
-        {"F", "F", "F", "F", "F", "F", "F", "F", "R", "R", "F", "F", "F", "F", "F", "F", "F", "F"},
-        {"F", "W", "F", "F", "F", "F", "F", "F", "R", "R", "F", "F", "F", "F", "F", "F", "F", "F"},
-        {"W", "F", "F", "F", "F", "F", "F", "F", "R", "R", "F", "F", "F", "F", "F", "F", "F", "W"}
-    };
     
     /**
-     * Loads a map from the given 2D matrix into the scene grid.
-     * Clears the current grid and recursively adds tiles from the map.
+     * Loads a map from the given 2D matrix of tiles into the scene grid.
+     * Clears the current grid and adds tiles from the provided tile matrix.
      *
-     * @param mapMatrix The 2D array representing the map.
+     * @param tileMatrix The 2D array representing the map.
      */
-    private void loadMap(String[][] mapMatrix) {
+    private void loadMap(Tile[][] tileMatrix) {
         sceneGrid.getChildren().clear();
-        loadMapRecursively(mapMatrix, 0, 0);
+        loadMapRecursively(tileMatrix, 0, 0);
     }
 
     /**
      * Recursively loads the map into the scene grid.
      * Traverses the map matrix row by row and adds corresponding tiles.
      *
-     * @param mapMatrix The 2D array representing the map.
+     * @param tileMatrix The 2D array representing the map.
      * @param row The current row being processed.
      * @param col The current column being processed.
      */
-    private void loadMapRecursively(String[][] mapMatrix, int row, int col) {
-        if (row >= mapMatrix.length) {
+    private void loadMapRecursively(Tile[][] tileMatrix, int row, int col) {
+        if (row >= tileMatrix.length) {
             return;
         }
 
-        if (col >= mapMatrix[row].length) {
-            loadMapRecursively(mapMatrix, row + 1, 0);
+        if (col >= tileMatrix[row].length) {
+            loadMapRecursively(tileMatrix, row + 1, 0);
             return;
         }
 
-        String tileChar = mapMatrix[row][col];
-        Tile tile = createTile(tileChar);
-        tileMatrix[row][col] = tile;
-        sceneGrid.add(tile.getImageView(), col, row);
-
-        loadMapRecursively(mapMatrix, row, col + 1);
-    }
-
-    /**
-     * Creates a Tile object based on the character representing the tile type.
-     *
-     * @param tileChar The character representing the tile type (e.g., 'G' for grass).
-     * @return The Tile object corresponding to the tile character.
-     */
-    private Tile createTile(String tileChar) {
-        String tileType = getTileType(tileChar);
-        String imagePath = getTileImagePath(tileType);
-        return new Tile(tileType, imagePath);
-    }
-
-    /**
-     * Maps a tile character to the corresponding tile type.
-     *
-     * @param tileChar The character representing the tile type.
-     * @return A string representing the tile type, mapped to its corresponding image.
-     */
-    private String getTileType(String tileChar) {
-        switch (tileChar) {
-            case "G": return "1_1";
-            case "L": return "1_2";
-            case "T": return "1_3";
-            case "H1": return "2_1";
-            case "H2": return "2_2";
-            case "H3": return "2_3";
-            case "H4": return "2_4";
-            case "H5": return "2_5";
-            case "H6": return "2_6";
-            case "R1": return "3_1";
-            case "R2": return "3_2";
-            case "R3": return "3_3";
-            case "R4": return "3_4";
-            case "R5": return "3_5";
-            case "T1": return "4_1";
-            case "T2": return "4_2";
-            case "T3": return "4_3";
-            case "T4": return "4_4";
-            case "T5": return "4_5";
-            case "T6": return "4_6";
-            case "T7": return "4_7";
-            case "O1": return "5_1";
-            case "O2": return "5_2";
-            case "O3": return "5_3";
-            case "C": return "5_4";
-            case "O5": return "5_5";
-            case "F": return "6_1";
-            case "S2": return "6_2";
-            case "S3": return "6_3";
-            case "S4": return "6_4";
-            case "O": return "6_5";
-            case "R": return "6_6";
-            case "W": return "6_7";
-            case "P1": return "7_1";
-            case "P2": return "7_2";
-            case "P3": return "7_3";
-            case "L1": return "8_1";
-            case "L2": return "8_2";
-            case "L3": return "8_3";
-            case "L4": return "8_4";
-            case "L5": return "8_5";
-            case "L6": return "8_6";
-            default: return "1_1";
+        Tile tile = tileMatrix[row][col];
+        if (tile != null) {
+            sceneGrid.add(tile.getImageView(), col, row);
         }
+
+        loadMapRecursively(tileMatrix, row, col + 1);
     }
 
     /**
-     * Maps a tile type to its corresponding image path.
-     *
-     * @param tileType The string representing the tile type (e.g., "1_1" for a grass tile).
-     * @return The image path corresponding to the tile type.
+     * Switches the current map to the village map.
      */
-    private String getTileImagePath(String tileType) {
-        switch (tileType) {
-            case "1_1": return "/Grass/1_1.jpg";
-            case "1_2": return "/Grass/1_2.png";
-            case "1_3": return "/Grass/1_3.png";
-            case "2_1": return "/House/2_1.jpg";
-            case "2_2": return "/House/2_2.jpg";
-            case "2_3": return "/House/2_3.jpg";
-            case "2_4": return "/House/2_4.jpg";
-            case "2_5": return "/House/2_5.jpg";
-            case "2_6": return "/House/2_6.jpg";
-            case "3_1": return "/Water/3_1.jpg";
-            case "3_2": return "/Water/3_2.jpg";
-            case "3_3": return "/Water/3_3.jpg";
-            case "3_4": return "/Water/3_4.jpg";
-            case "3_5": return "/Water/3_5.jpg";
-            case "4_1": return "/Forest/4_1.png";
-            case "4_2": return "/Forest/4_2.png";
-            case "4_3": return "/Forest/4_3.png";
-            case "4_4": return "/Forest/4_4.png";
-            case "4_5": return "/Forest/4_5.png";
-            case "4_6": return "/Forest/4_6.png";
-            case "4_7": return "/Forest/4_7.png";
-            case "5_1": return "/Cemetery/5_1.png";
-            case "5_2": return "/Cemetery/5_2.png";
-            case "5_3": return "/Cemetery/5_3.png";
-            case "5_4": return "/Cemetery/5_4.png";
-            case "5_5": return "/Cemetery/5_5.png";
-            case "6_1": return "/Church/6_1.png";
-            case "6_2": return "/Church/6_2.png";
-            case "6_3": return "/Church/6_3.png";
-            case "6_4": return "/Church/6_4.png";
-            case "6_5": return "/Church/6_5.png";
-            case "6_6": return "/Church/6_6.png";
-            case "6_7": return "/Characters/6_7.png";
-            case "7_1": return "/Characters/7_1.png";
-            case "7_2": return "/Characters/7_2.png";
-            case "7_3": return "/Characters/7_3.png";
-            case "8_1": return "/Legends/8_1.png";
-            case "8_2": return "/Legends/8_2.png";
-            case "8_3": return "/Legends/8_3.png";
-            case "8_4": return "/Legends/8_4.png";
-            case "8_5": return "/Legends/8_5.png";
-            case "8_6": return "/Legends/8_6.png";
-            default: return "/Grass/1_1.jpg";
-        }
+    @FXML
+    private void loadVillageMap() {
+        loadMap(gameMap.getVillageMap());
     }
 
     /**
-     * Retrieves the GridPane that represents the scene grid.
-     * 
-     * @return The GridPane representing the scene.
+     * Switches the current map to the forest map.
      */
-    public GridPane getGridPane() {
-        return sceneGrid;
+    @FXML
+    private void loadForestMap() {
+        loadMap(gameMap.getForestMap());
+    }
+
+    /**
+     * Switches the current map to the cemetery map.
+     */
+    @FXML
+    private void loadCemeteryMap() {
+        loadMap(gameMap.getCemeteryMap());
+    }
+
+    /**
+     * Switches the current map to the church map.
+     */
+    @FXML
+    private void loadChurchMap() {
+        loadMap(gameMap.getChurchMap());
     }
 }
