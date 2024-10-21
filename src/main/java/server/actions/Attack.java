@@ -9,7 +9,7 @@ package server.actions;
  * @author joxan
  */
 import game.Game;
-import characters.Character;
+import playableCharacters.Character;
 import game.Player;
 
 public class Attack implements Command {

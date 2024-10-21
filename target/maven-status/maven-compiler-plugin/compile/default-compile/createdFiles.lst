@@ -1,15 +1,17 @@
 Legends\Duende.class
 game\Tile.class
+game\Time.class
 server\actions\Move.class
 Characters\factory\WitchFactory.class
 game\Npc.class
-Characters\Witch.class
-Characters\Character.class
+playableCharacters\Hunter.class
 server\Flow.class
 Characters\factory\HunterFactory.class
 Legends\factory\DuendeFactory.class
 game\Client.class
+playableCharacters\Researcher.class
 Legends\PadreSinCabeza.class
+game\Time$1.class
 game\Player.class
 Legends\factory\LloronaFactory.class
 game\GameMap.class
@@ -27,7 +29,6 @@ Characters\factory\ResearcherFactory.class
 com\mycompany\urbanlegends\App.class
 module-info.class
 Legends\factory\SombreronFactory.class
-Characters\Researcher.class
 server\Server.class
 server\Interpreter.class
 controllers\MapController$1.class
@@ -35,6 +36,7 @@ Legends\Cadejo.class
 Legends\factory\CadejoFactory.class
 server\actions\Command.class
 Legends\factory\LegendFactory.class
-Characters\Hunter.class
+playableCharacters\Character.class
+playableCharacters\Witch.class
 server\actions\Attack.class
 Characters\factory\CharacterFactory.class

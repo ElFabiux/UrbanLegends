@@ -4,8 +4,8 @@
  */
 package characters.factory;
 
-import characters.Character;
-import characters.Researcher;
+import playableCharacters.Character;
+import playableCharacters.Researcher;
 
 /**
  *

@@ -4,8 +4,8 @@
  */
 package characters.factory;
 
-import characters.Character;
-import characters.Witch;
+import playableCharacters.Character;
+import playableCharacters.Witch;
 
 /**
  *

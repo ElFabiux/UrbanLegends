@@ -4,7 +4,7 @@
  */
 package game;
 
-import characters.Character;
+import playableCharacters.Character;
 
 /**
  *

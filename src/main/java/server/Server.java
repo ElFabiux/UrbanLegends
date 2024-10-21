@@ -3,8 +3,8 @@ package server;
 
 import game.Game;
 import game.Player;
-import characters.Witch;
-import characters.Character;
+import playableCharacters.Witch;
+import playableCharacters.Character;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;

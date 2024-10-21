@@ -3,7 +3,7 @@ package server;
 import server.actions.Attack;
 import server.actions.Move;
 import game.Game;
-import characters.Character;
+import playableCharacters.Character;
 import game.Player;
 
 public class Interpreter {

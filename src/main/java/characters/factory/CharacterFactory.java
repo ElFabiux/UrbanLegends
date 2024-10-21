@@ -4,7 +4,7 @@
  */
 package characters.factory;
 
-import characters.Character;
+import playableCharacters.Character;
 
 /**
  *

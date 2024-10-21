@@ -4,7 +4,7 @@
  */
 package legends;
 
-import characters.Character;
+import playableCharacters.Character;
 
 /**
  *

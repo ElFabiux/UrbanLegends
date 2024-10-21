@@ -5,7 +5,7 @@
 package server.actions;
 
 import game.Game;
-import characters.Character;
+import playableCharacters.Character;
 import game.Player;
 
 /**

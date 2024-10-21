@@ -5,10 +5,10 @@
 package controllers;
 
 import com.mycompany.urbanlegends.App;
-import characters.Character;
-import characters.Hunter;
-import characters.Researcher;
-import characters.Witch;
+import playableCharacters.Character;
+import playableCharacters.Hunter;
+import playableCharacters.Researcher;
+import playableCharacters.Witch;
 import game.Client;
 import java.io.IOException;
 import java.net.URL;
