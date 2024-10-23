@@ -85,3 +85,7 @@
 .start:hover, .back:hover {
     -fx-background-color: #639883;
 }
+
+.container{
+    -fx-background-color: 2b3d3b;
+}

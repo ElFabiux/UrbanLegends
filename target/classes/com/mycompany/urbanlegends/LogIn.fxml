@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" stylesheets="@../../../css/style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LogInController">
+<AnchorPane id="AnchorPane" fx:id="container" stylesheets="@../../../css/style.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LogInController">
    <children>
       <VBox fx:id="startMenuContainer" alignment="CENTER" layoutX="216.0" layoutY="100.0" prefHeight="200.0" prefWidth="168.0" styleClass="startMenuContainer">
          <children>

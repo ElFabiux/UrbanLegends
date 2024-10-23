@@ -34,7 +34,6 @@ public class MapController implements Initializable {
 
     @FXML
     private AnchorPane playerView;
-    private static GridPane view;
     private static int SIZE = 10;
     private static int WIDTH = 30;
     private static int HEIGHT = 30;
@@ -43,7 +42,7 @@ public class MapController implements Initializable {
     
     private Tile[][] tileMatrix = new Tile[18][18];
     @FXML
-    private GridPane sceneGrid = new GridPane();
+    private static GridPane sceneGrid = new GridPane();
     private static char[][] map;
     private static Client client;
     private static MapController instance; 
@@ -59,42 +58,13 @@ public class MapController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.playerView.getChildren().add(view);
-        MapController.view.setFocusTraversable(true);
-        MapController.view.addEventHandler(KeyEvent.KEY_PRESSED, this::movePlayer);
+        this.playerView.getChildren().add(sceneGrid);
+        MapController.sceneGrid.setFocusTraversable(true);
+        MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED, this::movePlayer);
         
         gameMap = new GameMap();
         gameMap.loadTileMatrix();
         loadMap(gameMap.getCemeteryMap());
-    }
-
-    /**
-     * Creates the grid layout for the player view.
-     * This is a recursive method that generates a grid structure.
-     * Fill the view of the player with 10 rows and 10 cols
-     *
-     * @param row The current row index.
-     * @param col The current column index.
-     * @param grid The GridPane that holds the grid layout.
-     * @param cell The node (Label) that represents each grid cell.
-     * @return The generated GridPane with the complete grid layout.
-     */
-    private static void createGrid(int row, int col, Label cell) {
-        if (col == SIZE) {
-            return;
-        }
-        cell = new Label();
-        cell.setMinSize(WIDTH, HEIGHT);
-        cell.setStyle("-fx-border-color: black;");
-        cell.setText(String.valueOf(map[row][col]));
-        MapController.view.add(cell, row, col);
-
-
-        if (row < SIZE - 1) {
-            createGrid(row + 1, col, cell);
-        } else {
-            createGrid(0, col + 1, cell);
-        }
     }
 
     /**
@@ -144,7 +114,7 @@ public class MapController implements Initializable {
         if (col == SIZE) {
             return;
         }
-        Label cell = (Label) getNodeFromGridPane(view, row, col);
+        Label cell = (Label) getNodeFromGridPane(sceneGrid, row, col);
 
         if (cell != null) {
             if (!String.valueOf(playerView[row][col]).equals(cell.getText())) {
@@ -162,8 +132,8 @@ public class MapController implements Initializable {
 
     public static void setClient(Client client) {
         MapController.client = client;
-        if (MapController.view == null) {
-            MapController.view = new GridPane();
+        if (MapController.sceneGrid == null) {
+            MapController.sceneGrid = new GridPane();
             MapController.instance = new MapController();
         }
         startMap();
@@ -172,13 +142,16 @@ public class MapController implements Initializable {
 
     private static void startMap() {
         MapController.map = client.getMap();
-        createGrid(0, 0, new Label());
         MapController mp = new MapController();
+        if(instance == null){
+            instance = new MapController();
+        }
         mp.render(0, 0, map);
     }
     
     public static void requestRender(char[][] newMap){
         MapController.map = newMap;
+        
         instance.render(0, 0, map);
     }
 
@@ -210,6 +183,7 @@ public class MapController implements Initializable {
                     break;
             }
             if (newMap != null) {
+                //arreglar lo que el servidor manda para que sea la porción del mapa
                 requestRender(newMap);
             }
         }
