@@ -7,12 +7,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
+import server.Server;
 
 public class Client {
 
     private static final int MAP_WIDTH = 10;
     private static final int MAP_HEIGHT = 10;
-    private char[][] map = new char[MAP_HEIGHT][MAP_WIDTH];  // Matriz local del cliente
+    private String[][] map = new String[MAP_HEIGHT][MAP_WIDTH];  // Matriz local del cliente
     private DataOutputStream output;
     private DataInputStream input;
     private Socket socket;
@@ -29,6 +30,7 @@ public class Client {
         client.connectToServer("localhost", 8000);
         return client;
     }
+
     // Método para conectar al servidor
     private void connectToServer(String host, int port) {
         try {
@@ -46,7 +48,7 @@ public class Client {
     }
 
     // Método para escuchar comandos y enviar movimientos al servidor
-    public char[][] listenForCommands(String command) {
+    public String[][] listenForCommands(String command) {
         try {
             sendMoveCommand(command);
             String response = input.readUTF();  // Recibir respuesta del servidor
@@ -54,11 +56,23 @@ public class Client {
             String mapState = input.readUTF();  // Estado actualizado del mapa
             System.out.println(mapState);
             updateLocalMap(mapState);  // Actualizar el mapa local
-            
+
         } catch (IOException e) {
             System.out.println("Connection closed.");
         }
         return this.map;
+    }
+    
+    public String getPosition(String command){
+        String response = "";
+        try {
+            sendMoveCommand(command);
+            response = input.readUTF();  // Recibir respuesta del servidor
+            System.out.println(response);
+        } catch (IOException e) {
+            System.out.println("Connection closed.");
+        }
+        return response;
     }
 
     public void closeResources() {
@@ -93,6 +107,9 @@ public class Client {
             case "right":
                 output.writeUTF("move right");
                 break;
+            case "position":
+                output.writeUTF("get "+playerName);
+                break;
             default:
                 System.out.println("Invalid command. Use 'up', 'down', 'left', 'right'.");
         }
@@ -103,7 +120,7 @@ public class Client {
     private void initializeMap() {
         for (int i = 0; i < MAP_HEIGHT; i++) {
             for (int j = 0; j < MAP_WIDTH; j++) {
-                map[i][j] = '.';
+                map[i][j] = ".";
             }
         }
     }
@@ -114,7 +131,7 @@ public class Client {
 
         // Ignorar la primera línea que contiene el encabezado "Map:"
         String[] lines = mapState.split("\n");
-        if (lines.length < MAP_HEIGHT + 1) {  // Asegúrate de que haya suficientes filas, incluido el encabezado
+        if (lines.length < MAP_HEIGHT + 1) {
             System.out.println("Error: El mapa no tiene la altura esperada.");
             return;
         }
@@ -127,10 +144,9 @@ public class Client {
                 return;
             }
             for (int j = 0; j < MAP_WIDTH; j++) {
-                map[i - 1][j] = columns[j].charAt(0);  // Actualiza el mapa local
+                map[i - 1][j] = String.valueOf(columns[j].charAt(0));
             }
         }
-        MapController.requestRender(map);
     }
 
     // Mostrar el mapa local del cliente
@@ -143,8 +159,8 @@ public class Client {
             System.out.println();
         }
     }
-    
-    public char[][] getMap(){
+
+    public String[][] getMap() {
         return this.map;
     }
 }

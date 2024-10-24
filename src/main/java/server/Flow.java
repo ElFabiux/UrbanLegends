@@ -19,6 +19,7 @@ public class Flow extends Thread {
     private Interpreter interpreter;
 
     public Flow(Socket socket, Player player, Game game) {
+        System.out.println("game: "+game);
         this.socket = socket;
         this.player = player;
         this.game = game;
@@ -37,7 +38,8 @@ public class Flow extends Thread {
         try {
             while (true) {
                 
-                String received = input.readUTF();  
+                String received = input.readUTF();
+
                 String[] parts = received.split(" ");
 
                 String command = parts[0];  

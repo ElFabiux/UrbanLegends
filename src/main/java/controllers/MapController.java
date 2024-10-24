@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -22,12 +23,12 @@ import javafx.scene.layout.GridPane;
 /**
  * FXML Controller class
  *
- * Manages the map, player view, and grid display for the game.
- * It is responsible for rendering the tiles, updating the map, 
- * and managing user interactions with the interface.
- * 
+ * Manages the map, player view, and grid display for the game. It is
+ * responsible for rendering the tiles, updating the map, and managing user
+ * interactions with the interface.
+ *
  * Implements Initializable interface to handle the initialization process.
- * 
+ *
  * @author igmml
  */
 public class MapController implements Initializable {
@@ -39,14 +40,15 @@ public class MapController implements Initializable {
     private static int HEIGHT = 30;
     @FXML
     private Button btn;
-    
-    private Tile[][] tileMatrix = new Tile[18][18];
+
+    private Tile[][] tileMatrix = new Tile[SIZE][SIZE];
     @FXML
     private static GridPane sceneGrid = new GridPane();
-    private static char[][] map;
+    private static String[][] map;
+    private static String[][] oldMap;
     private static Client client;
-    private static MapController instance; 
-    
+    private static MapController instance;
+
     GameMap gameMap;
 
     /**
@@ -61,21 +63,6 @@ public class MapController implements Initializable {
         this.playerView.getChildren().add(sceneGrid);
         MapController.sceneGrid.setFocusTraversable(true);
         MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED, this::movePlayer);
-        
-        gameMap = new GameMap();
-        gameMap.loadTileMatrix();
-        loadMap(gameMap.getCemeteryMap());
-    }
-
-    /**
-     * Retrieves a Node from the GridPane by its row and column index.
-     * This method finds the corresponding Node (e.g., Label) in the grid.
-     *
-     * @param gridPane The GridPane from which to retrieve the node.
-     * @param row The row index.
-     * @param col The column index.
-     * @return The Node at the specified row and column, or null if not found.
-
     }
 
     /**
@@ -95,41 +82,13 @@ public class MapController implements Initializable {
         return null;
     }
 
-
     /**
-     * Renders the player view based on the new layout of the grid.
-     * Updates each cell in the grid with the corresponding value.
-     * This is a recursive method that traverses the entire grid.
-     *
-     * @param row The current row being rendered.
-     * @param col The current column being rendered.
-     * @param playerView The 2D array representing the player's current view.
      * Render the map
      *
      * @param row current row
      * @param col current col
      * @param playerView the new playerView
      */
-    public void render(int row, int col, char[][] playerView) {
-        if (col == SIZE) {
-            return;
-        }
-        Label cell = (Label) getNodeFromGridPane(sceneGrid, row, col);
-
-        if (cell != null) {
-            if (!String.valueOf(playerView[row][col]).equals(cell.getText())) {
-                cell.setText(String.valueOf(playerView[row][col]));
-                //change the image
-            }
-        
-        if (row < SIZE - 1) {
-            render(row + 1, col, playerView);
-        } else {
-            render(0, col + 1, playerView);
-        }
-        }
-    }
-
     public static void setClient(Client client) {
         MapController.client = client;
         if (MapController.sceneGrid == null) {
@@ -142,22 +101,47 @@ public class MapController implements Initializable {
 
     private static void startMap() {
         MapController.map = client.getMap();
-        MapController mp = new MapController();
-        if(instance == null){
+        if (instance == null) {
             instance = new MapController();
         }
-        mp.render(0, 0, map);
+        instance.gameMap = new GameMap();
+        instance.tileMatrix = instance.gameMap.createTileMatrix(MapController.map);
+        System.out.println("tile: "+instance.tileMatrix[9][9]);
+        instance.loadMap(instance.tileMatrix);
     }
-    
-    public static void requestRender(char[][] newMap){
+
+    public static void requestRender(String[][] newMap) {
+        MapController.oldMap = MapController.map;
         MapController.map = newMap;
-        
-        instance.render(0, 0, map);
+
+        instance.render(0, 0, MapController.map);
+        instance.tileMatrix = instance.gameMap.createTileMatrix(MapController.map);
+        instance.loadMapRecursively(instance.tileMatrix, 0, 0);
+    }
+
+    private void render(int row, int col, String[][] newMap) {
+        //1. Recorrer el nuevo mapa
+        //2. Verificar si hay algo diferente del mapa anterior
+        //3. Cambiar lo que haya cambiado
+        //4. Renderizar el nuevo mapa
+        if (row >= SIZE) {
+            return;
+        }
+        if (col >= SIZE) {
+            render(row + 1, 0, newMap);
+            return;
+        }
+        if (!newMap[row][col].equals(MapController.oldMap[row][col])) {
+            tileMatrix[row][col] = gameMap.createTile(newMap[row][col]);
+            MapController.oldMap[row][col] = newMap[row][col];
+        }
+
+        render(row, col + 1, newMap);
     }
 
     /**
-     * Handles the action of the render button.
-     * Generates a random 2D array for the player view and calls the render method.
+     * Handles the action of the render button. Generates a random 2D array for
+     * the player view and calls the render method.
      *
      * @param event The ActionEvent triggered by pressing the button.
      */
@@ -165,7 +149,7 @@ public class MapController implements Initializable {
     private void movePlayer(KeyEvent event) {
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
 
-            char[][] newMap = null;
+            String[][] newMap = null;
             switch (event.getCode()) {
                 case UP:
                     newMap = MapController.client.listenForCommands("up");
@@ -183,15 +167,18 @@ public class MapController implements Initializable {
                     break;
             }
             if (newMap != null) {
-                //arreglar lo que el servidor manda para que sea la porción del mapa
                 requestRender(newMap);
             }
         }
     }
-    
+
+    private String getPosition() {
+        return MapController.client.getPosition("position");
+    }
+
     /**
-     * Loads a map from the given 2D matrix of tiles into the scene grid.
-     * Clears the current grid and adds tiles from the provided tile matrix.
+     * Loads a map from the given 2D matrix of tiles into the scene grid. Clears
+     * the current grid and adds tiles from the provided tile matrix.
      *
      * @param tileMatrix The 2D array representing the map.
      */
@@ -201,8 +188,8 @@ public class MapController implements Initializable {
     }
 
     /**
-     * Recursively loads the map into the scene grid.
-     * Traverses the map matrix row by row and adds corresponding tiles.
+     * Recursively loads the map into the scene grid. Traverses the map matrix
+     * row by row and adds corresponding tiles.
      *
      * @param tileMatrix The 2D array representing the map.
      * @param row The current row being processed.
@@ -212,17 +199,14 @@ public class MapController implements Initializable {
         if (row >= tileMatrix.length) {
             return;
         }
-
         if (col >= tileMatrix[row].length) {
             loadMapRecursively(tileMatrix, row + 1, 0);
             return;
         }
-
-        Tile tile = tileMatrix[row][col];
-        if (tile != null) {
-            sceneGrid.add(tile.getImageView(), col, row);
+        ImageView image = (ImageView) getNodeFromGridPane(MapController.sceneGrid, row, col);
+        if (image == null || !image.equals(tileMatrix[row][col].getImageView())) {
+            sceneGrid.add(tileMatrix[row][col].getImageView(), col, row);
         }
-
         loadMapRecursively(tileMatrix, row, col + 1);
     }
 

@@ -24,6 +24,9 @@ public class Interpreter {
             case "attack":
                 Attack attackCommand = new Attack();
                 return attackCommand.execute(player, game);
+                
+            case "get":
+                return player.getPosition();
 
             default:
 
