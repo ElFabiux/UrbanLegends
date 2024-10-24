@@ -3,6 +3,8 @@ package game;
 import controllers.MapController;
 import java.util.Vector;
 
+import game.MovementsLogic;
+
 public class Game {
 
     private static Game instance;
@@ -10,7 +12,9 @@ public class Game {
     private Vector<Player> players = new Vector<>(3);
     private final int MAP_WIDTH = 10;
     private final int MAP_HEIGHT = 10;
-    private char[][] map = new char[MAP_HEIGHT][MAP_WIDTH];
+    public char[][] map = new char[MAP_WIDTH][MAP_HEIGHT];
+
+    private MovementsLogic movementsLogic;
 
     private Game() {
         initializeMap();
@@ -37,7 +41,7 @@ public class Game {
             players.add(player);
             player.setPositionX(x);
             player.setPositionY(y);
-            map[y][x] = 'P';  // Representa al jugador en el mapa
+            map[y][x] = 'P';
         }
     }
 
@@ -50,8 +54,9 @@ public class Game {
 
         if (isValidPosition(oldX, oldY) && isValidPosition(
                 player.getPositionX(), player.getPositionY())) {
-            map[oldY][oldX] = '.';  
-            map[player.getPositionY()][player.getPositionX()] = 'P';
+            //  checkMovements(player, oldX, oldY);
+          //  movementsLogic.checkMovements(map, player, oldX, oldY, 'P');
+
         } else {
             System.out.println("Error: La nueva posición está fuera del mapa.");
         }
@@ -61,13 +66,12 @@ public class Game {
 //        }
     }
 
-    
     public String printMap() {
         return printMapHelper(0, 0, new StringBuilder());
     }
 
     private String printMapHelper(int row, int col, StringBuilder sb) {
-        
+
         if (row == MAP_HEIGHT) {
             return sb.toString();
         }

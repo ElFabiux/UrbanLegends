@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 
+<<<<<<< HEAD
 <AnchorPane id="AnchorPane" fx:id="playerView" onKeyReleased="#movePlayer" prefHeight="1008.0" prefWidth="1008.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MapController">
    <children>
       <GridPane fx:id="sceneGrid" layoutX="7.0" prefHeight="1008.0" prefWidth="1008.0">
@@ -52,3 +53,6 @@
       </GridPane>
    </children>
 </AnchorPane>
+=======
+<AnchorPane id="AnchorPane" fx:id="playerView" onKeyReleased="#movePlayer" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MapController" />
+>>>>>>> reds

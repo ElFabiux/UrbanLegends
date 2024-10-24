@@ -18,6 +18,7 @@ game\GameMap.class
 Legends\factory\PadreSinCabezaFactory.class
 game\Game.class
 controllers\MapController.class
+<<<<<<< HEAD
 Legends\Legend.class
 Legends\Sombreron.class
 game\Mision.class
@@ -26,14 +27,24 @@ controllers\LogInController.class
 Legends\Llorona.class
 Legends\Segua.class
 Characters\factory\ResearcherFactory.class
+=======
+game\Mision.class
+legends\factory\SombreronFactory.class
+controllers\LogInController.class
+game\MovementsLogic.class
+legends\Llorona.class
+>>>>>>> reds
 com\mycompany\urbanlegends\App.class
 module-info.class
 Legends\factory\SombreronFactory.class
 server\Server.class
 server\Interpreter.class
 controllers\MapController$1.class
+<<<<<<< HEAD
 Legends\Cadejo.class
 Legends\factory\CadejoFactory.class
+=======
+>>>>>>> reds
 server\actions\Command.class
 Legends\factory\LegendFactory.class
 playableCharacters\Character.class

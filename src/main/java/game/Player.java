@@ -76,7 +76,7 @@ public class Player {
     }
 
     public void moveDown() {
-        if(this.positionY >10) return;
+        if(this.positionY > 10) return;
         this.positionY ++;
     }
 
