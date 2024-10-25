@@ -51,6 +51,10 @@ public class GameMap {
         {"R1", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "T6", "G", "O5", "G", "G", "G", "G", "G", "G", "G", "G", "G", "T3", "O5", "G", "O2", "G", "G", "G", "O5"},
         {"R1", "G", "G", "T7", "G", "T1", "G", "G", "G", "G", "G", "G", "G", "T5", "G", "G", "G", "G", "O5", "G", "T3", "T3", "G", "T3", "G", "G", "O1", "G", "G", "G", "G", "O3", "G", "O2", "O5", "O5"}
     };
+
+    public static String[][] getGameMap() {
+        return gameMap;
+    }
     
     /**
      * Loads the entire tile matrix recursively from the gameMap.
@@ -58,7 +62,7 @@ public class GameMap {
     public void loadTileMatrix() {
         loadTileMatrixRecursively(gameMap, 0, 0);
     }
-
+    
     /**
      * Recursively loads the tile matrix from the gameMap string matrix.
      * 

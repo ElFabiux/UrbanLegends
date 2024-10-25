@@ -7,9 +7,9 @@ package server.actions;
 import game.Game;
 import game.Player;
 import playableCharacters.Character;
-import controllers.MapController;
 import game.Player;
 import game.MovementsLogic;
+import game.GameMap;
 
 /**
  *
@@ -19,12 +19,13 @@ public class Move implements Command {
 
     private String direction;
     private final MovementsLogic moves = new MovementsLogic();
-    private MapController map;
+    private GameMap map;
 
-    //Esto esta de pruba, es el mapa que espero
+// Este es el mapa real   map.getGameMap () 
+//Esto esta de pruba, es el mapa que espero
     private static final String[][] finalMap = {
         {"R1", "G", "G", "G", "G", "G", "G", "G", "G", "T2", "G", "G", "G", "G", "G", "G", "G", "G", "R1", "G", "G", "T6", "G", "G", "T3", "G", "T7", "G", "G", "T2", "G", "G", "G", "G", "G", "T5"},
-        {"R1", "T1", "T1", "G", "G", "G", "G", "G", "T2", "G", "G", "G", "H6", "H4", "G", "G", "T3", "T3", "R1", "T1", "G", "G", "G", "G", "T4", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G"},
+        {"R1", "T1", "T1", "G", "G", "G", "N1", "G", "T2", "G", "G", "G", "H6", "H4", "G", "G", "T3", "T3", "R1", "T1", "G", "G", "G", "G", "T4", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G"},
         {"R1", "G", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "R1", "T1", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "T4", "G", "G", "G"},
         {"R1", "G", "L", "G", "G", "H5", "T", "H5", "G", "G", "T3", "T3", "T3", "T3", "T3", "T3", "T3", "G", "R1", "G", "G", "G", "G", "G", "G", "G", "T2", "G", "T1", "G", "G", "G", "T3", "G", "G", "G"},
         {"R1", "G", "L", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "R1", "G", "G", "G", "G", "T5", "G", "G", "G", "G", "G", "T1", "G", "G", "G", "T3", "T6", "G"},
@@ -81,8 +82,8 @@ public class Move implements Command {
         System.out.println("recibo posx" + player.getPositionX());
         System.out.println("recibo posy" + player.getPositionY());
 
-        System.out.println("popopopooopopoo" + moves.checkMovements(finalMap, player, direction));
-        if (moves.checkMovements(finalMap, player,direction)) {
+        System.out.println("popopopooopopoo" + !moves.checkMovements(finalMap, player, direction));
+        if (!moves.checkMovements(finalMap, player, direction)) {
 
             player.getCharacter().modifyEnergy(-1);
 
