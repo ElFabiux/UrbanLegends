@@ -1,7 +1,7 @@
 package game;
 
 import playableCharacters.Character;
-import characters.Character;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,10 +89,7 @@ public class Player {
         return ip;
     }
 
-    public void moveDown() {
-        if(this.positionY > 10) return;
-        this.positionY ++;
-    }
+  
 
     /**
      * Gets the x-coordinate of the player's position on the map.

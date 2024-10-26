@@ -69,7 +69,7 @@ public class Move implements Command {
         {"O5", "G", "G", "O5", "G", "G", "G", "G", "G", "G", "G", "O3", "G", "G", "G", "O1", "G", "O1", "F", "F", "F", "F", "F", "F", "F", "F", "R", "R", "F", "F", "F", "F", "F", "F", "F", "F"},
         {"O5", "G", "G", "G", "G", "G", "G", "G", "G", "G", "T3", "O5", "G", "O2", "G", "G", "G", "O5", "F", "W", "F", "F", "F", "F", "F", "F", "R", "R", "F", "F", "F", "F", "F", "F", "F", "F"},
         {"O5", "G", "T3", "T3", "G", "T3", "G", "G", "O1", "G", "G", "G", "G", "O3", "G", "O2", "O5", "O5", "W", "F", "F", "F", "F", "F", "F", "F", "R", "R", "F", "F", "F", "F", "F", "F", "F", "W"},};
-    private String direction; 
+    
 
     /**
      * Constructs a new {@code Move} command with the specified direction.
