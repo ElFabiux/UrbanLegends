@@ -1,6 +1,7 @@
 package game;
 
 import controllers.MapController;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import game.MovementsLogic;
@@ -44,7 +45,10 @@ public class Game {
             map[y][x] = 'P';
         }
     }
+    
+    
 
+  
     // Validar si una posición es válida en el mapa
     public boolean isValidPosition(int x, int y) {
         return (x >= 0 && x < MAP_WIDTH && y >= 0 && y < MAP_HEIGHT);
