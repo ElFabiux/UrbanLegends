@@ -1,12 +1,13 @@
 package server;
 
-import game.Game;
-import game.Player;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+
+import game.Game;
+import game.Player;
 
 /**
  * The {@code Flow} class handles the interaction between a single player and
@@ -64,21 +65,22 @@ public class Flow extends Thread {
     public void run() {
         try {
             while (true) {
-
+                
                 String received = input.readUTF();
+
                 String[] parts = received.split(" ");
 
-                String command = parts[0];
-                String direction = parts.length > 1 ? parts[1] : "";
+                String command = parts[0];  
+                String direction = parts.length > 1 ? parts[1] : ""; 
 
-                int oldX = player.getPositionX();
-                int oldY = player.getPositionY();
-
-                String response = interpreter.interpret(command, direction,
+             
+                String response = interpreter.interpret(command, direction, 
                         player);
 
-                game.updateMap(player, oldX, oldY);
+              
+                game.updateMap(player);
 
+                
                 output.writeUTF(response);
                 output.writeUTF("Map:\n" + game.printMap());
                 System.out.println(game.printMap());

@@ -1,9 +1,9 @@
 package game;
 
-import playableCharacters.Character;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import playableCharacters.Character;
 
 /**
  * Represents a player in the game with attributes such as name, position, 
@@ -89,7 +89,9 @@ public class Player {
         return ip;
     }
 
-  
+    public String getName(){
+        return  this.name;
+    }
 
     /**
      * Gets the x-coordinate of the player's position on the map.
@@ -166,6 +168,9 @@ public class Player {
     public void setCharacter(Character character) {
         this.character = character;
     }
+   
+
+    
 
     
     public void setIp(String ip) {
@@ -182,7 +187,7 @@ public class Player {
         this.positionX = positionX;
     }
 
- 
+
     public void setPositionY(int positionY) {
         this.positionY = positionY;
     }
