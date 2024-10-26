@@ -1,5 +1,6 @@
 Legends\Duende.class
 game\Tile.class
+game\Time.class
 server\actions\Move.class
 Characters\factory\WitchFactory.class
 game\Npc.class
@@ -10,6 +11,7 @@ Characters\factory\HunterFactory.class
 Legends\factory\DuendeFactory.class
 game\Client.class
 Legends\PadreSinCabeza.class
+game\Time$1.class
 game\Player.class
 Legends\factory\LloronaFactory.class
 game\GameMap.class
@@ -18,7 +20,6 @@ game\Game.class
 controllers\MapController.class
 Legends\Legend.class
 Legends\Sombreron.class
-game\Mision.class
 Legends\factory\SeguaFactory.class
 controllers\LogInController.class
 Legends\Llorona.class
