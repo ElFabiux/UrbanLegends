@@ -62,10 +62,9 @@ public class GameMap {
         loadTileMatrixRecursively(gameMap, 0, 0);
     }
 
-    public Tile[][] createTileMatrix(String[][] stringMatrix) {
+    public Tile[][] createTileMatrix(String[][] stringMatrix, Tile[][] tileMatrix) {
         int rows = stringMatrix.length;
         int cols = stringMatrix[0].length;
-        Tile[][] tileMatrix = new Tile[rows][cols];
         createTileMatrixRecursively(stringMatrix, tileMatrix, 0, 0);
         return tileMatrix;
     }
@@ -75,11 +74,14 @@ public class GameMap {
         if (row >= stringMatrix.length) {
             return;
         }
+        
+        if(newTileMatrix[row][col] == null){
+            newTileMatrix[row][col] = createTile(stringMatrix[row][col]);
+        }else if
+        (!stringMatrix[row][col].equals(newTileMatrix[row][col].getTileType())) {
+            newTileMatrix[row][col] = createTile(stringMatrix[row][col]);
+        }
 
-        // Crear el Tile para la posición actual
-        newTileMatrix[row][col] = createTile(stringMatrix[row][col]);
-
-        // Avanzar al siguiente elemento
         if (col < stringMatrix[row].length - 1) {
             // Si no hemos llegado al final de la fila, seguir en la misma fila
             createTileMatrixRecursively(stringMatrix, newTileMatrix, row, col + 1);

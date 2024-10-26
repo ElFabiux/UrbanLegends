@@ -105,7 +105,7 @@ public class LogInController implements Initializable {
         player[0] = this.playerName.getText();
         player[1] = this.character.getName();
         Client client = Client.main(player);
-        MapController.setClient(client);
+        MapController.setClient(client, player[1]);
         
         App.setRoot("Map");
     }

@@ -76,7 +76,7 @@ public class Player {
     }
 
     public void moveDown() {
-        if(this.positionY >10) return;
+        if(this.positionY >35) return;
         this.positionY ++;
     }
 
@@ -86,12 +86,12 @@ public class Player {
     }
 
     public void moveRight() {
-        if(this.positionX>10)return;
+        if(this.positionX>35)return;
         this.positionX ++;
     }
 
     public String getPosition() {
-        return "(" + positionX + ", " + positionY + ")";
+        return "(" + positionX + "," + positionY + ")";
     }
    
    

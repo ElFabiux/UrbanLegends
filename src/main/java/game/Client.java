@@ -47,23 +47,22 @@ public class Client {
         }
     }
 
-    // Método para escuchar comandos y enviar movimientos al servidor
     public String[][] listenForCommands(String command) {
         try {
             sendMoveCommand(command);
-            String response = input.readUTF();  // Recibir respuesta del servidor
+            String response = input.readUTF();
             System.out.println(response);
-            String mapState = input.readUTF();  // Estado actualizado del mapa
+            String mapState = input.readUTF();
             System.out.println(mapState);
-            updateLocalMap(mapState);  // Actualizar el mapa local
+            updateLocalMap(mapState);
 
         } catch (IOException e) {
             System.out.println("Connection closed.");
         }
         return this.map;
     }
-    
-    public String getPosition(String command){
+
+    public String getPosition(String command) {
         String response = "";
         try {
             sendMoveCommand(command);
@@ -108,7 +107,7 @@ public class Client {
                 output.writeUTF("move right");
                 break;
             case "position":
-                output.writeUTF("get "+playerName);
+                output.writeUTF("get " + playerName);
                 break;
             default:
                 System.out.println("Invalid command. Use 'up', 'down', 'left', 'right'.");
@@ -125,39 +124,63 @@ public class Client {
         }
     }
 
-    // Actualizar el mapa local del cliente
     private void updateLocalMap(String mapState) {
         System.out.println("Map state received: \n" + mapState);
 
-        // Ignorar la primera línea que contiene el encabezado "Map:"
         String[] lines = mapState.split("\n");
         if (lines.length < MAP_HEIGHT + 1) {
             System.out.println("Error: El mapa no tiene la altura esperada.");
             return;
         }
 
-        // Procesar solo las líneas que contienen el mapa (omitir la primera línea)
-        for (int i = 1; i <= MAP_HEIGHT; i++) {
-            String[] columns = lines[i].split(" ");
-            if (columns.length != MAP_WIDTH) {
-                System.out.println("Error: La fila " + (i - 1) + " no tiene la longitud esperada.");
-                return;
-            }
-            for (int j = 0; j < MAP_WIDTH; j++) {
-                map[i - 1][j] = String.valueOf(columns[j].charAt(0));
-            }
-        }
+        processMapLines(lines, 1);
     }
 
-    // Mostrar el mapa local del cliente
+    private void processMapLines(String[] lines, int currentLine) {
+        if (currentLine > MAP_HEIGHT) {
+            return;
+        }
+
+        String[] columns = lines[currentLine].split(" ");
+        if (columns.length != MAP_WIDTH) {
+            System.out.println("Error: La fila " + (currentLine - 1) + " no tiene la longitud esperada.");
+            return;
+        }
+
+        fillMapColumns(currentLine, columns, 0);
+        processMapLines(lines, currentLine + 1);
+    }
+
+    private void fillMapColumns(int currentLine, String[] columns, int currentColumn) {
+        if (currentColumn >= MAP_WIDTH) {
+            return;
+        }
+
+        map[currentLine - 1][currentColumn] = String.valueOf(columns[currentColumn].charAt(0));
+
+        fillMapColumns(currentLine, columns, currentColumn + 1);
+    }
+
     private void printLocalMap() {
         System.out.println("Local Map:");
-        for (int i = 0; i < MAP_HEIGHT; i++) {
-            for (int j = 0; j < MAP_WIDTH; j++) {
-                System.out.print(map[i][j] + " ");
-            }
-            System.out.println();
+        printRows(0);
+    }
+
+    private void printRows(int currentRow) {
+        if (currentRow >= MAP_HEIGHT) {
+            return;
         }
+        printColumns(currentRow, 0);
+        printRows(currentRow + 1);
+    }
+
+    private void printColumns(int currentRow, int currentColumn) {
+        if (currentColumn >= MAP_WIDTH) {
+            System.out.println();
+            return;
+        }
+        System.out.print(map[currentRow][currentColumn] + " ");
+        printColumns(currentRow, currentColumn + 1);
     }
 
     public String[][] getMap() {

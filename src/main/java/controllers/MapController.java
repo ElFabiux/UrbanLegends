@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import game.Client;
 import game.GameMap;
 import game.Tile;
+import java.util.Arrays;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -50,6 +51,10 @@ public class MapController implements Initializable {
     private static MapController instance;
 
     GameMap gameMap;
+    private ImageView playerIcon;
+    private static String character;
+    private int playerRow = 0; // Fila inicial del jugador
+    private int playerCol = 0; // Columna inicial del jugador
 
     /**
      * Initializes the controller class and add focus to the map for the player
@@ -63,6 +68,22 @@ public class MapController implements Initializable {
         this.playerView.getChildren().add(sceneGrid);
         MapController.sceneGrid.setFocusTraversable(true);
         MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED, this::movePlayer);
+
+        playerIcon = new ImageView(getCharacterRoute());
+        updatePlayerPosition();
+    }
+
+    public String getCharacterRoute() {
+        switch (MapController.character) {
+            case "Researcher":
+                return "/Characters/7_1.png";
+            case "Hunter":
+                return "/Characters/7_2.png";
+            case "Witch":
+                return "/Characters/7_3.png";
+            default:
+                throw new AssertionError();
+        }
     }
 
     /**
@@ -82,6 +103,11 @@ public class MapController implements Initializable {
         return null;
     }
 
+    private void updatePlayerPosition() {
+        sceneGrid.getChildren().remove(playerIcon);
+        sceneGrid.add(playerIcon, playerCol, playerRow);
+    }
+
     /**
      * Render the map
      *
@@ -89,8 +115,9 @@ public class MapController implements Initializable {
      * @param col current col
      * @param playerView the new playerView
      */
-    public static void setClient(Client client) {
+    public static void setClient(Client client, String character) {
         MapController.client = client;
+        MapController.character = character;
         if (MapController.sceneGrid == null) {
             MapController.sceneGrid = new GridPane();
             MapController.instance = new MapController();
@@ -105,8 +132,7 @@ public class MapController implements Initializable {
             instance = new MapController();
         }
         instance.gameMap = new GameMap();
-        instance.tileMatrix = instance.gameMap.createTileMatrix(MapController.map);
-        System.out.println("tile: "+instance.tileMatrix[9][9]);
+        instance.tileMatrix = instance.gameMap.createTileMatrix(MapController.map, instance.tileMatrix);
         instance.loadMap(instance.tileMatrix);
     }
 
@@ -115,7 +141,7 @@ public class MapController implements Initializable {
         MapController.map = newMap;
 
         instance.render(0, 0, MapController.map);
-        instance.tileMatrix = instance.gameMap.createTileMatrix(MapController.map);
+        instance.tileMatrix = instance.gameMap.createTileMatrix(MapController.map, instance.tileMatrix);
         instance.loadMapRecursively(instance.tileMatrix, 0, 0);
     }
 
@@ -124,19 +150,18 @@ public class MapController implements Initializable {
         //2. Verificar si hay algo diferente del mapa anterior
         //3. Cambiar lo que haya cambiado
         //4. Renderizar el nuevo mapa
-        if (row >= SIZE) {
-            return;
-        }
         if (col >= SIZE) {
-            render(row + 1, 0, newMap);
             return;
         }
         if (!newMap[row][col].equals(MapController.oldMap[row][col])) {
             tileMatrix[row][col] = gameMap.createTile(newMap[row][col]);
             MapController.oldMap[row][col] = newMap[row][col];
         }
-
-        render(row, col + 1, newMap);
+        if (row < SIZE - 1) {
+            render(row + 1, col, newMap);
+        } else {
+            render(0, col + 1, newMap);
+        }
     }
 
     /**
@@ -148,32 +173,56 @@ public class MapController implements Initializable {
     @FXML
     private void movePlayer(KeyEvent event) {
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
-
             String[][] newMap = null;
+            boolean moved = false;
+
             switch (event.getCode()) {
                 case UP:
-                    newMap = MapController.client.listenForCommands("up");
+                    if (playerRow > 0) {
+                        playerRow--;
+                        newMap = MapController.client.listenForCommands("left");
+                        moved = true;
+                    }
                     break;
                 case DOWN:
-                    newMap = MapController.client.listenForCommands("down");
+                    if (playerRow < SIZE - 1) {
+                        playerRow++;
+                        newMap = MapController.client.listenForCommands("right");
+                        moved = true;
+                    }
                     break;
                 case LEFT:
-                    newMap = MapController.client.listenForCommands("left");
+                    if (playerCol > 0) {
+                        playerCol--;
+                        newMap = MapController.client.listenForCommands("up");
+                        moved = true;
+                    }
                     break;
                 case RIGHT:
-                    newMap = MapController.client.listenForCommands("right");
+                    if (playerCol < SIZE - 1) {
+                        playerCol++;
+                        newMap =  MapController.client.listenForCommands("down");
+                        moved = true;
+                    }
                     break;
                 default:
                     break;
             }
-            if (newMap != null) {
+            if (moved && newMap != null) {
                 requestRender(newMap);
             }
+            updatePlayerPosition();
         }
     }
 
-    private String getPosition() {
-        return MapController.client.getPosition("position");
+    private void getPosition() {
+        String position = MapController.client.getPosition("position");
+        String[] xy = position.split(",");
+        System.out.println("xy: " + Arrays.toString(xy));
+        String row = xy[1].substring(0, 1);
+        String col = xy[0].substring(1, 2);
+        this.playerRow = Integer.valueOf(row);
+        this.playerCol = Integer.valueOf(col);
     }
 
     /**
@@ -199,6 +248,7 @@ public class MapController implements Initializable {
         if (row >= tileMatrix.length) {
             return;
         }
+
         if (col >= tileMatrix[row].length) {
             loadMapRecursively(tileMatrix, row + 1, 0);
             return;

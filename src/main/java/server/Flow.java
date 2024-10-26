@@ -19,7 +19,6 @@ public class Flow extends Thread {
     private Interpreter interpreter;
 
     public Flow(Socket socket, Player player, Game game) {
-        System.out.println("game: "+game);
         this.socket = socket;
         this.player = player;
         this.game = game;
@@ -45,16 +44,12 @@ public class Flow extends Thread {
                 String command = parts[0];  
                 String direction = parts.length > 1 ? parts[1] : ""; 
 
-                
-                int oldX = player.getPositionX();
-                int oldY = player.getPositionY();
-
              
                 String response = interpreter.interpret(command, direction, 
                         player);
 
               
-                game.updateMap(player, oldX, oldY);
+                game.updateMap(player);
 
                 
                 output.writeUTF(response);
