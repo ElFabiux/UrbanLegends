@@ -5,7 +5,6 @@ C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\legends\fac
 C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\game\Player.java
 C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\legends\factory\LegendFactory.java
 C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\game\GameMap.java
-C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\game\Mision.java
 C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\game\MovementsLogic.java
 C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\server\actions\Attack.java
 C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\controllers\MapController.java
@@ -18,6 +17,7 @@ C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\characters\
 C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\legends\Segua.java
 C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\characters\factory\CharacterFactory.java
 C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\game\Time.java
+C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\game\Mission.java
 C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\legends\Legend.java
 C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\controllers\LogInController.java
 C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\src\main\java\legends\factory\CadejoFactory.java
