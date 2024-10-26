@@ -1,0 +1,10 @@
+1|In Search of the Lost Relic|Talk to Carla at the village|Mental Health +10
+2|The Old Legend|Speak to Marcos in the forest|Superstition -5
+3|The Shaman’s Test|Find Esteban at the mystic lake|Energy +20
+4|The Hidden Cave|Assist Julia near the haunted cave|Mental Health +5
+5|The Forgotten Garden|Visit Amalia in the village|Superstition -10
+6|The Healer's Request|Meet Rosa by the mystic river|Energy +5
+7|The Elder's Blessing|Help Mateo at the sacred mountain|Mental Health +20
+8|The Villager’s Fear|Speak with Elena about the haunted forest|Superstition +15
+9|The Treasure Hunt|Locate the treasure with Daniel|Energy -15
+10|Defend the Sacred Grounds|Join Carlos to protect the village|Energy +25
