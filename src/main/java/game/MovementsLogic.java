@@ -55,8 +55,6 @@ public class MovementsLogic {
 
         isCloseToNpc = playerCloseToNpc(map, posX, posY);
 
-//        System.out.println("stoy en: " + map[oldY][oldX]);
-//        System.out.println("voy para: " + map[posX][posY]);
         if (isBlocked(map[posY][oldX], 0) || isBlocked(map[oldY][posX], 0)) {
             return true;
         }
