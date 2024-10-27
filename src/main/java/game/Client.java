@@ -18,6 +18,7 @@ public class Client {
     private DataInputStream input;
     private Socket socket;
     private static String playerName;
+    private static String character;
 
     public Client() {
         // Inicializar el mapa local del cliente
@@ -27,6 +28,7 @@ public class Client {
     public static Client main(String[] args) {
         Client client = new Client();
         Client.playerName = args[0];
+        Client.character = args[1];
         client.connectToServer("localhost", 8000);
         return client;
     }
@@ -39,7 +41,7 @@ public class Client {
             input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
 
             System.out.println("Connected to server.");
-            output.writeUTF(playerName);
+            output.writeUTF(playerName + "," + character);
             output.flush();
 
         } catch (IOException e) {
@@ -53,7 +55,7 @@ public class Client {
             String response = input.readUTF();
             System.out.println(response);
             String mapState = input.readUTF();
-            System.out.println(mapState);
+            System.out.println("client_58: " + mapState);
             updateLocalMap(mapState);
 
         } catch (IOException e) {
@@ -66,16 +68,30 @@ public class Client {
         String response = "";
         try {
             sendMoveCommand(command);
-            response = input.readUTF();  // Recibir respuesta del servidor
-            System.out.println(response);
+            response = input.readUTF();
+            System.out.println("reponsssseeeeee: +" + response);
         } catch (IOException e) {
             System.out.println("Connection closed.");
         }
         return response;
     }
+    
+    private void deletePlayer(){
+        try {
+            sendMoveCommand("delete");
+            String response = input.readUTF();
+            System.out.println(response);
+            String mapState = input.readUTF();
+            System.out.println("client_58: " + mapState);
+            updateLocalMap(mapState);
+
+        } catch (IOException e) {
+            System.out.println("Connection closed.");
+        }
+    }
 
     public void closeResources() {
-        // Cerrar los recursos
+        deletePlayer();
         try {
             if (input != null) {
                 input.close();
@@ -128,6 +144,7 @@ public class Client {
         System.out.println("Map state received: \n" + mapState);
 
         String[] lines = mapState.split("\n");
+        System.out.println("client_135 lines: " + lines.length);
         if (lines.length < MAP_HEIGHT + 1) {
             System.out.println("Error: El mapa no tiene la altura esperada.");
             return;
