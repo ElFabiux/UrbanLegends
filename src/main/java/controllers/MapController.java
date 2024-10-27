@@ -51,8 +51,8 @@ public class MapController implements Initializable {
     GameMap gameMap;
     private ImageView playerIcon;
     private static String character;
-    private int playerRow; // Fila inicial del jugador
-    private int playerCol; // Columna inicial del jugador
+    private int playerRow;
+    private int playerCol;
 
     /**
      * Initializes the controller class and add focus to the map for the player
@@ -103,6 +103,7 @@ public class MapController implements Initializable {
 
     private void updatePlayerPosition() {
         sceneGrid.getChildren().remove(playerIcon);
+        playerIcon = new ImageView(getCharacterRoute());
         sceneGrid.add(playerIcon, instance.playerCol, instance.playerRow);
         playerIcon.toFront();
     }
@@ -152,15 +153,32 @@ public class MapController implements Initializable {
 
     }
 
+    private void renderPlayers(String character, int row, int col) {
+        switch (character) {
+            case "r":
+                MapController.character = "Researcher";
+                break;
+            case "w":
+                MapController.character = "Witch";
+                break;
+            case "h":
+                MapController.character = "Hunter";
+                break;
+            default:
+                break;
+        }
+        instance.playerRow = row;
+        instance.playerCol = col;
+        updatePlayerPosition();
+    }
+
     private void searchrPlayerLocation(int row, int col, String[][] newMap) {
         if (col >= SIZE) {
             return;
         }
-        if (newMap[row][col].equals(character.substring(0, 1).toLowerCase())) {
-            System.out.println("char at: " + row + "," + col);
-            instance.playerRow = row;
-            instance.playerCol = col;
-            return;
+        if (newMap[row][col].equals("r") || newMap[row][col].equals("w") || 
+                newMap[row][col].equals("h")) {
+            renderPlayers(newMap[row][col], row, col);
         }
         if (row < SIZE - 1) {
             searchrPlayerLocation(row + 1, col, newMap);
