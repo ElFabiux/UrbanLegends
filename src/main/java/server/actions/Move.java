@@ -119,7 +119,7 @@ public class Move implements Command {
         System.out.println("recibo posy" + player.getPositionY());
 
         System.out.println("popopopooopopoo" + !moves.checkMovements(finalMap, player, direction));
-        if (!moves.checkMovements(finalMap, player, direction)) {
+        //if (!moves.checkMovements(finalMap, player, direction)) {
 
             player.getCharacter().modifyEnergy(-1);
 
@@ -140,7 +140,9 @@ public class Move implements Command {
                     return "Invalid direction. Use up, down, left, or right.";
             }
 
-        }
+        //}
+        System.out.println("recibo posx" + player.getPositionX());
+        System.out.println("recibo posy" + player.getPositionY());
 
         return "Move successful. " + player.getPosition()
                 + ". Current energy: " + player.getCharacter().getEnergy();

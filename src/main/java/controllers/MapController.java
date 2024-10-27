@@ -10,12 +10,10 @@ import java.util.ResourceBundle;
 import game.Client;
 import game.GameMap;
 import game.Tile;
-import java.util.Arrays;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -53,8 +51,8 @@ public class MapController implements Initializable {
     GameMap gameMap;
     private ImageView playerIcon;
     private static String character;
-    private int playerRow = 0; // Fila inicial del jugador
-    private int playerCol = 0; // Columna inicial del jugador
+    private int playerRow; // Fila inicial del jugador
+    private int playerCol; // Columna inicial del jugador
 
     /**
      * Initializes the controller class and add focus to the map for the player
@@ -105,23 +103,26 @@ public class MapController implements Initializable {
 
     private void updatePlayerPosition() {
         sceneGrid.getChildren().remove(playerIcon);
-        sceneGrid.add(playerIcon, playerCol, playerRow);
+        sceneGrid.add(playerIcon, instance.playerCol, instance.playerRow);
+        playerIcon.toFront();
     }
 
-    /**
-     * Render the map
-     *
-     * @param row current row
-     * @param col current col
-     * @param playerView the new playerView
-     */
+    private static void initializeConstanst() {
+        if (MapController.sceneGrid == null) {
+            MapController.sceneGrid = new GridPane();
+        }
+        if (MapController.instance == null) {
+            MapController.instance = new MapController();
+        }
+        if (MapController.instance.gameMap == null) {
+            MapController.instance.gameMap = new GameMap();
+        }
+    }
+
     public static void setClient(Client client, String character) {
         MapController.client = client;
         MapController.character = character;
-        if (MapController.sceneGrid == null) {
-            MapController.sceneGrid = new GridPane();
-            MapController.instance = new MapController();
-        }
+        initializeConstanst();
         startMap();
 
     }
@@ -131,18 +132,41 @@ public class MapController implements Initializable {
         if (instance == null) {
             instance = new MapController();
         }
-        instance.gameMap = new GameMap();
-        instance.tileMatrix = instance.gameMap.createTileMatrix(MapController.map, instance.tileMatrix);
+        instance.tileMatrix
+                = instance.gameMap.createTileMatrix(MapController.map,
+                        instance.tileMatrix);
         instance.loadMap(instance.tileMatrix);
     }
 
     public static void requestRender(String[][] newMap) {
         MapController.oldMap = MapController.map;
         MapController.map = newMap;
-
+        instance.searchrPlayerLocation(0, 0, MapController.map);
+        System.out.println("row: " + instance.playerRow);
+        System.out.println("col: " + instance.playerCol);
         instance.render(0, 0, MapController.map);
-        instance.tileMatrix = instance.gameMap.createTileMatrix(MapController.map, instance.tileMatrix);
+        instance.tileMatrix
+                = instance.gameMap.createTileMatrix(MapController.map,
+                        instance.tileMatrix);
         instance.loadMapRecursively(instance.tileMatrix, 0, 0);
+
+    }
+
+    private void searchrPlayerLocation(int row, int col, String[][] newMap) {
+        if (col >= SIZE) {
+            return;
+        }
+        if (newMap[row][col].equals(character.substring(0, 1).toLowerCase())) {
+            System.out.println("char at: " + row + "," + col);
+            instance.playerRow = row;
+            instance.playerCol = col;
+            return;
+        }
+        if (row < SIZE - 1) {
+            searchrPlayerLocation(row + 1, col, newMap);
+        } else {
+            searchrPlayerLocation(0, col + 1, newMap);
+        }
     }
 
     private void render(int row, int col, String[][] newMap) {
@@ -174,55 +198,32 @@ public class MapController implements Initializable {
     private void movePlayer(KeyEvent event) {
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
             String[][] newMap = null;
-            boolean moved = false;
-
             switch (event.getCode()) {
                 case UP:
-                    if (playerRow > 0) {
-                        playerRow--;
-                        newMap = MapController.client.listenForCommands("left");
-                        moved = true;
-                    }
+                case W:
+                    newMap = MapController.client.listenForCommands("up");
                     break;
                 case DOWN:
-                    if (playerRow < SIZE - 1) {
-                        playerRow++;
-                        newMap = MapController.client.listenForCommands("right");
-                        moved = true;
-                    }
+                case S:
+                    newMap = MapController.client.listenForCommands("down");
                     break;
                 case LEFT:
-                    if (playerCol > 0) {
-                        playerCol--;
-                        newMap = MapController.client.listenForCommands("up");
-                        moved = true;
-                    }
+                case A:
+                    newMap = MapController.client.listenForCommands("left");
                     break;
                 case RIGHT:
-                    if (playerCol < SIZE - 1) {
-                        playerCol++;
-                        newMap =  MapController.client.listenForCommands("down");
-                        moved = true;
-                    }
+                case D:
+                    newMap = MapController.client.listenForCommands("right");
                     break;
                 default:
                     break;
             }
-            if (moved && newMap != null) {
+            if (newMap != null) {
                 requestRender(newMap);
+                updatePlayerPosition();
             }
-            updatePlayerPosition();
-        }
-    }
 
-    private void getPosition() {
-        String position = MapController.client.getPosition("position");
-        String[] xy = position.split(",");
-        System.out.println("xy: " + Arrays.toString(xy));
-        String row = xy[1].substring(0, 1);
-        String col = xy[0].substring(1, 2);
-        this.playerRow = Integer.valueOf(row);
-        this.playerCol = Integer.valueOf(col);
+        }
     }
 
     /**
@@ -258,37 +259,5 @@ public class MapController implements Initializable {
             sceneGrid.add(tileMatrix[row][col].getImageView(), col, row);
         }
         loadMapRecursively(tileMatrix, row, col + 1);
-    }
-
-    /**
-     * Switches the current map to the village map.
-     */
-    @FXML
-    private void loadVillageMap() {
-        loadMap(gameMap.getVillageMap());
-    }
-
-    /**
-     * Switches the current map to the forest map.
-     */
-    @FXML
-    private void loadForestMap() {
-        loadMap(gameMap.getForestMap());
-    }
-
-    /**
-     * Switches the current map to the cemetery map.
-     */
-    @FXML
-    private void loadCemeteryMap() {
-        loadMap(gameMap.getCemeteryMap());
-    }
-
-    /**
-     * Switches the current map to the church map.
-     */
-    @FXML
-    private void loadChurchMap() {
-        loadMap(gameMap.getChurchMap());
     }
 }

@@ -11,7 +11,7 @@ package game;
 public class MovementsLogic {
 
     private final char characterNPC = 'N';
-    private final char[] blockedGrids = {'R', 'T', 'H', 'O', 'C', 'S', 'W', 'P', 'L', characterNPC};
+    private final char[] blockedGrids = {'r', 'T', 'h', 'O', 'C', 'S', 'w', 'P', 'L', characterNPC};
     private boolean isCloseToNpc = false;
 
     /**
@@ -50,6 +50,7 @@ public class MovementsLogic {
         int posY = newPos[1];
 
         if (isOutOfBounds(map, posX, posY)) {
+            System.out.println("out");
             return true;
         }
 
@@ -58,6 +59,7 @@ public class MovementsLogic {
 //        System.out.println("stoy en: " + map[oldY][oldX]);
 //        System.out.println("voy para: " + map[posX][posY]);
         if (isBlocked(map[posY][oldX], 0) || isBlocked(map[oldY][posX], 0)) {
+            System.out.println("block");
             return true;
         }
 
