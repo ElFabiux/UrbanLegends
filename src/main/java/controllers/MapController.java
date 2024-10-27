@@ -210,6 +210,7 @@ public class MapController implements Initializable {
             }
             if (moved && newMap != null) {
                 requestRender(newMap);
+                getPosition();
             }
             updatePlayerPosition();
         }
@@ -217,6 +218,7 @@ public class MapController implements Initializable {
 
     private void getPosition() {
         String position = MapController.client.getPosition("position");
+        System.out.println("posssssssss🐢"+ position);
         String[] xy = position.split(",");
         System.out.println("xy: " + Arrays.toString(xy));
         String row = xy[1].substring(0, 1);

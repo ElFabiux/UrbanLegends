@@ -117,7 +117,7 @@ public class Player {
      * @return The player's position as a formatted string.
      */
     public String getPosition() {
-        return "(" + positionX + ", " + positionY + ")";
+        return "(" + positionX + "," + positionY + ")";
     }
 
     /**

@@ -76,6 +76,7 @@ public class Flow extends Thread {
              
                 String response = interpreter.interpret(command, direction, 
                         player);
+                System.out.println("lallalala:" + response);
 
               
                 game.updateMap(player);
