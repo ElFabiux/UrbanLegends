@@ -124,7 +124,7 @@ public class Player {
      * Moves the player down by increasing the y-coordinate.
      */
     public void moveDown() {
-        if (this.positionY > 10) {
+        if (this.positionY > 35) {
             return;
         }
         this.positionY++;
@@ -144,7 +144,7 @@ public class Player {
      * Moves the player right by increasing the x-coordinate.
      */
     public void moveRight() {
-        if (this.positionX > 10) {
+        if (this.positionX > 35) {
             return;
         }
         this.positionX++;

@@ -4,14 +4,19 @@
  */
 package game;
 
+import java.util.Arrays;
+
 /**
- *
+ *  MovementsLogic handles the logic for player movement and interaction 
+ *  with the game environment. It includes methods to validate movement
+ *  directions, check proximity to NPCs, and detect blocked paths on the map.
+ * 
  * @author jorge
  */
 public class MovementsLogic {
 
     private final char characterNPC = 'N';
-    private final char[] blockedGrids = {'R', 'T', 'H', 'O', 'C', 'S', 'W', 'P', 'L', characterNPC};
+    private final char[] blockedGrids = {'R', 'T', 'H', 'O', 'C', 'S', 'W', 'P', 'N', characterNPC};
     private boolean isCloseToNpc = false;
 
     /**
@@ -20,14 +25,29 @@ public class MovementsLogic {
     public MovementsLogic() {
     }
 
+    /**
+     * Gets the array of blocked grid characters.
+     * 
+     * @return An array of characters representing blocked grid elements
+     */
     public char[] getBlockedGrids() {
         return blockedGrids;
     }
 
+    /**
+     * Checks if the player is close to an NPC
+     * 
+     * @return true if the player is near an NPC, false otherwise.
+     */
     public boolean isIsCloseToNpc() {
         return isCloseToNpc;
     }
 
+    /**
+     * Sets the proximity status to an NPC.
+     * 
+     * @param isCloseToNpc true if the player is near an NPC, false otherwise
+     */
     public void setIsCloseToNpc(boolean isCloseToNpc) {
         this.isCloseToNpc = isCloseToNpc;
     }
@@ -43,6 +63,8 @@ public class MovementsLogic {
      * @return true if the movement is valid, false otherwise
      */
     public boolean checkMovements(String[][] map, Player player, String direction) {
+        System.out.println("direction: " + direction);
+     
         int oldX = player.getPositionX();
         int oldY = player.getPositionY();
         int[] newPos = getNewPosition(oldX, oldY, direction);
@@ -50,14 +72,18 @@ public class MovementsLogic {
         int posY = newPos[1];
 
         if (isOutOfBounds(map, posX, posY)) {
+            System.out.println("out");
             return true;
         }
 
         isCloseToNpc = playerCloseToNpc(map, posX, posY);
 
-//        System.out.println("stoy en: " + map[oldY][oldX]);
-//        System.out.println("voy para: " + map[posX][posY]);
+        System.out.println("newPos:" + posX);
+        System.out.println("newPosY:" + posY);
+
         if (isBlocked(map[posY][oldX], 0) || isBlocked(map[oldY][posX], 0)) {
+            System.out.println("lalala" + map[posY][oldX]);
+            System.out.println("block");
             return true;
         }
 
@@ -65,10 +91,10 @@ public class MovementsLogic {
     }
 
     /**
-     * Checks if the player is close to an NPC in any of the adjacent tiles
-     * It inspects the tiles around the player's current position (up, down, left, right)
-     * o determine if any of them contain the NPC character
-     * 
+     * Checks if the player is close to an NPC in any of the adjacent tiles It
+     * inspects the tiles around the player's current position (up, down, left,
+     * right) o determine if any of them contain the NPC character
+     *
      * @param mapA 2D array representing the game map.
      * @param posX The player's current X-coordinate on the map
      * @param posY The player's current Y-coordinate on the map

@@ -23,7 +23,6 @@ import game.Player;
  */
 public class Flow extends Thread {
 
-  
     private Game game;
     private DataInputStream input;
     private DataOutputStream output;
@@ -65,26 +64,30 @@ public class Flow extends Thread {
     public void run() {
         try {
             while (true) {
-                
+
                 String received = input.readUTF();
 
                 String[] parts = received.split(" ");
 
-                String command = parts[0];  
-                String direction = parts.length > 1 ? parts[1] : ""; 
+                String command = parts[0];
+                String direction = parts.length > 1 ? parts[1] : "";
 
-             
-                String response = interpreter.interpret(command, direction, 
-                        player);
-                System.out.println("lallalala:" + response);
-
-              
-                game.updateMap(player);
-
+                int oldRow = player.getPositionY();
+                int oldCol = player.getPositionX();
                 
-                output.writeUTF(response);
-                output.writeUTF("Map:\n" + game.printMap());
-                System.out.println(game.printMap());
+                String response = interpreter.interpret(command, direction,
+                        player);
+                
+                
+                game.updateMap(player, oldRow, oldCol);
+                if (command.equals("get")) {
+                    output.writeUTF(response);
+                } else {
+                    output.writeUTF(response);
+                    output.writeUTF("Map:\n" + game.printMap());
+                    System.out.println(game.printMap());
+                }
+
                 output.flush();
             }
         } catch (IOException ioe) {
@@ -95,8 +98,8 @@ public class Flow extends Thread {
     }
 
     /**
-     * Closes the input, output streams, and socket resources to prevent resource
-     * leaks.
+     * Closes the input, output streams, and socket resources to prevent
+     * resource leaks.
      */
     private void closeResources() {
         try {

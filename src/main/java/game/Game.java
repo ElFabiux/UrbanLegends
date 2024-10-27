@@ -12,8 +12,16 @@ public class Game {
     private final int MAP_WIDTH = 10;
     private final int MAP_HEIGHT = 10;
     private String[][] map = new String[MAP_HEIGHT][MAP_WIDTH];
+    private String[][] mapClone;
+
     private Game() {
         initializeMap();
+        System.out.println("mapclone: ");
+        printMatrix(mapClone);
+    }
+
+    public String[][] getMapClone() {
+        return mapClone;
     }
 
     public static synchronized Game getInstance() {
@@ -23,45 +31,47 @@ public class Game {
         return instance;
     }
 
-    // Inicializar el mapa
-    private void initializeMap() {
-        this.map = GameMap.getMap();
-    }
-
     public void addPlayer(Player player, int x, int y) {
-        System.out.println("instance: " + Game.instance);
         if (this.players.size() < 3) {
             this.players.add(player);
             player.setPositionX(x);
             player.setPositionY(y);
-            GameMap.getMap()[y][x] = player.getCharacter().getName().substring(0, 1);
         }
-        System.out.println("players: " + this.players.toString());
     }
-    
-    
 
-  
     // Validar si una posición es válida en el mapa
     public boolean isValidPosition(int x, int y) {
         return (x >= 0 && x < MAP_WIDTH && y >= 0 && y < MAP_HEIGHT);
     }
 
-    public void updateMap(Player player) {
-        this.map = extractSubmatrix(GameMap.getMap(), player.getPositionX(), player.getPositionY(), 10);
+    public void updateMap(Player player, int oldRow, int oldCol) {
+        oldRow = oldRow>=36?35:oldRow;
+        oldCol = oldCol>=36?35:oldCol;
+        this.mapClone[oldRow][oldCol] = GameMap.getMap()[oldRow][oldCol];
+        int playerRow = player.getPositionY() >= 36 ? 35 : player.getPositionY();
+        int playerCol = player.getPositionX() >= 35 ? 35 : player.getPositionX();
+        this.mapClone[playerRow][playerCol]
+                = player.getCharacter().getName().substring(0, 1).toLowerCase();
+
+        this.map = extractSubmatrix(this.mapClone, player.getPositionY(),
+                player.getPositionX(), 10);
+        System.out.println("postions: " + player.getPosition());
+
     }
-    
-    private void createStringForPlayerPositions(ArrayList<Player> players, Player head, String positions){
+
+    private void createStringForPlayerPositions(ArrayList<Player> players, Player head, String positions) {
         positions = positions + ";" + head.getPosition();
         players.remove(head);
-        if(players.isEmpty()) return;
+        if (players.isEmpty()) {
+            return;
+        }
         head = players.get(0);
         createStringForPlayerPositions(players, head, positions);
     }
-    
-    public String getPlayersPosition(){
-        String positions="";
-        ArrayList<Player> playersCopy =(ArrayList<Player>) Game.instance.players.clone();
+
+    public String getPlayersPosition() {
+        String positions = "";
+        ArrayList<Player> playersCopy = (ArrayList<Player>) Game.instance.players.clone();
         createStringForPlayerPositions(playersCopy, playersCopy.get(0), positions);
         return positions;
     }
@@ -83,21 +93,57 @@ public class Game {
         }
     }
 
+    private static void adjustRowLimits(int endRow, int startRow, int rows) {
+        if (endRow - startRow < 10) {
+            if (endRow == rows) {
+                startRow = Math.max(0, endRow - 10);
+            } else {
+                endRow = Math.min(rows, startRow + 10);
+            }
+        }
+    }
+
+    private static void adjustColLimits(int endCol, int startCol, int cols) {
+        if (endCol - startCol < 10) {
+            if (endCol == cols) {
+                startCol = Math.max(0, endCol - 10);
+            } else {
+                endCol = Math.min(cols, startCol + 10);
+            }
+        }
+    }
+
     public static String[][] extractSubmatrix(String[][] originalMatrix, int targetRow, int targetCol, int size) {
         int rows = originalMatrix.length;
         int cols = originalMatrix[0].length;
 
-        int startRow = Math.max(targetRow - size / 2, 0);
-        int startCol = Math.max(targetCol - size / 2, 0);
+        size = Math.max(size, 10);
+
+        int startRow = Math.max(0, targetRow - size / 2);
+        int startCol = Math.max(0, targetCol - size / 2);
         int endRow = Math.min(startRow + size, rows);
         int endCol = Math.min(startCol + size, cols);
-        String[][] submatrix = new String[endRow - startRow][endCol - startCol];
+        
+        if (endRow - startRow < 10) {
+            if (endRow == rows) {
+                startRow = Math.max(0, endRow - 10);
+            } else {
+                endRow = Math.min(rows, startRow + 10);
+            }
+        }
+        if (endCol - startCol < 10) {
+            if (endCol == cols) {
+                startCol = Math.max(0, endCol - 10);
+            } else {
+                endCol = Math.min(cols, startCol + 10);
+            }
+        }
 
-        fillSubmatrix(originalMatrix, submatrix, startRow, startCol, 0, 0,
-                endRow - startRow, endCol - startCol, startRow, startCol);
+        String[][] submatrix = new String[endRow - startRow][endCol - startCol];
+        fillSubmatrix(originalMatrix, submatrix, startRow, startCol, 0, 0, endRow - startRow, endCol - startCol, startRow, startCol);
+
         return submatrix;
     }
-    //agregar validadción para cuando cambie de row o col se reinicie los de la matriz original tambien
 
     private static void fillSubmatrix(String[][] original, String[][] submatrix,
             int origRow, int origCol, int subRow, int subCol, int numRows,
@@ -112,7 +158,6 @@ public class Game {
                     subRow + 1, 0, numRows, numCols, auxOrigRow, auxOrigCol);
             return;
         }
-        //aqui se puede agregar el jugador: original[origRow][origCol]+ "/"+(CARACTER DEL JUGADOR)
         submatrix[subRow][subCol] = original[origRow][origCol];
         fillSubmatrix(original, submatrix, origRow, origCol + 1, subRow,
                 subCol + 1, numRows, numCols, auxOrigRow, auxOrigCol);
@@ -182,4 +227,23 @@ public class Game {
         sb.append(map[row][col]).append(' ');
         return printMapHelper(row, col + 1, sb);
     }
+
+    private void initializeMap() {
+        this.mapClone = new String[36][36];
+        copyMapRecursively(GameMap.getMap(), mapClone, 0, 0);
+    }
+
+    private void copyMapRecursively(String[][] original, String[][] clone, int row, int col) {
+        if (row >= original.length) {
+            return;
+        }
+
+        if (col >= original.length) {
+            copyMapRecursively(original, clone, row + 1, 0);
+        } else {
+            clone[row][col] = original[row][col];
+            copyMapRecursively(original, clone, row, col + 1);
+        }
+    }
+
 }
