@@ -62,14 +62,16 @@ public class GameMap {
         loadTileMatrixRecursively(gameMap, 0, 0);
     }
 
-    public Tile[][] createTileMatrix(String[][] stringMatrix, Tile[][] tileMatrix) {
+    public Tile[][] createTileMatrix(String[][] stringMatrix, 
+            Tile[][] tileMatrix) {
         int rows = stringMatrix.length;
         int cols = stringMatrix[0].length;
         createTileMatrixRecursively(stringMatrix, tileMatrix, 0, 0);
         return tileMatrix;
     }
 
-    private void createTileMatrixRecursively(String[][] stringMatrix, Tile[][] newTileMatrix, int row, int col) {
+    private void createTileMatrixRecursively(String[][] stringMatrix,
+            Tile[][] newTileMatrix, int row, int col) {
         // Caso base: Si hemos procesado todas las filas
         if (row >= stringMatrix.length) {
             return;

@@ -103,10 +103,14 @@ public class MovementsLogic {
      */
     private boolean playerCloseToNpc(String[][] map, int posX, int posY) {
 
-        if (!isOutOfBounds(map, posX + 1, posY) && map[posY][posX + 1].charAt(0) == characterNPC
-                || !isOutOfBounds(map, posX - 1, posY) && map[posY][posX - 1].charAt(0) == characterNPC
-                || !isOutOfBounds(map, posX, posY + 1) && map[posY + 1][posX].charAt(0) == characterNPC
-                || !isOutOfBounds(map, posX, posY - 1) && map[posY - 1][posX].charAt(0) == characterNPC) {
+        if (!isOutOfBounds(map, posX + 1, posY) &&
+                map[posY][posX + 1].charAt(0) == characterNPC
+                || !isOutOfBounds(map, posX - 1, posY) &&
+                map[posY][posX - 1].charAt(0) == characterNPC
+                || !isOutOfBounds(map, posX, posY + 1) &&
+                map[posY + 1][posX].charAt(0) == characterNPC
+                || !isOutOfBounds(map, posX, posY - 1) &&
+                map[posY - 1][posX].charAt(0) == characterNPC) {
             System.out.println("ESTOY CERCAR");
             return true;
         }

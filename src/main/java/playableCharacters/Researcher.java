@@ -18,4 +18,9 @@ public class Researcher extends Character {
     public Researcher() {
     }
 
+    @Override
+    public Character createCharacter() {
+        return new Researcher("Researcher", 70, 100, 40);
+    }
+
 }

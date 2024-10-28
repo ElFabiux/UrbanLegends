@@ -27,6 +27,10 @@ public class Game {
         printMatrix(mapClone);
     }
 
+    /**
+     *
+     * @return
+     */
     public String[][] getMapClone() {
         return mapClone;
     }
@@ -135,7 +139,8 @@ public class Game {
 
     public String getPlayersPosition() {
         String positions = "";
-        ArrayList<Player> playersCopy = (ArrayList<Player>) Game.instance.players.clone();
+        ArrayList<Player> playersCopy = 
+                (ArrayList<Player>) Game.instance.players.clone();
         createStringForPlayerPositions(playersCopy,
                 playersCopy.get(0), positions);
         return positions;
@@ -149,11 +154,20 @@ public class Game {
     }
 
     private static void printMatrix(String[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                System.out.print(matrix[i][j] + " ");
-            }
-            System.out.println("");
+        printMatrix(matrix, 0, 0);
+    }
+
+    private static void printMatrix(String[][] matrix, int i, int j) {
+        if (i >= matrix.length) {
+            return;
+        }
+        System.out.print(matrix[i][j] + " ");
+
+        if (j < matrix[i].length - 1) {
+            printMatrix(matrix, i, j + 1);
+        } else {
+            System.out.println();
+            printMatrix(matrix, i + 1, 0);
         }
     }
 

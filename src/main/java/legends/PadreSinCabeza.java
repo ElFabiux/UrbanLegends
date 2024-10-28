@@ -22,4 +22,9 @@ public class PadreSinCabeza extends Legend {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    @Override
+    public Legend createLegend() {
+        return new PadreSinCabeza("Father", 8,3);
+    }
+
 }

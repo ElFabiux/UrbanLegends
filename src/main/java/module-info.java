@@ -11,17 +11,9 @@ module com.mycompany.urbanlegends {
     exports controllers;
     
     
-//     opens characters to javafx.fxml;
-//     exports characters;
-     
-//     opens characters.factory to javafx.fxml;
-//     exports characters.factory;
-//     
-//  
-    
-    
-    
-    
-    
+     opens playableCharacters to javafx.fxml;
+     exports playableCharacters;
+
+
    
 }

@@ -58,8 +58,8 @@ public class MapController implements Initializable {
      * Initializes the controller class and add focus to the map for the player
      * inputs.
      *
-     * @param url
-     * @param rb
+     * @param url for indicate the sourche searching 
+     * @param rb ResourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -101,6 +101,7 @@ public class MapController implements Initializable {
         return null;
     }
 
+    
     private void updatePlayerPosition() {
         sceneGrid.getChildren().remove(playerIcon);
         playerIcon = new ImageView(getCharacterRoute());

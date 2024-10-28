@@ -31,4 +31,9 @@ public class Cadejo extends Legend {
  
     }
 
+    @Override
+    public Legend createLegend() {
+         return new Cadejo("Cadejin", 3,6);
+    }
+
 }

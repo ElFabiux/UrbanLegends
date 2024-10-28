@@ -8,14 +8,15 @@ package playableCharacters;
  *
  * @author jorge
  */
-public abstract class Character {
+public abstract class Character implements CharacterFactory{
 
     private String name;
     private int energy;
     private int mentalHealth;
     private int superstition;
 
-    public Character(String name, int energy, int mentalHealth, int superstition) {
+    public Character(String name, int energy, int mentalHealth,
+            int superstition) {
 
         this.name = name;
         this.energy = energy;

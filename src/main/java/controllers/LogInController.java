@@ -21,7 +21,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 
 /**
@@ -54,11 +53,18 @@ public class LogInController implements Initializable {
     @FXML
     private AnchorPane container;
 
+    Hunter hunter;
+    Researcher researcher;
+    Witch witch;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        hunter = new Hunter();
+        researcher = new Researcher();
+        witch = new Witch();
     }
 
     @FXML
@@ -86,13 +92,14 @@ public class LogInController implements Initializable {
         String value = selectedRadioButton.getText();
         switch (value) {
             case "Witch":
-                this.character = new Witch("Witch", 0, 0, 0);
+                this.character = witch.createCharacter();
                 break;
+
             case "Hunter":
-                this.character = new Hunter("Hunter", 0, 0, 0);
+                this.character = hunter.createCharacter();
                 break;
             case "Researcher":
-                this.character = new Researcher("Researcher", 0, 0, 0);
+                this.character = researcher.createCharacter();
                 break;
             default:
                 throw new AssertionError();
@@ -106,7 +113,7 @@ public class LogInController implements Initializable {
         player[1] = this.character.getName();
         Client client = Client.main(player);
         MapController.setClient(client, player[1]);
-        
+
         App.setRoot("Map");
     }
 
