@@ -25,8 +25,8 @@ import game.MovementsLogic;
 public class Move implements Command {
 
     private String direction;
-    private final MovementsLogic moves = new MovementsLogic();
     private Game map;
+    private final MovementsLogic moves = new MovementsLogic();
 
     /**
      * Constructs a new {@code Move} command with the specified direction.
@@ -72,13 +72,9 @@ public class Move implements Command {
         if (player.getCharacter().getEnergy() < 10) {
             return "Move failed. Not enough energy.";
         }
-        System.out.println("recibo posx" + player.getPositionX());
-        System.out.println("recibo posy" + player.getPositionY());
 
-        System.out.println("popopopooopopoo" + !moves.checkMovements(Game.getInstance().getMapClone(), player, direction));
-        if (!moves.checkMovements(Game.getInstance().getMapClone(), player, direction)) {
-
-            //player.getCharacter().modifyEnergy(-1);
+        if (!moves.checkMovements(Game.getInstance().getMapClone(), player, 
+                direction)) {
 
             switch (direction) {
                 case "up":
@@ -98,8 +94,6 @@ public class Move implements Command {
             }
 
         }
-        System.out.println("recibo posx" + player.getPositionX());
-        System.out.println("recibo posy" + player.getPositionY());
 
         return "Move successful. " + player.getPosition()
                 + ". Current energy: " + player.getCharacter().getEnergy();

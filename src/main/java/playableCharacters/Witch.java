@@ -5,6 +5,10 @@
 package playableCharacters;
 
 /**
+ * 
+ * The Witch class represents a specific type of character within the game.
+ * It inherits from the Character class and defines the unique properties 
+ * of a Witch character, including custom energy, mental health, and superstition levels.
  *
  * @author joxan
  */
