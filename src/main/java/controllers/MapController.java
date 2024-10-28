@@ -10,6 +10,11 @@ import java.util.ResourceBundle;
 import game.Client;
 import game.GameMap;
 import game.Tile;
+import game.Time;
+import game.TimeObserver;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -30,7 +35,7 @@ import javafx.scene.layout.GridPane;
  * 
  * @author igmml
  */
-public class MapController implements Initializable {
+public class MapController implements Initializable, TimeObserver  {
 
     @FXML
     private AnchorPane playerView;
@@ -48,6 +53,8 @@ public class MapController implements Initializable {
     private static MapController instance; 
     
     GameMap gameMap;
+    private boolean isDaytime = true;
+    Time time;
 
     /**
      * Initializes the controller class and add focus to the map for the player
@@ -62,11 +69,21 @@ public class MapController implements Initializable {
         MapController.sceneGrid.setFocusTraversable(true);
         MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED, this::movePlayer);
         
-        gameMap = new GameMap();
+        time = new Time();
+        gameMap = new GameMap(time);
         gameMap.loadTileMatrix();
+        time.addObserver(this);
+        time.startTime();
         loadMap(gameMap.getCemeteryMap());
     }
 
+        @Override
+    public void update(boolean isDaytime) {
+        Platform.runLater(() -> {
+            loadMap(gameMap.getCemeteryMap());
+        });
+    }
+    
     /**
      * Retrieves a Node from the GridPane by its row and column index.
      * This method finds the corresponding Node (e.g., Label) in the grid.

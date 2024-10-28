@@ -11,6 +11,7 @@ package game;
 public class GameMap {
     
     private Tile[][] tileMatrix = new Tile[36][36];
+    private Time time = new Time();
     
     private static final String[][] gameMap = {
         {"R1", "G", "G", "G", "G", "G", "G", "G", "G", "T2", "G", "G", "G", "G", "G", "G", "G", "G", "W", "W", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"},
@@ -52,6 +53,18 @@ public class GameMap {
         {"R1", "G", "G", "T7", "G", "T1", "G", "G", "G", "G", "G", "G", "G", "T5", "G", "G", "G", "G", "O5", "G", "T3", "T3", "G", "T3", "G", "G", "O1", "G", "G", "G", "G", "O3", "G", "O2", "O5", "O5"}
     };
     
+    public GameMap(Time time) {
+        this.time = time;
+    }
+    
+    public Time getTime(){
+        return this.time;
+    }
+    
+    public void changeTime(boolean isDaytime) {
+        time.setTimeOfDay(isDaytime);  // Set time and notify tiles
+    }
+    
     /**
      * Loads the entire tile matrix recursively from the gameMap.
      */
@@ -79,6 +92,8 @@ public class GameMap {
         String tileChar = mapMatrix[row][col];
         Tile tile = createTile(tileChar);
         tileMatrix[row][col] = tile;
+        
+        time.addObserver(tile);
 
         loadTileMatrixRecursively(mapMatrix, row, col + 1);
     }

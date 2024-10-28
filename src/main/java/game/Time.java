@@ -1,5 +1,9 @@
 package game;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -24,6 +28,8 @@ public class Time {
     private Duration elapsedTime;
     private Timeline timeLine;
     private boolean isRunning;
+    private boolean isDaytime;
+    private List<TimeObserver> observers;
     
     /**
      * Constructor de la clase Time.
@@ -39,11 +45,16 @@ public class Time {
                 elapsedTime = elapsedTime.add(Duration.seconds(1));
                 if (elapsedTime.toMinutes() >= 1) {
                     elapsedTime = Duration.ZERO;
+                    isDaytime = !isDaytime;
+                    notifyObservers();
                 }
             }
         }));
         timeLine.setCycleCount(Timeline.INDEFINITE);
         isRunning = false;
+        
+        this.isDaytime = true;
+        observers = new ArrayList<>();
     }
     
     /**
@@ -86,6 +97,30 @@ public class Time {
         seconds = seconds % 60;
 
         return String.format("%02d:%02d", minutes, seconds);
+    }
+    
+    //Para Observer................................
+    public void addObserver(TimeObserver observer) {
+        observers.add(observer);
+    }
+    
+    public void removeObserver(TimeObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers() {
+        for (TimeObserver observer : observers) {
+            observer.update(isDaytime);
+        }
+    }
+
+    public void setTimeOfDay(boolean isDaytime) {
+        this.isDaytime = isDaytime;
+        notifyObservers();
+    }
+
+    public boolean isDaytime() {
+        return isDaytime;
     }
 }
 
