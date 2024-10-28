@@ -42,15 +42,27 @@ public class Player {
         this.character = character;
         this.activeMissions = new ArrayList<>();
     }
+    
 
     /**
      * Accepts a mission and adds it to the player's list of active missions.
      * 
      * @param mission The mission to be added.
      */
-    public void acceptMission(Mission mission) {
-        activeMissions.add(mission);
+   public void acceptMission(Mission mission) {
+        if (!activeMissions.contains(mission)) {
+            activeMissions.add(mission);
+            System.out.println("Mission accepted: " + mission.getTitle());
+        }
     }
+    
+     /**
+     * Checks if the player is near any NPC in the provided list.
+     * If a nearby NPC is found, displays an alert to accept the mission.
+     * 
+     * @param npcs List of NPCs to check proximity with
+     */
+ 
 
     /**
      * Marks a specified mission as completed.

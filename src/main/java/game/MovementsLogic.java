@@ -5,6 +5,7 @@
 package game;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  *  MovementsLogic handles the logic for player movement and interaction 
@@ -127,6 +128,43 @@ public class MovementsLogic {
         }
         return false;
     }
+    
+    /**
+ * Checks if there is an NPC within close proximity to the player.
+ * If an NPC is found within a distance of one unit, it returns the NPC.
+ *
+ * @param npcs   List of all NPCs on the map
+ * @param player The player object with current position data
+ * @return The nearby NPC if within proximity; null if no NPC is close
+ */
+public Npc isNearNpc(List<Npc> npcs, Player player) {
+    int playerX = player.getPositionX();
+    int playerY = player.getPositionY();
+    for (Npc npc : npcs) {
+        if (Math.abs(npc.getPositionX() - playerX) <= 1 && Math.abs(npc.getPositionY() - playerY) <= 1) {
+            return npc; 
+        }
+    }
+    return null; 
+}
+
+/**
+ * Checks if the player is close to a specific legend on the map, such as "La Llorona" near a river.
+ * Verifies adjacent tiles around the player's position for the specified legend symbol.
+ *
+ * @param map         A 2D array representing the game map
+ * @param posX        The player's current X-coordinate on the map
+ * @param posY        The player's current Y-coordinate on the map
+ * @param legendSymbol The symbol character representing the legend on the map
+ * @return true if the player is near the specified legend; false otherwise
+ */
+public boolean isNearLegend(String[][] map, int posX, int posY, char legendSymbol) {
+    return !isOutOfBounds(map, posX + 1, posY) && map[posY][posX + 1].charAt(0) == legendSymbol
+        || !isOutOfBounds(map, posX - 1, posY) && map[posY][posX - 1].charAt(0) == legendSymbol
+        || !isOutOfBounds(map, posX, posY + 1) && map[posY + 1][posX].charAt(0) == legendSymbol
+        || !isOutOfBounds(map, posX, posY - 1) && map[posY - 1][posX].charAt(0) == legendSymbol;
+}
+
 
     /**
      * This method calculates the new position based on the current position and

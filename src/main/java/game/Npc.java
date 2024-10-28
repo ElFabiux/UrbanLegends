@@ -68,16 +68,5 @@ public class Npc {
         return positionY;
     }
 
-    /**
-     * Determines if the specified position is within a distance of one unit
-     * from the NPC's current position.
-     *
-     * @param x The x-coordinate of the position to check.
-     * @param y The y-coordinate of the position to check.
-     * @return true if the specified position is near the NPC; false otherwise.
-     */
-    public boolean isNear(int x, int y) {
-        return Math.abs(this.positionX - x) <= 1 && Math.abs(this.positionY - y)
-                <= 1;
-    }
+      
 }

@@ -78,7 +78,7 @@ public class Move implements Command {
         System.out.println("popopopooopopoo" + !moves.checkMovements(Game.getInstance().getMapClone(), player, direction));
         if (!moves.checkMovements(Game.getInstance().getMapClone(), player, direction)) {
 
-            player.getCharacter().modifyEnergy(-1);
+            //player.getCharacter().modifyEnergy(-1);
 
             switch (direction) {
                 case "up":

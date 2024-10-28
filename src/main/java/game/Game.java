@@ -1,6 +1,12 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 import server.Server;
 
@@ -9,6 +15,7 @@ public class Game {
     private static Game instance;
 
     private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Npc> npcs = new ArrayList<>();
     private final int MAP_WIDTH = 10;
     private final int MAP_HEIGHT = 10;
     private String[][] map = new String[MAP_HEIGHT][MAP_WIDTH];
@@ -39,14 +46,70 @@ public class Game {
         }
     }
 
-    // Validar si una posición es válida en el mapa
+    public void spawnNpcsWithMissions(int npcCount) {
+        List<Mission> missions = Mission.loadMissions();
+        Random random = new Random();
+
+        for (int i = 0; i < npcCount && i < missions.size(); i++) {
+            int x = PositionGenerator.getRandomPositionX();
+            int y = PositionGenerator.getRandomPositionY();
+
+            Mission mission = missions.get(i);
+            Npc npc = new Npc("NPC " + (i + 1), x, y, mission);
+            addNpcToMap(npc);
+        }
+    }
+
+    public void addNpcToMap(Npc npc) {
+        if (isValidPosition(npc.getPositionX(), npc.getPositionY())) {
+            map[npc.getPositionY()][npc.getPositionX()] = "N";
+            npcs.add(npc);
+        }
+    }
+
+    public void checkNearbyNpcs(Player player) {
+        checkNearbyNpc(npcs, player, 0);
+    }
+
+    private void checkNearbyNpc(List<Npc> npcs, Player player, int index) {
+        if (index >= npcs.size()) {
+            return;
+        }
+
+        Npc npc = npcs.get(index);
+        if (isNear(player.getPositionX(), player.getPositionY(),
+                npc.getPositionX(), npc.getPositionY())) {
+            Mission mission = npc.assignMission();
+            if (mission != null) {
+
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Mission Assignment");
+                alert.setHeaderText("Mission found: " + mission.getTitle());
+                alert.setContentText(mission.getDescription() + "\nReward: "
+                        + mission.getReward()
+                        + "\n\nDo you want to accept this mission?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    player.acceptMission(mission);
+                    System.out.println("Mission accepted: " + mission.getTitle());
+                }
+            }
+        }
+        checkNearbyNpc(npcs, player, index + 1);
+    }
+
+    private boolean isNear(int x1, int y1, int x2, int y2) {
+        return Math.abs(x1 - x2) <= 1 && Math.abs(y1 - y2) <= 1;
+    }
+
     public boolean isValidPosition(int x, int y) {
         return (x >= 0 && x < MAP_WIDTH && y >= 0 && y < MAP_HEIGHT);
     }
 
     public void updateMap(Player player, int oldRow, int oldCol) {
-        oldRow = oldRow>=36?35:oldRow;
-        oldCol = oldCol>=36?35:oldCol;
+        oldRow = oldRow >= 36 ? 35 : oldRow;
+        oldCol = oldCol >= 36 ? 35 : oldCol;
         this.mapClone[oldRow][oldCol] = GameMap.getMap()[oldRow][oldCol];
         int playerRow = player.getPositionY() >= 36 ? 35 : player.getPositionY();
         int playerCol = player.getPositionX() >= 35 ? 35 : player.getPositionX();
@@ -59,7 +122,8 @@ public class Game {
 
     }
 
-    private void createStringForPlayerPositions(ArrayList<Player> players, Player head, String positions) {
+    private void createStringForPlayerPositions(ArrayList<Player> players,
+            Player head, String positions) {
         positions = positions + ";" + head.getPosition();
         players.remove(head);
         if (players.isEmpty()) {
@@ -72,11 +136,11 @@ public class Game {
     public String getPlayersPosition() {
         String positions = "";
         ArrayList<Player> playersCopy = (ArrayList<Player>) Game.instance.players.clone();
-        createStringForPlayerPositions(playersCopy, playersCopy.get(0), positions);
+        createStringForPlayerPositions(playersCopy,
+                playersCopy.get(0), positions);
         return positions;
     }
 
-    // Método para obtener un mapa pequeño basado en la posición del jugador
     private String[][] getMiniMap(int playerX, int playerY) {
         String[][] miniMap = new String[MAP_HEIGHT][MAP_WIDTH];
         fillMiniMap(playerX, playerY, miniMap, 0, 0);
@@ -113,7 +177,8 @@ public class Game {
         }
     }
 
-    public static String[][] extractSubmatrix(String[][] originalMatrix, int targetRow, int targetCol, int size) {
+    public static String[][] extractSubmatrix(String[][] originalMatrix,
+            int targetRow, int targetCol, int size) {
         int rows = originalMatrix.length;
         int cols = originalMatrix[0].length;
 
@@ -123,7 +188,7 @@ public class Game {
         int startCol = Math.max(0, targetCol - size / 2);
         int endRow = Math.min(startRow + size, rows);
         int endCol = Math.min(startCol + size, cols);
-        
+
         if (endRow - startRow < 10) {
             if (endRow == rows) {
                 startRow = Math.max(0, endRow - 10);
@@ -140,7 +205,9 @@ public class Game {
         }
 
         String[][] submatrix = new String[endRow - startRow][endCol - startCol];
-        fillSubmatrix(originalMatrix, submatrix, startRow, startCol, 0, 0, endRow - startRow, endCol - startCol, startRow, startCol);
+        fillSubmatrix(originalMatrix, submatrix, startRow,
+                startCol, 0, 0, endRow - startRow,
+                endCol - startCol, startRow, startCol);
 
         return submatrix;
     }
@@ -163,7 +230,8 @@ public class Game {
                 subCol + 1, numRows, numCols, auxOrigRow, auxOrigCol);
     }
 
-    private void fillMiniMap(int playerX, int playerY, String[][] miniMap, int row, int col) {
+    private void fillMiniMap(int playerX, int playerY, String[][] miniMap,
+            int row, int col) {
         if (row >= MAP_HEIGHT) {
             return;
         }
@@ -203,7 +271,8 @@ public class Game {
         if (head.getName().equals(name)) {
             return head.getPosition();
         }
-        ArrayList<Player> newPlayers = new ArrayList(Server.getGameInstance().players);
+        ArrayList<Player> newPlayers = new ArrayList(
+                Server.getGameInstance().players);
         newPlayers.remove(head);
         return getPlayerByName(name, newPlayers);
     }
@@ -233,7 +302,8 @@ public class Game {
         copyMapRecursively(GameMap.getMap(), mapClone, 0, 0);
     }
 
-    private void copyMapRecursively(String[][] original, String[][] clone, int row, int col) {
+    private void copyMapRecursively(String[][] original, String[][] clone,
+            int row, int col) {
         if (row >= original.length) {
             return;
         }

@@ -38,13 +38,12 @@ public class Server {
 
     public static void main(String[] args) {
         ServerSocket serverSocket = null;
-        Random random = new Random();
-        int MAX = 9;
-        int MIN = 0;
+    
+       
         try {
             serverSocket = new ServerSocket(8000);
             System.out.println("Server has started... waiting for players.");
-
+              Game.getInstance().spawnNpcsWithMissions(10);
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 DataInputStream input = new DataInputStream(
