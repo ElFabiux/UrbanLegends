@@ -82,10 +82,11 @@ public class Flow extends Thread {
                 game.updateMap(player, oldRow, oldCol);
                 if (command.equals("get")) {
                     output.writeUTF(response);
-                } else {
+                } else if(command.equals("npc")){
+                    output.writeUTF(game.getNpcs());
+                }else{
                     output.writeUTF(response);
                     output.writeUTF("Map:\n" + game.printMap());
-                    System.out.println(game.printMap());
                 }
 
                 output.flush();

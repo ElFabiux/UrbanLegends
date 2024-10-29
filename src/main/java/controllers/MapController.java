@@ -1,6 +1,8 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt 
+ * to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java 
+ * to edit this template
  */
 package controllers;
 
@@ -8,16 +10,32 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import game.Client;
+import game.ClientPlayer;
 import game.GameMap;
 import game.Tile;
+import game.Time;
+import game.TimeObserver;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
+import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import static javafx.scene.input.KeyCode.A;
+import static javafx.scene.input.KeyCode.D;
+import static javafx.scene.input.KeyCode.DOWN;
+import static javafx.scene.input.KeyCode.LEFT;
+import static javafx.scene.input.KeyCode.RIGHT;
+import static javafx.scene.input.KeyCode.S;
+import static javafx.scene.input.KeyCode.UP;
+import static javafx.scene.input.KeyCode.W;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 /**
  * FXML Controller class
@@ -28,51 +46,65 @@ import javafx.scene.layout.GridPane;
  *
  * Implements Initializable interface to handle the initialization process.
  *
- * @author igmml
+ *
+ * @author Ismael Marchena
+ * @author Jorge Rojas
+ * @author Fabian Arguedas
+ * @author Joxan Portilla
+ * @author Melani Barrantes
  */
-public class MapController implements Initializable {
+public class MapController implements Initializable, TimeObserver  {
 
-    @FXML
-    private AnchorPane playerView;
+    private static int HEIGHT = 30;
+    private int playerCol;
+    private int playerRow;
     private static int SIZE = 10;
     private static int WIDTH = 30;
-    private static int HEIGHT = 30;
-    @FXML
-    private Button btn;
-
-    private Tile[][] tileMatrix = new Tile[SIZE][SIZE];
-    @FXML
-    private static GridPane sceneGrid = new GridPane();
+    private ArrayList<ClientPlayer> nearPlayers = new ArrayList<>();
+    private static Client client;
+    private static String character;
     private static String[][] map;
     private static String[][] oldMap;
-    private static Client client;
-    private static MapController instance;
-
-    GameMap gameMap;
+    private GameMap gameMap;
     private ImageView playerIcon;
-    private static String character;
-    private int playerRow;
-    private int playerCol;
+    private static MapController instance;
+    private Tile[][] tileMatrix = new Tile[SIZE][SIZE];
+    @FXML
+    private AnchorPane playerView;
+    @FXML
+    private static GridPane sceneGrid = new GridPane();
+    private boolean isDaytime = true;
+    Time time;
 
     /**
-     * Initializes the controller class and add focus to the map for the player
-     * inputs.
+     * Adds all the near player to an arrayList
      *
-     * @param url for indicate the sourche searching 
-     * @param rb ResourceBundle
+     * @param character the character of each player
+     * @param row current row
+     * @param col current col
      */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        this.playerView.getChildren().add(sceneGrid);
-        MapController.sceneGrid.setFocusTraversable(true);
-        MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED, this::movePlayer);
-
-        playerIcon = new ImageView(getCharacterRoute());
-        updatePlayerPosition();
+    private void addNearPlayer(String character, int row, int col) {
+        String playerCharacter = character.substring(0, 1).toLowerCase();
+        ImageView icon = new ImageView(getCharacterRoute(character));
+        ClientPlayer clientPlayer = new ClientPlayer(col, row, icon);
+        instance.nearPlayers.add(clientPlayer);
     }
 
-    public String getCharacterRoute() {
-        switch (MapController.character) {
+    @Override
+    public void update(boolean isDaytime) {
+        Platform.runLater(() -> {
+            loadMap(gameMap.getCemeteryMap());
+        });
+    }
+
+    /**
+     * Gets the route of the image of the corresponding character
+     *
+     * @param character the character to be search
+     * @return url of the image of the character
+     */
+    public String getCharacterRoute(String character) {
+        switch (character) {
             case "Researcher":
                 return "/Characters/7_1.png";
             case "Hunter":
@@ -101,14 +133,38 @@ public class MapController implements Initializable {
         return null;
     }
 
-    
-    private void updatePlayerPosition() {
-        sceneGrid.getChildren().remove(playerIcon);
-        playerIcon = new ImageView(getCharacterRoute());
-        sceneGrid.add(playerIcon, instance.playerCol, instance.playerRow);
-        playerIcon.toFront();
+    /**
+     * Initializes the controller class and add focus to the map for the player
+     * inputs.
+     *
+     * @param url Indicates the search source
+     * @param rb ResourceBundle
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        this.playerView.getChildren().add(sceneGrid);
+        MapController.sceneGrid.setFocusTraversable(true);
+        MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED,
+                this::movePlayer);
     }
+    //    @Override
+//    public void initialize(URL url, ResourceBundle rb) {
+//        this.playerView.getChildren().add(sceneGrid);
+//        MapController.sceneGrid.setFocusTraversable(true);
+//        MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED, this::movePlayer);
+//        
+//        time = new Time();
+//        gameMap = new GameMap(time);
+//        gameMap.loadTileMatrix();
+//        time.addObserver(this);
+//        time.startTime();
+//        loadMap(gameMap.getCemeteryMap());
+//    }
+    
 
+    /**
+     * Initialize all the constanst
+     */
     private static void initializeConstanst() {
         if (MapController.sceneGrid == null) {
             MapController.sceneGrid = new GridPane();
@@ -119,129 +175,8 @@ public class MapController implements Initializable {
         if (MapController.instance.gameMap == null) {
             MapController.instance.gameMap = new GameMap();
         }
-    }
-
-    public static void setClient(Client client, String character) {
-        MapController.client = client;
-        MapController.character = character;
-        initializeConstanst();
-        startMap();
-
-    }
-
-    private static void startMap() {
-        MapController.map = client.getMap();
         if (instance == null) {
             instance = new MapController();
-        }
-        instance.tileMatrix
-                = instance.gameMap.createTileMatrix(MapController.map,
-                        instance.tileMatrix);
-        instance.loadMap(instance.tileMatrix);
-    }
-
-    public static void requestRender(String[][] newMap) {
-        MapController.oldMap = MapController.map;
-        MapController.map = newMap;
-        instance.searchrPlayerLocation(0, 0, MapController.map);
-        System.out.println("row: " + instance.playerRow);
-        System.out.println("col: " + instance.playerCol);
-        instance.render(0, 0, MapController.map);
-        instance.tileMatrix
-                = instance.gameMap.createTileMatrix(MapController.map,
-                        instance.tileMatrix);
-        instance.loadMapRecursively(instance.tileMatrix, 0, 0);
-
-    }
-
-    private void renderPlayers(String character, int row, int col) {
-        switch (character) {
-            case "r":
-                MapController.character = "Researcher";
-                break;
-            case "w":
-                MapController.character = "Witch";
-                break;
-            case "h":
-                MapController.character = "Hunter";
-                break;
-            default:
-                break;
-        }
-        instance.playerRow = row;
-        instance.playerCol = col;
-        updatePlayerPosition();
-    }
-
-    private void searchrPlayerLocation(int row, int col, String[][] newMap) {
-        if (col >= SIZE) {
-            return;
-        }
-        if (newMap[row][col].equals("r") || newMap[row][col].equals("w") || 
-                newMap[row][col].equals("h")) {
-            renderPlayers(newMap[row][col], row, col);
-        }
-        if (row < SIZE - 1) {
-            searchrPlayerLocation(row + 1, col, newMap);
-        } else {
-            searchrPlayerLocation(0, col + 1, newMap);
-        }
-    }
-
-    private void render(int row, int col, String[][] newMap) {
-        //1. Recorrer el nuevo mapa
-        //2. Verificar si hay algo diferente del mapa anterior
-        //3. Cambiar lo que haya cambiado
-        //4. Renderizar el nuevo mapa
-        if (col >= SIZE) {
-            return;
-        }
-        if (!newMap[row][col].equals(MapController.oldMap[row][col])) {
-            tileMatrix[row][col] = gameMap.createTile(newMap[row][col]);
-            MapController.oldMap[row][col] = newMap[row][col];
-        }
-        if (row < SIZE - 1) {
-            render(row + 1, col, newMap);
-        } else {
-            render(0, col + 1, newMap);
-        }
-    }
-
-    /**
-     * Handles the action of the render button. Generates a random 2D array for
-     * the player view and calls the render method.
-     *
-     * @param event The ActionEvent triggered by pressing the button.
-     */
-    @FXML
-    private void movePlayer(KeyEvent event) {
-        if (event.getEventType() == KeyEvent.KEY_PRESSED) {
-            String[][] newMap = null;
-            switch (event.getCode()) {
-                case UP:
-                case W:
-                    newMap = MapController.client.listenForCommands("up");
-                    break;
-                case DOWN:
-                case S:
-                    newMap = MapController.client.listenForCommands("down");
-                    break;
-                case LEFT:
-                case A:
-                    newMap = MapController.client.listenForCommands("left");
-                    break;
-                case RIGHT:
-                case D:
-                    newMap = MapController.client.listenForCommands("right");
-                    break;
-                default:
-                    break;
-            }
-            if (newMap != null) {
-                requestRender(newMap);
-                updatePlayerPosition();
-            }
-
         }
     }
 
@@ -273,10 +208,199 @@ public class MapController implements Initializable {
             loadMapRecursively(tileMatrix, row + 1, 0);
             return;
         }
-        ImageView image = (ImageView) getNodeFromGridPane(MapController.sceneGrid, row, col);
+        ImageView image
+                = (ImageView) getNodeFromGridPane(MapController.sceneGrid,
+                        row, col);
         if (image == null || !image.equals(tileMatrix[row][col].getImageView())) {
             sceneGrid.add(tileMatrix[row][col].getImageView(), col, row);
         }
         loadMapRecursively(tileMatrix, row, col + 1);
+    }
+
+    /**
+     * Handles the action of the render button. Generates a random 2D array for
+     * the player view and calls the request render method.
+     *
+     * @param event The ActionEvent triggered by pressing the button.
+     */
+    @FXML
+    private void movePlayer(KeyEvent event) {
+        if (event.getEventType() == KeyEvent.KEY_PRESSED) {
+            System.out.println("npc: ");
+            System.out.println(MapController.client.getNpcs("npc"));
+            String[][] newMap = null;
+            switch (event.getCode()) {
+                case UP:
+                case W:
+                    newMap = MapController.client.listenForCommands("up");
+                    break;
+                case DOWN:
+                case S:
+                    newMap = MapController.client.listenForCommands("down");
+                    break;
+                case LEFT:
+                case A:
+                    newMap = MapController.client.listenForCommands("left");
+                    break;
+                case RIGHT:
+                case D:
+                    newMap = MapController.client.listenForCommands("right");
+                    break;
+                default:
+                    break;
+            }
+            if (newMap != null) {
+                requestRender(newMap);
+            }
+
+        }
+    }
+
+    /**
+     * Update the old map of the client
+     *
+     * @param row current row
+     * @param col current col
+     * @param newMap updated map
+     */
+    private void render(int row, int col, String[][] newMap) {
+        if (col >= SIZE) {
+            return;
+        }
+        if (!newMap[row][col].equals(MapController.oldMap[row][col])) {
+            MapController.oldMap[row][col] = newMap[row][col];
+        }
+        if (row < SIZE - 1) {
+            render(row + 1, col, newMap);
+        } else {
+            render(0, col + 1, newMap);
+        }
+    }
+
+    /**
+     * Render the corresponding character in the view depending of the
+     * MapController.character
+     *
+     * @param character the char that identifies the character
+     * @param row row of the character
+     * @param col column of the character
+     */
+    private void renderPlayers(String character, int row, int col) {
+        switch (character) {
+            case "r":
+                addNearPlayer("Researcher", row, col);
+                break;
+            case "w":
+                addNearPlayer("Witch", row, col);
+                break;
+            case "h":
+                addNearPlayer("Hunter", row, col);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Render all the near players
+     * 
+     * @param nearPlayers arrayList of near players
+     * @param head the current near player
+     */
+    private void renderPlayers(ArrayList<ClientPlayer> nearPlayers){
+        if(nearPlayers.isEmpty()){
+            return;
+        }
+        ClientPlayer currentPlayer = nearPlayers.get(0);
+        updatePlayerPosition(currentPlayer);
+        nearPlayers.remove(0);
+        renderPlayers(nearPlayers);
+    }
+
+    /**
+     * Render the visible players
+     * 
+     * @param map current map
+     */
+    private void renderVisiblePlayers(String[][] map) {
+        instance.nearPlayers.clear();
+        searchVisiblePlayers(0, 0, MapController.map);
+        renderPlayers(instance.nearPlayers);
+    }
+
+    /**
+     * Request a render for the client
+     *
+     * @param newMap updated map
+     */
+    public static void requestRender(String[][] newMap) {
+        MapController.oldMap = MapController.map;
+        MapController.map = newMap;
+        instance.render(0, 0, MapController.map);
+        instance.tileMatrix
+                = instance.gameMap.createTileMatrix(MapController.map,
+                        instance.tileMatrix);
+        instance.loadMapRecursively(instance.tileMatrix, 0, 0);
+        instance.renderVisiblePlayers(MapController.map);
+    }
+
+    /**
+     * Search the ubication of the player in the view map
+     *
+     * @param row current row
+     * @param col current column
+     * @param newMap updated map
+     */
+    private void searchVisiblePlayers(int row, int col, String[][] newMap) {
+        if (col >= SIZE) {
+            return;
+        }
+        if (newMap[row][col].equals("r") || newMap[row][col].equals("w")
+                || newMap[row][col].equals("h")) {
+            renderPlayers(newMap[row][col], row, col);
+        }
+        if (row < SIZE - 1) {
+            searchVisiblePlayers(row + 1, col, newMap);
+        } else {
+            searchVisiblePlayers(0, col + 1, newMap);
+        }
+    }
+
+    /**
+     * Save the current client to be use and the identification for the
+     * character
+     *
+     * @param client client fromt the server
+     * @param character char that identificates the player in the map
+     */
+    public static void setClient(Client client, String character) {
+        MapController.client = client;
+        MapController.character = character;
+        initializeConstanst();
+        startMap();
+
+    }
+
+    /**
+     * Obtains the map from the server and load the map
+     */
+    private static void startMap() {
+        MapController.map = client.getMap();
+        instance.tileMatrix
+                = instance.gameMap.createTileMatrix(MapController.map,
+                        instance.tileMatrix);
+        instance.loadMap(instance.tileMatrix);
+    }
+
+    /**
+     * Update the view of the player
+     */
+    private void updatePlayerPosition(ClientPlayer clientPlayer) {
+        if (sceneGrid.getChildren().contains(clientPlayer.getIcon())) {
+            sceneGrid.getChildren().remove(clientPlayer.getIcon());
+        }
+        sceneGrid.add(clientPlayer.getIcon(), clientPlayer.getCol(), 
+                clientPlayer.getRow());
+        clientPlayer.getIcon().toFront();
     }
 }
