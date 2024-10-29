@@ -99,7 +99,6 @@ public class Time {
         return String.format("%02d:%02d", minutes, seconds);
     }
     
-    //Para Observer................................
     public void addObserver(TimeObserver observer) {
         observers.add(observer);
     }

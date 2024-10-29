@@ -10,7 +10,7 @@ import playableCharacters.Character;
  *
  * @author jorge
  */
-public abstract class Legend {
+public abstract class Legend implements LegendFactory{
 
     private String name;
     private int positionX;

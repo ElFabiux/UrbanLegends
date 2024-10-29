@@ -9,15 +9,17 @@ package playableCharacters;
  * @author joxan
  */
 public class Hunter extends Character {
-    
-    
-    
 
     public Hunter(String name, int energy, int mentalHealth, int superstition) {
         super(name, energy, mentalHealth, superstition);
     }
 
     public Hunter() {
+    }
+
+    @Override
+    public Character createCharacter() {
+        return new Hunter("Hunter", 100, 80, 50);
     }
 
 }

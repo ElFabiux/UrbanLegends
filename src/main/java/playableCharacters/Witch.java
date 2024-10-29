@@ -4,8 +4,6 @@
  */
 package playableCharacters;
 
-
-
 /**
  *
  * @author joxan
@@ -17,6 +15,11 @@ public class Witch extends Character {
     }
 
     public Witch() {
+    }
+
+    @Override
+    public Character createCharacter() {
+        return new Witch("Witch", 80, 90, 70);
     }
 
 }

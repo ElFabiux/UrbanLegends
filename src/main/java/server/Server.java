@@ -1,54 +1,70 @@
- 
 package server;
-
-import game.Game;
-import game.Player;
-import playableCharacters.Witch;
-import playableCharacters.Character;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Random;
+
+import game.Game;
+import game.Player;
+import playableCharacters.Character;
+import playableCharacters.Witch;
 
 /**
+ * The {@code Server} class initializes the game server, allowing clients
+ * (players) to connect, create their character, and join the game.
+ *
+ * The server listens for incoming player connections on a specified port
+ * (8000). For each new connection:
+ * <ul>
+ * <li>It reads the player's name from the input stream.</li>
+ * <li>Initializes a {@code Player} instance with the character and adds it to
+ * the game.</li>
+ * <li>Creates a new {@code Flow} thread to handle the player's actions.</li>
+ * </ul>
+ *
+ * The server runs indefinitely, accepting new connections and processing
+ * actions for each player.
  *
  * @author joxan
  */
 public class Server {
 
+    public static Game getGameInstance() {
+        return Game.getInstance();
+    }
+
     public static void main(String[] args) {
         ServerSocket serverSocket = null;
+    
+       
         try {
-            serverSocket = new ServerSocket(8000); 
+            serverSocket = new ServerSocket(8000);
             System.out.println("Server has started... waiting for players.");
-
-            Game game = Game.getInstance();  
-
+              Game.getInstance().spawnNpcsWithMissions(10);
             while (true) {
-                Socket clientSocket = serverSocket.accept();  
+                Socket clientSocket = serverSocket.accept();
                 DataInputStream input = new DataInputStream(
-                        new BufferedInputStream(clientSocket.getInputStream()));
+                        new BufferedInputStream(clientSocket.
+                                getInputStream()));
 
-                
-                String playerName = input.readUTF();
+                String response = input.readUTF();
+                String[] data = response.split(",");
+                String playerName = data[0];
+                String characterName = data[1];
                 System.out.println("Connection accepted from: " + playerName);
 
-              
-                Character character = new Witch(playerName, 100,
+                Character character = new Witch(characterName, 100,
                         100, 0);
-
-               
-                Player player = new Player(playerName, 
+                Player player = new Player(playerName,
                         clientSocket.getInetAddress().getHostAddress(),
-                        0,1, character);
+                        0, 0, character);
 
-             
-                game.addPlayer(player, 1, 0);
+                Game.getInstance().addPlayer(player, 4, 4);
 
-              
-                Flow flow = new Flow(clientSocket, player, game);
+                Flow flow = new Flow(clientSocket, player, Game.getInstance());
                 flow.start();
             }
         } catch (IOException e) {

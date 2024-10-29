@@ -16,10 +16,14 @@ public class Llorona extends Legend {
         super(name, positionX, positionY);
     }
 
-
     @Override
     public void attack(Character character) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Legend createLegend() {
+        return new Llorona("maricona", 7, 9);
     }
 
 }
