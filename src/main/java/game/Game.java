@@ -23,10 +23,10 @@ public class Game {
 
     private static Game instance;
 
-    private ArrayList<Player> players = new ArrayList<>();
-    private ArrayList<Npc> npcs = new ArrayList<>();
     private final int MAP_WIDTH = 10;
     private final int MAP_HEIGHT = 10;
+    private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Npc> npcs = new ArrayList<>();
     private String[][] map = new String[MAP_HEIGHT][MAP_WIDTH];
     private String[][] mapClone;
 
@@ -38,14 +38,9 @@ public class Game {
     }
 
     /**
-<<<<<<< HEAD
-     *
-     * @return
-=======
      * Get the map clone
      *
      * @return mapClone
->>>>>>> yzma
      */
     public String[][] getMapClone() {
         return mapClone;
@@ -193,8 +188,8 @@ public class Game {
      */
     public String getPlayersPosition() {
         String positions = "";
-        ArrayList<Player> playersCopy = 
-                (ArrayList<Player>) Game.instance.players.clone();
+        ArrayList<Player> playersCopy
+                = (ArrayList<Player>) Game.instance.players.clone();
         createStringForPlayerPositions(playersCopy,
                 playersCopy.get(0), positions);
         return positions;
@@ -215,6 +210,33 @@ public class Game {
     }
 
     /**
+     * Generate a string with the data of the npcs
+     *
+     * @param npcs arraylist of npcs
+     * @param response the data
+     */
+    private void generateNpcString(ArrayList<Npc> npcs, String response) {
+        if (npcs.isEmpty()) {
+            return;
+        }
+        Npc npc = npcs.get(0);
+        npcs.remove(0);
+        response = ";" + response + npc.toString();
+        generateNpcString(npcs, response);
+    }
+
+    /**
+     * Gets all the npcs
+     *
+     * @return a string with the npcs data
+     */
+    public String getNpcs() {
+        String response = "";
+        generateNpcString(this.npcs, response);
+        return response;
+    }
+
+    /**
      * Print a matrix
      *
      * @param matrix to be print
@@ -223,6 +245,13 @@ public class Game {
         printMatrix(matrix, 0, 0);
     }
 
+    /**
+     * Print a matrix
+     *
+     * @param matrix matrix to be print
+     * @param i current i
+     * @param j current j
+     */
     private static void printMatrix(String[][] matrix, int i, int j) {
         if (i >= matrix.length) {
             return;
@@ -239,7 +268,7 @@ public class Game {
 
     /**
      * Adjust the rows for always maintain a 10x10 matrix.
-     * 
+     *
      * @param startRow start row.
      * @param endRow end row.
      * @param rows amount of rows.
@@ -255,14 +284,15 @@ public class Game {
         }
         return new int[]{startRow, endRow};
     }
-    
-/**
- * Adjust the columns for always maintain a 10x10 matrix.
- * @param startCol start column.
- * @param endCol end column.
- * @param cols amount of columns.
- * @return the new start column and the end column.
- */
+
+    /**
+     * Adjust the columns for always maintain a 10x10 matrix.
+     *
+     * @param startCol start column.
+     * @param endCol end column.
+     * @param cols amount of columns.
+     * @return the new start column and the end column.
+     */
     private static int[] adjustColLimits(int startCol, int endCol, int cols) {
         if (endCol - startCol < 10) {
             if (endCol == cols) {
@@ -276,14 +306,14 @@ public class Game {
 
     /**
      * Extract a submatrix from the map clone
-     * 
+     *
      * @param originalMatrix original matrix
      * @param targetRow target row
      * @param targetCol target column
      * @param size the size of the submatrix
      * @return the submatrix
      */
-    public static String[][] extractSubmatrix(String[][] originalMatrix, 
+    public static String[][] extractSubmatrix(String[][] originalMatrix,
             int targetRow, int targetCol, int size) {
         int rows = originalMatrix.length;
         int cols = originalMatrix[0].length;
@@ -295,20 +325,6 @@ public class Game {
         int endRow = Math.min(startRow + size, rows);
         int endCol = Math.min(startCol + size, cols);
 
-        if (endRow - startRow < 10) {
-            if (endRow == rows) {
-                startRow = Math.max(0, endRow - 10);
-            } else {
-                endRow = Math.min(rows, startRow + 10);
-            }
-        }
-        if (endCol - startCol < 10) {
-            if (endCol == cols) {
-                startCol = Math.max(0, endCol - 10);
-            } else {
-                endCol = Math.min(cols, startCol + 10);
-            }
-        }
         int[] adjustedRows = adjustRowLimits(startRow, endRow, rows);
         int[] adjustedCols = adjustColLimits(startCol, endCol, cols);
         startRow = adjustedRows[0];
@@ -317,7 +333,7 @@ public class Game {
         endCol = adjustedCols[1];
 
         String[][] submatrix = new String[endRow - startRow][endCol - startCol];
-        fillSubmatrix(originalMatrix, submatrix, startRow, startCol, 0, 0, 
+        fillSubmatrix(originalMatrix, submatrix, startRow, startCol, 0, 0,
                 endRow - startRow, endCol - startCol, startRow, startCol);
 
         return submatrix;
@@ -325,7 +341,7 @@ public class Game {
 
     /**
      * Fill the submatrix with the values from the original matrix
-     * 
+     *
      * @param original original matrix
      * @param submatrix sub matrix
      * @param origRow original row
@@ -357,14 +373,14 @@ public class Game {
 
     /**
      * Fill the mini map.
-     * 
+     *
      * @param playerX player x position.
      * @param playerY player y position.
      * @param miniMap the minimap.
      * @param row current row.
      * @param col current column.
      */
-    private void fillMiniMap(int playerX, int playerY, String[][] miniMap, 
+    private void fillMiniMap(int playerX, int playerY, String[][] miniMap,
             int row, int col) {
         if (row >= MAP_HEIGHT) {
             return;
@@ -395,7 +411,7 @@ public class Game {
 
     /**
      * Get a player by its name.
-     * 
+     *
      * @param name the player name.
      * @param players the list of players.
      * @return the search player.
@@ -417,26 +433,34 @@ public class Game {
         newPlayers.remove(head);
         return getPlayerByName(name, newPlayers);
     }
-    
-/**
- * Ge a player by searching it by its name.
- * 
- * @param name of the player to be search.
- * @return the player.
- */
+
+    /**
+     * Ge a player by searching it by its name.
+     *
+     * @param name of the player to be search.
+     * @return the player.
+     */
     public String getPlayer(String name) {
         return getPlayerByName(name, Server.getGameInstance().players);
     }
 
     /**
      * Print a map in console
-     * 
+     *
      * @return the print map
      */
     public String printMap() {
         return printMapHelper(0, 0, new StringBuilder());
     }
 
+    /**
+     * Help to print the map recursivily
+     *
+     * @param row current row
+     * @param col current column
+     * @param sb StringBuilder
+     * @return the map
+     */
     private String printMapHelper(int row, int col, StringBuilder sb) {
         if (row >= map.length) {
             return sb.toString();
@@ -449,11 +473,22 @@ public class Game {
         return printMapHelper(row, col + 1, sb);
     }
 
+    /**
+     * Initialize the map clone
+     */
     private void initializeMap() {
         this.mapClone = new String[36][36];
         copyMapRecursively(GameMap.getMap(), mapClone, 0, 0);
     }
 
+    /**
+     * Copy the original map to the clone
+     *
+     * @param original original map
+     * @param clone clone map
+     * @param row current row
+     * @param col current column
+     */
     private void copyMapRecursively(String[][] original, String[][] clone,
             int row, int col) {
         if (row >= original.length) {

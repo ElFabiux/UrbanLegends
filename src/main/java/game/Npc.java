@@ -67,6 +67,17 @@ public class Npc {
     public int getPositionY() {
         return positionY;
     }
+    /**
+     * Transfer the data of the npc to a string
+     * @return the data
+     */
+    @Override
+    public String toString() {
+        return "Npc{" + "positionX=" + positionX + ", positionY=" + positionY 
+                + ", mission=" + mission.toString() + ", name=" + name + '}';
+    }
+    
+    
 
       
 }
