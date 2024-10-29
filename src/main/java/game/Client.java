@@ -71,7 +71,8 @@ public class Client {
      * @param columns the array of columns
      * @param currentColumn current column
      */
-    private void fillMapColumns(int currentLine, String[] columns, int currentColumn) {
+    private void fillMapColumns(int currentLine, String[] columns, 
+            int currentColumn) {
         if (currentColumn >= MAP_WIDTH) {
             return;
         }
