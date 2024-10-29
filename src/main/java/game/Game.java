@@ -1,7 +1,6 @@
 package game;
 
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -9,8 +8,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 
-=======
->>>>>>> yzma
 import server.Server;
 
 /**
@@ -24,18 +21,12 @@ import server.Server;
  */
 public class Game {
 
-<<<<<<< HEAD
     private static Game instance;
 
     private ArrayList<Player> players = new ArrayList<>();
     private ArrayList<Npc> npcs = new ArrayList<>();
     private final int MAP_WIDTH = 10;
-=======
->>>>>>> yzma
     private final int MAP_HEIGHT = 10;
-    private final int MAP_WIDTH = 10;
-    private ArrayList<Player> players = new ArrayList<>();
-    private static Game instance;
     private String[][] map = new String[MAP_HEIGHT][MAP_WIDTH];
     private String[][] mapClone;
 
@@ -87,7 +78,6 @@ public class Game {
         }
     }
 
-<<<<<<< HEAD
     public void spawnNpcsWithMissions(int npcCount) {
         List<Mission> missions = Mission.loadMissions();
         Random random = new Random();
@@ -145,7 +135,6 @@ public class Game {
         return Math.abs(x1 - x2) <= 1 && Math.abs(y1 - y2) <= 1;
     }
 
-=======
     /**
      * Verified if its a valid position
      *
@@ -153,7 +142,6 @@ public class Game {
      * @param y current y of the player
      * @return if its valid or not
      */
->>>>>>> yzma
     public boolean isValidPosition(int x, int y) {
         return (x >= 0 && x < MAP_WIDTH && y >= 0 && y < MAP_HEIGHT);
     }
@@ -180,8 +168,6 @@ public class Game {
                 player.getPositionX(), 10);
     }
 
-<<<<<<< HEAD
-=======
     /**
      * Creates a string for the players postitions
      *
@@ -189,7 +175,6 @@ public class Game {
      * @param head the current player
      * @param positions the string with the positions
      */
->>>>>>> yzma
     private void createStringForPlayerPositions(ArrayList<Player> players,
             Player head, String positions) {
         positions = positions + ";" + head.getPosition();
@@ -208,19 +193,10 @@ public class Game {
      */
     public String getPlayersPosition() {
         String positions = "";
-<<<<<<< HEAD
         ArrayList<Player> playersCopy = 
                 (ArrayList<Player>) Game.instance.players.clone();
         createStringForPlayerPositions(playersCopy,
                 playersCopy.get(0), positions);
-        return positions;
-    }
-
-=======
-        ArrayList<Player> playersCopy
-                = (ArrayList<Player>) Game.instance.players.clone();
-        createStringForPlayerPositions(playersCopy, playersCopy.get(0),
-                positions);
         return positions;
     }
 
@@ -231,7 +207,6 @@ public class Game {
      * @param playerY player position y
      * @return the mini map
      */
->>>>>>> yzma
     private String[][] getMiniMap(int playerX, int playerY) {
         String[][] miniMap = new String[MAP_HEIGHT][MAP_WIDTH];
         fillMiniMap(playerX, playerY, miniMap, 0, 0);
@@ -299,9 +274,6 @@ public class Game {
         return new int[]{startCol, endCol};
     }
 
-<<<<<<< HEAD
-    public static String[][] extractSubmatrix(String[][] originalMatrix,
-=======
     /**
      * Extract a submatrix from the map clone
      * 
@@ -312,7 +284,6 @@ public class Game {
      * @return the submatrix
      */
     public static String[][] extractSubmatrix(String[][] originalMatrix, 
->>>>>>> yzma
             int targetRow, int targetCol, int size) {
         int rows = originalMatrix.length;
         int cols = originalMatrix[0].length;
@@ -324,7 +295,6 @@ public class Game {
         int endRow = Math.min(startRow + size, rows);
         int endCol = Math.min(startCol + size, cols);
 
-<<<<<<< HEAD
         if (endRow - startRow < 10) {
             if (endRow == rows) {
                 startRow = Math.max(0, endRow - 10);
@@ -339,12 +309,6 @@ public class Game {
                 endCol = Math.min(cols, startCol + 10);
             }
         }
-
-        String[][] submatrix = new String[endRow - startRow][endCol - startCol];
-        fillSubmatrix(originalMatrix, submatrix, startRow,
-                startCol, 0, 0, endRow - startRow,
-                endCol - startCol, startRow, startCol);
-=======
         int[] adjustedRows = adjustRowLimits(startRow, endRow, rows);
         int[] adjustedCols = adjustColLimits(startCol, endCol, cols);
         startRow = adjustedRows[0];
@@ -355,7 +319,6 @@ public class Game {
         String[][] submatrix = new String[endRow - startRow][endCol - startCol];
         fillSubmatrix(originalMatrix, submatrix, startRow, startCol, 0, 0, 
                 endRow - startRow, endCol - startCol, startRow, startCol);
->>>>>>> yzma
 
         return submatrix;
     }
@@ -392,9 +355,6 @@ public class Game {
                 subCol + 1, numRows, numCols, auxOrigRow, auxOrigCol);
     }
 
-<<<<<<< HEAD
-    private void fillMiniMap(int playerX, int playerY, String[][] miniMap,
-=======
     /**
      * Fill the mini map.
      * 
@@ -405,7 +365,6 @@ public class Game {
      * @param col current column.
      */
     private void fillMiniMap(int playerX, int playerY, String[][] miniMap, 
->>>>>>> yzma
             int row, int col) {
         if (row >= MAP_HEIGHT) {
             return;
