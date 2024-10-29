@@ -36,6 +36,8 @@ public class Client {
     // Método para conectar al servidor
     private void connectToServer(String host, int port) {
         try {
+//            host = "192.168.27.159";
+//            port = 8000;
             socket = new Socket(host, port);
             output = new DataOutputStream(socket.getOutputStream());
             input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));

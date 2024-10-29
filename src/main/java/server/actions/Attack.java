@@ -32,10 +32,10 @@ public class Attack implements Command {
      * 
      * If the player's energy is less than 5, the attack fails.
      * 
-     * @param player the player who performs the attack
+     * @param player the player who performs the attack.
      * @param game the game instance where the action is performed
      * @return a message indicating whether the attack was successful or failed,
-     * along with the player's updated stats
+     * along with the player's updated stats.
      */
     @Override
     public String execute(Player player, Game game) {

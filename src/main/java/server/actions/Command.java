@@ -22,9 +22,9 @@ public interface Command {
     /**
      * Executes a command based on the player's input.
      * 
-     * @param player the player performing the action
-     * @param game the game instance where the action takes place
-     * @return a string message indicating the result of the command
+     * @param player the player performing the action.
+     * @param game the game instance where the action takes place.
+     * @return a string message indicating the result of the command.
      */
     String execute(Player player, Game game);
 }
