@@ -68,5 +68,13 @@ public class Npc {
         return positionY;
     }
 
+    @Override
+    public String toString() {
+        return "Npc{" + "positionX=" + positionX + ", positionY=" + positionY 
+                + ", mission=" + mission.toString() + ", name=" + name + '}';
+    }
+    
+    
+
       
 }

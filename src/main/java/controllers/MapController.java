@@ -10,8 +10,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import game.Client;
+import game.ClientPlayer;
 import game.GameMap;
 import game.Tile;
+import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -28,6 +30,7 @@ import static javafx.scene.input.KeyCode.W;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 /**
  * FXML Controller class
@@ -48,32 +51,46 @@ import javafx.scene.layout.GridPane;
 public class MapController implements Initializable {
 
     private static int HEIGHT = 30;
-    private static int SIZE = 10;
-    private static int WIDTH = 30;
     private int playerCol;
     private int playerRow;
+    private static int SIZE = 10;
+    private static int WIDTH = 30;
+    private ArrayList<ClientPlayer> nearPlayers = new ArrayList<>();
+    private static Client client;
     private static String character;
     private static String[][] map;
     private static String[][] oldMap;
-    @FXML
-    private AnchorPane playerView;
-    @FXML
-    private Button btn;
-    @FXML
-    private static GridPane sceneGrid = new GridPane();
-    private static Client client;
-    GameMap gameMap;
+    private GameMap gameMap;
     private ImageView playerIcon;
     private static MapController instance;
     private Tile[][] tileMatrix = new Tile[SIZE][SIZE];
+    @FXML
+    private AnchorPane playerView;
+    @FXML
+    private static GridPane sceneGrid = new GridPane();
+
+    /**
+     * Adds all the near player to an arrayList
+     *
+     * @param character the character of each player
+     * @param row current row
+     * @param col current col
+     */
+    private void addNearPlayer(String character, int row, int col) {
+        String playerCharacter = character.substring(0, 1).toLowerCase();
+        ImageView icon = new ImageView(getCharacterRoute(character));
+        ClientPlayer clientPlayer = new ClientPlayer(col, row, icon);
+        instance.nearPlayers.add(clientPlayer);
+    }
 
     /**
      * Gets the route of the image of the corresponding character
      *
+     * @param character the character to be search
      * @return url of the image of the character
      */
-    public String getCharacterRoute() {
-        switch (MapController.character) {
+    public String getCharacterRoute(String character) {
+        switch (character) {
             case "Researcher":
                 return "/Characters/7_1.png";
             case "Hunter":
@@ -84,7 +101,7 @@ public class MapController implements Initializable {
                 throw new AssertionError();
         }
     }
-    
+
     /**
      * Obtains the node from the gridPane
      *
@@ -101,7 +118,7 @@ public class MapController implements Initializable {
         }
         return null;
     }
-    
+
     /**
      * Initializes the controller class and add focus to the map for the player
      * inputs.
@@ -115,10 +132,8 @@ public class MapController implements Initializable {
         MapController.sceneGrid.setFocusTraversable(true);
         MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED,
                 this::movePlayer);
-        playerIcon = new ImageView(getCharacterRoute());
-        updatePlayerPosition();
     }
-    
+
     /**
      * Initialize all the constanst
      */
@@ -165,17 +180,16 @@ public class MapController implements Initializable {
             loadMapRecursively(tileMatrix, row + 1, 0);
             return;
         }
-        ImageView image = 
-                (ImageView) getNodeFromGridPane(MapController.sceneGrid, 
+        ImageView image
+                = (ImageView) getNodeFromGridPane(MapController.sceneGrid,
                         row, col);
-        if (image == null || !image.equals(tileMatrix[row][col].getImageView()))
-        {
+        if (image == null || !image.equals(tileMatrix[row][col].getImageView())) {
             sceneGrid.add(tileMatrix[row][col].getImageView(), col, row);
         }
         loadMapRecursively(tileMatrix, row, col + 1);
     }
 
-     /**
+    /**
      * Handles the action of the render button. Generates a random 2D array for
      * the player view and calls the request render method.
      *
@@ -184,6 +198,8 @@ public class MapController implements Initializable {
     @FXML
     private void movePlayer(KeyEvent event) {
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
+            System.out.println("npc: ");
+            System.out.println(MapController.client.getNpcs("npc"));
             String[][] newMap = null;
             switch (event.getCode()) {
                 case UP:
@@ -207,12 +223,11 @@ public class MapController implements Initializable {
             }
             if (newMap != null) {
                 requestRender(newMap);
-                updatePlayerPosition();
             }
 
         }
     }
-    
+
     /**
      * Update the old map of the client
      *
@@ -225,7 +240,6 @@ public class MapController implements Initializable {
             return;
         }
         if (!newMap[row][col].equals(MapController.oldMap[row][col])) {
-            tileMatrix[row][col] = gameMap.createTile(newMap[row][col]);
             MapController.oldMap[row][col] = newMap[row][col];
         }
         if (row < SIZE - 1) {
@@ -234,7 +248,7 @@ public class MapController implements Initializable {
             render(0, col + 1, newMap);
         }
     }
-    
+
     /**
      * Render the corresponding character in the view depending of the
      * MapController.character
@@ -246,22 +260,46 @@ public class MapController implements Initializable {
     private void renderPlayers(String character, int row, int col) {
         switch (character) {
             case "r":
-                MapController.character = "Researcher";
+                addNearPlayer("Researcher", row, col);
                 break;
             case "w":
-                MapController.character = "Witch";
+                addNearPlayer("Witch", row, col);
                 break;
             case "h":
-                MapController.character = "Hunter";
+                addNearPlayer("Hunter", row, col);
                 break;
             default:
                 break;
         }
-        instance.playerRow = row;
-        instance.playerCol = col;
-        updatePlayerPosition();
     }
-    
+
+    /**
+     * Render all the near players
+     * 
+     * @param nearPlayers arrayList of near players
+     * @param head the current near player
+     */
+    private void renderPlayers(ArrayList<ClientPlayer> nearPlayers){
+        if(nearPlayers.isEmpty()){
+            return;
+        }
+        ClientPlayer currentPlayer = nearPlayers.get(0);
+        updatePlayerPosition(currentPlayer);
+        nearPlayers.remove(0);
+        renderPlayers(nearPlayers);
+    }
+
+    /**
+     * Render the visible players
+     * 
+     * @param map current map
+     */
+    private void renderVisiblePlayers(String[][] map) {
+        instance.nearPlayers.clear();
+        searchVisiblePlayers(0, 0, MapController.map);
+        renderPlayers(instance.nearPlayers);
+    }
+
     /**
      * Request a render for the client
      *
@@ -270,17 +308,14 @@ public class MapController implements Initializable {
     public static void requestRender(String[][] newMap) {
         MapController.oldMap = MapController.map;
         MapController.map = newMap;
-        instance.searchPlayerLocation(0, 0, MapController.map);
-        System.out.println("row: " + instance.playerRow);
-        System.out.println("col: " + instance.playerCol);
         instance.render(0, 0, MapController.map);
         instance.tileMatrix
                 = instance.gameMap.createTileMatrix(MapController.map,
                         instance.tileMatrix);
         instance.loadMapRecursively(instance.tileMatrix, 0, 0);
-
+        instance.renderVisiblePlayers(MapController.map);
     }
-    
+
     /**
      * Search the ubication of the player in the view map
      *
@@ -288,7 +323,7 @@ public class MapController implements Initializable {
      * @param col current column
      * @param newMap updated map
      */
-    private void searchPlayerLocation(int row, int col, String[][] newMap) {
+    private void searchVisiblePlayers(int row, int col, String[][] newMap) {
         if (col >= SIZE) {
             return;
         }
@@ -297,12 +332,12 @@ public class MapController implements Initializable {
             renderPlayers(newMap[row][col], row, col);
         }
         if (row < SIZE - 1) {
-            searchPlayerLocation(row + 1, col, newMap);
+            searchVisiblePlayers(row + 1, col, newMap);
         } else {
-            searchPlayerLocation(0, col + 1, newMap);
+            searchVisiblePlayers(0, col + 1, newMap);
         }
     }
-    
+
     /**
      * Save the current client to be use and the identification for the
      * character
@@ -317,7 +352,7 @@ public class MapController implements Initializable {
         startMap();
 
     }
-    
+
     /**
      * Obtains the map from the server and load the map
      */
@@ -332,10 +367,12 @@ public class MapController implements Initializable {
     /**
      * Update the view of the player
      */
-    private void updatePlayerPosition() {
-        sceneGrid.getChildren().remove(playerIcon);
-        playerIcon = new ImageView(getCharacterRoute());
-        sceneGrid.add(playerIcon, instance.playerCol, instance.playerRow);
-        playerIcon.toFront();
-    }   
+    private void updatePlayerPosition(ClientPlayer clientPlayer) {
+        if (sceneGrid.getChildren().contains(clientPlayer.getIcon())) {
+            sceneGrid.getChildren().remove(clientPlayer.getIcon());
+        }
+        sceneGrid.add(clientPlayer.getIcon(), clientPlayer.getCol(), 
+                clientPlayer.getRow());
+        clientPlayer.getIcon().toFront();
+    }
 }

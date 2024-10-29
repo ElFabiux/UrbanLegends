@@ -23,10 +23,10 @@ public class Game {
 
     private static Game instance;
 
-    private ArrayList<Player> players = new ArrayList<>();
-    private ArrayList<Npc> npcs = new ArrayList<>();
     private final int MAP_WIDTH = 10;
     private final int MAP_HEIGHT = 10;
+    private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Npc> npcs = new ArrayList<>();
     private String[][] map = new String[MAP_HEIGHT][MAP_WIDTH];
     private String[][] mapClone;
 
@@ -38,14 +38,9 @@ public class Game {
     }
 
     /**
-<<<<<<< HEAD
-     *
-     * @return
-=======
      * Get the map clone
      *
      * @return mapClone
->>>>>>> yzma
      */
     public String[][] getMapClone() {
         return mapClone;
@@ -212,6 +207,20 @@ public class Game {
         fillMiniMap(playerX, playerY, miniMap, 0, 0);
 
         return miniMap;
+    }
+    
+    public String getNpcs(){
+        String response = "";
+        generateNpcString(this.npcs, response);
+        return response;
+    }
+    
+    private void generateNpcString(ArrayList<Npc>npcs, String response){
+        if(npcs.isEmpty()){return;}
+        Npc npc = npcs.get(0);
+        npcs.remove(0);
+        response = ";"+response + npc.toString();
+        generateNpcString(npcs, response);
     }
 
     /**

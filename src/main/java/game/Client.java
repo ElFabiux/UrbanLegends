@@ -89,6 +89,23 @@ public class Client {
     public String[][] getMap() {
         return this.map;
     }
+    
+    /**
+     * Return all the npcs and their position
+     * 
+     * @param command "npc"
+     * @return all the npcs
+     */
+    public String getNpcs(String command){
+        String response = "";
+        try {
+            sendMoveCommand(command);
+            response = input.readUTF();
+        } catch (IOException e) {
+            System.out.println("Connection closed.");
+        }
+        return response;
+    }
 
     /**
      * Ask to the server for the position of the player
@@ -249,8 +266,12 @@ public class Client {
             case "position":
                 output.writeUTF("get " + playerName);
                 break;
+            case "npc":
+                output.writeUTF("npc "+playerName);
+                break;
             default:
-                System.out.println("Invalid command. Use 'up', 'down', 'left', 'right'.");
+                System.out.println("Invalid command. Use 'up', 'down', 'left',"
+                        + " 'right', 'get', 'npc'.");
         }
         output.flush();
     }

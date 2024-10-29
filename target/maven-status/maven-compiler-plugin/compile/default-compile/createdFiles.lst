@@ -3,6 +3,7 @@ game\Tile.class
 game\Time.class
 game\PositionGenerator.class
 server\actions\Move.class
+game\ClientPlayer.class
 game\Npc.class
 Legends\LegendFactory.class
 playableCharacters\Hunter.class
