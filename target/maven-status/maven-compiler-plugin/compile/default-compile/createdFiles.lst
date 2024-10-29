@@ -13,6 +13,7 @@ Legends\PadreSinCabeza.class
 game\Time$1.class
 game\Player.class
 game\Mission.class
+game\TimeObserver.class
 game\GameMap.class
 game\Game.class
 controllers\MapController.class

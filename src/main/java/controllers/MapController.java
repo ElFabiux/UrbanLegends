@@ -12,6 +12,11 @@ import java.util.ResourceBundle;
 import game.Client;
 import game.GameMap;
 import game.Tile;
+import game.Time;
+import game.TimeObserver;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -45,7 +50,7 @@ import javafx.scene.layout.GridPane;
  * @author Joxan Portilla
  * @author Melani Barrantes
  */
-public class MapController implements Initializable {
+public class MapController implements Initializable, TimeObserver  {
 
     private static int HEIGHT = 30;
     private static int SIZE = 10;
@@ -63,15 +68,19 @@ public class MapController implements Initializable {
     private static GridPane sceneGrid = new GridPane();
     private static Client client;
     GameMap gameMap;
+    private boolean isDaytime = true;
+    Time time;
     private ImageView playerIcon;
     private static MapController instance;
     private Tile[][] tileMatrix = new Tile[SIZE][SIZE];
 
-    /**
-     * Gets the route of the image of the corresponding character
-     *
-     * @return url of the image of the character
-     */
+    @Override
+    public void update(boolean isDaytime) {
+        Platform.runLater(() -> {
+            loadMap(gameMap.getCemeteryMap());
+        });
+    }
+
     public String getCharacterRoute() {
         switch (MapController.character) {
             case "Researcher":
@@ -118,6 +127,19 @@ public class MapController implements Initializable {
         playerIcon = new ImageView(getCharacterRoute());
         updatePlayerPosition();
     }
+    //    @Override
+//    public void initialize(URL url, ResourceBundle rb) {
+//        this.playerView.getChildren().add(sceneGrid);
+//        MapController.sceneGrid.setFocusTraversable(true);
+//        MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED, this::movePlayer);
+//        
+//        time = new Time();
+//        gameMap = new GameMap(time);
+//        gameMap.loadTileMatrix();
+//        time.addObserver(this);
+//        time.startTime();
+//        loadMap(gameMap.getCemeteryMap());
+//    }
     
     /**
      * Initialize all the constanst
