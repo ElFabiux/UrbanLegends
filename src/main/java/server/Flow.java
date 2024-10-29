@@ -10,36 +10,39 @@ import game.Game;
 import game.Player;
 
 /**
- * The {@code Flow} class handles the interaction between a single player and
+ * The Flow class handles the interaction between a single player and
  * the server. It reads commands from the player, interprets them, and updates
- * the game state accordingly. The {@code Flow} class operates as a thread to
+ * the game state accordingly. The Flow class operates as a thread to
  * manage communication independently for each player.
  *
- * It utilizes an {@code Interpreter} instance to process commands, execute
+ * It utilizes an Interpreter instance to process commands, execute
  * actions, and communicate with the game to update the player's position and
  * actions on the map.
  *
- * @author joxan
+ * @author Jorge Rojas
+ * @author Ismael Marchena
+ * @author Fabian Arguedas
+ * @author Joxan Portilla
+ * @author Melani Barrantes
  */
 public class Flow extends Thread {
 
-    private Game game;
     private DataInputStream input;
     private DataOutputStream output;
+    private Game game;
+    private Interpreter interpreter;
     private Player player;
     private Socket socket;
 
-    private Interpreter interpreter;
-
     /**
-     * Constructs a {@code Flow} instance for a player, initializing the
-     * necessary input and output streams, and an {@code Interpreter} to process
+     * Constructs a Flow instance for a player, initializing the
+     * necessary input and output streams, and an Interpreter to process
      * player commands.
      *
-     * @param socket the socket for communicating with the player
-     * @param player the player instance interacting with the server
+     * @param socket the socket for communicating with the player.
+     * @param player the player instance interacting with the server.
      * @param game the game instance to update the game state based on player
-     * actions
+     * actions.
      */
     public Flow(Socket socket, Player player, Game game) {
         this.socket = socket;
@@ -77,8 +80,7 @@ public class Flow extends Thread {
                 
                 String response = interpreter.interpret(command, direction,
                         player);
-                
-                
+
                 game.updateMap(player, oldRow, oldCol);
                 if (command.equals("get")) {
                     output.writeUTF(response);

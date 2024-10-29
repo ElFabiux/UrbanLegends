@@ -24,12 +24,12 @@ import game.MovementsLogic;
  */
 public class Move implements Command {
 
-    private String direction;
     private Game map;
     private final MovementsLogic moves = new MovementsLogic();
+    private String direction;
 
     /**
-     * Constructs a new {@code Move} command with the specified direction.
+     * Constructs a new Move command with the specified direction.
      * 
      * @param direction the direction in which the player will move
      */
@@ -37,23 +37,6 @@ public class Move implements Command {
         this.direction = direction;
     }
 
-    /**
-     * Gets the current direction of movement.
-     * 
-     * @return the direction in which the player will move
-     */
-    public String getDirection() {
-        return direction;
-    }
-
-    /**
-     * Sets a new direction for the movement.
-     * 
-     * @param direction the new direction for the player to move
-     */
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
 
     /**
      * Executes the move command, modifying the player's position within the game

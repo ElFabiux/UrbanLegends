@@ -5,7 +5,6 @@
 package server.actions;
 
 import game.Game;
-import playableCharacters.Character;
 import game.Player;
 
 /**
@@ -44,12 +43,10 @@ public class Attack implements Command {
             return "Attack failed. Not enough energy.";
         }
 
-        
         player.getCharacter().modifyEnergy(-5);
         player.getCharacter().modifyMentalHealth(-10);
         player.getCharacter().modifySuperstition(5);
 
-       
         return "Attack successful. Current stats: Energy: "
                 + player.getCharacter().getEnergy()
                 + ", Mental Health: " + player.getCharacter().getMentalHealth()

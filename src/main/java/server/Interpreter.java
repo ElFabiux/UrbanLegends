@@ -3,27 +3,29 @@ package server;
 import server.actions.Attack;
 import server.actions.Move;
 import game.Game;
-import playableCharacters.Character;
 import game.Player;
 
 /**
- * The {@code Interpreter} class is responsible for interpreting commands
+ * The Interpreter class is responsible for interpreting commands
  * sent by players and executing the corresponding actions.
  * 
  * This class processes commands and applies their effects on the game state,
  * acting as an intermediary between the player's input and the game logic.
  * 
- * @author joxan
+ * @author Jorge Rojas
+ * @author Ismael Marchena
+ * @author Fabian Arguedas
+ * @author Joxan Portilla
+ * @author Melani Barrantes
  */
 public class Interpreter {
 
-    
     private Game game;
 
     /**
-     * Constructs an {@code Interpreter} with the specified {@code Game} instance.
+     * Constructs an Interpreter with the specified Game instance.
      * 
-     * @param game the game instance that this interpreter will affect
+     * @param game the game instance that this interpreter will affect.
      */
     public Interpreter(Game game) {
         this.game = game;
@@ -36,10 +38,10 @@ public class Interpreter {
      * unknown command.
      * 
      * @param command the action to be performed.
-     * @param direction the direction of the action (used with "move" command)
-     * @param player the player performing the action
+     * @param direction the direction of the action (used with "move" command).
+     * @param player the player performing the action.
      * @return a message indicating the result of the command, such as success
-     * or failure
+     * or failure.
      */
     public String interpret(String command, String direction, Player player) {
         switch (command) {
