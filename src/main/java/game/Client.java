@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
- * Client Class: handles the connection and communication with the server in the 
- * game.
- * Allows you to send and receive commands to control the character on the map.
- * 
+ * Client Class: handles the connection and communication with the server in the
+ * game. Allows you to send and receive commands to control the character on the
+ * map.
+ *
  * @author Melani
  * @author Joxan
  * @author Fabian
@@ -21,15 +21,15 @@ public class Client {
 
     private static final int MAP_HEIGHT = 10;
     private static final int MAP_WIDTH = 10;
-    
+
     private String[][] map = new String[MAP_HEIGHT][MAP_WIDTH];
-    
+
     private DataInputStream input;
     private DataOutputStream output;
     private static String character;
     private static String playerName;
     private Socket socket;
-   
+
     /**
      * The constructor that initialize the client map
      */
@@ -45,7 +45,7 @@ public class Client {
     public String[][] getMap() {
         return this.map;
     }
-    
+
     /**
      * The principal comunication to the server for the move
      *
@@ -66,14 +66,14 @@ public class Client {
         }
         return this.map;
     }
-    
+
     /**
      * Return all the npcs and their position
-     * 
+     *
      * @param command "npc"
      * @return all the npcs
      */
-    public String getNpcs(String command){
+    public String getNpcs(String command) {
         String response = "";
         try {
             sendMoveCommand(command);
@@ -101,7 +101,7 @@ public class Client {
         }
         return response;
     }
-    
+
     /**
      * Close the resources that the client have been used
      */
@@ -117,7 +117,7 @@ public class Client {
                 socket.close();
             }
         } catch (IOException e) {
-            System.out.println("Error closing client resources: " 
+            System.out.println("Error closing client resources: "
                     + e.getMessage());
         }
     }
@@ -153,7 +153,7 @@ public class Client {
      * @param columns the array of columns
      * @param currentColumn current column
      */
-    private void fillMapColumns(int currentLine, String[] columns, 
+    private void fillMapColumns(int currentLine, String[] columns,
             int currentColumn) {
         if (currentColumn >= MAP_WIDTH) {
             return;
@@ -240,7 +240,7 @@ public class Client {
 
         String[] columns = lines[currentLine].split(" ");
         if (columns.length != MAP_WIDTH) {
-            System.out.println("Error: La fila " + (currentLine - 1) 
+            System.out.println("Error: La fila " + (currentLine - 1)
                     + " no tiene la longitud esperada.");
             return;
         }
@@ -273,7 +273,7 @@ public class Client {
                 output.writeUTF("get " + playerName);
                 break;
             case "npc":
-                output.writeUTF("npc "+playerName);
+                output.writeUTF("npc " + playerName);
                 break;
             default:
                 System.out.println("Invalid command. Use 'up', 'down', 'left',"
@@ -281,7 +281,7 @@ public class Client {
         }
         output.flush();
     }
-
+    
     /**
      * Update the local map
      *
@@ -298,7 +298,7 @@ public class Client {
 
         processMapLines(lines, 1);
     }
-    
+
     /**
      * Conect to the server
      *

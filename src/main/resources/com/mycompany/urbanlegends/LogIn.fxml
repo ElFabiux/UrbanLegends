@@ -12,15 +12,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="container" stylesheets="@../../../css/style.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LogInController">
+<AnchorPane id="AnchorPane" fx:id="container" stylesheets="@../../../css/style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LogInController">
    <children>
-      <VBox fx:id="startMenuContainer" alignment="CENTER" layoutX="216.0" layoutY="100.0" prefHeight="200.0" prefWidth="168.0" styleClass="startMenuContainer">
+      <ImageView fitHeight="408.0" fitWidth="714.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Menu/menu.jpg" />
+         </image>
+      </ImageView>
+      <VBox fx:id="startMenuContainer" alignment="CENTER" layoutX="281.0" layoutY="183.0" prefHeight="200.0" prefWidth="168.0" styleClass="startMenuContainer">
          <children>
             <Button fx:id="newGame" mnemonicParsing="false" onAction="#newGame" text="New Game" />
             <Button fx:id="exit" mnemonicParsing="false" onAction="#exit" text="Exit" />
          </children>
       </VBox>
-      <AnchorPane fx:id="createPlayerMenuContainer" disable="true" prefHeight="400.0" prefWidth="600.0" styleClass="createPlayerMenuContainer" visible="false">
+      <AnchorPane fx:id="createPlayerMenuContainer" disable="true" prefHeight="400.0" prefWidth="714.0" styleClass="createPlayerMenuContainer" visible="false">
          <children>
             <TextField fx:id="playerName" layoutX="39.0" layoutY="57.0" styleClass="playerName" />
             <Label layoutX="39.0" layoutY="40.0" text="Name" />

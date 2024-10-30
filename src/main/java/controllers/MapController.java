@@ -136,6 +136,7 @@ public class MapController implements Initializable, TimeObserver {
         }
         if (MapController.instance.gameMap == null) {
             MapController.instance.gameMap = new GameMap();
+            MapController.instance.gameMap.loadTileMatrix();
         }
         if (instance == null) {
             instance = new MapController();

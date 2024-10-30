@@ -1,71 +1,70 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+ * Estilo tenebroso estilo pixel art de cementerio
  */
-
 
 .startMenuContainer {
     -fx-spacing: 10px;
-    -fx-background-color: #2b3d3b; 
     -fx-padding: 20px;
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
+    -fx-border-width: 2px;
 }
+
 .button {
-    -fx-background-color: #5f9487;
-    -fx-text-fill: white;
+    -fx-background-color: #3e4a4d; /* Tono oscuro en lugar de verde */
+    -fx-text-fill: #d1d5db; /* Color de texto gris claro */
     -fx-font-size: 16px;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
     -fx-padding: 10px 20px;
     -fx-cursor: hand;
+    -fx-border-color: #5a6567; /* Bordes sutiles */
 }
 
 .button:hover {
-    -fx-background-color: #4d7a6e; 
+    -fx-background-color: #505c5e; /* Color de fondo más claro en hover */
 }
 
 .radioButton {
-    -fx-text-fill: white;
+    -fx-text-fill: #b0b6b9; /* Gris claro */
     -fx-font-size: 14px;
 }
 
 .radioButton .radio {
-    -fx-background-color: #81b3a0;
+    -fx-background-color: #6b7579; /* Tono oscuro en lugar de verde */
 }
 
 .radioButton:armed .radio {
-    -fx-background-color: #639883;
+    -fx-background-color: #505c5e; /* Oscuro al seleccionarse */
 }
 
 .radioButton ImageView {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 10, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.85), 15, 0, 0, 0); /* Sombras más oscuras */
 }
 
 .radioButton:hover ImageView {
-    -fx-scale-x: 1.1;
-    -fx-scale-y: 1.1;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
 
 .createPlayerMenuContainer {
-    -fx-background-color: #2b3d3b; 
-    -fx-border-color: #81b3a0; 
+    -fx-background-color: #1a1d1f; /* Fondo oscuro */
+    -fx-border-color: #3e4a4d; /* Bordes oscuros */
     -fx-border-width: 2px;
-    -fx-border-radius: 15px;
     -fx-background-radius: 15px;
     -fx-padding: 20px;
 }
 
 .playerName {
-    -fx-background-color: #3e5654; 
-    -fx-text-fill: white;
-    -fx-border-color: #81b3a0; 
+    -fx-background-color: #2e3335; /* Tono oscuro */
+    -fx-text-fill: #d1d5db;
+    -fx-border-color: #5a6567; /* Bordes sutiles */
     -fx-border-radius: 5px;
     -fx-padding: 5px;
 }
 
 .playerName:focused {
-    -fx-border-color: #639883; 
+    -fx-border-color: #6b7579; /* Color de borde en foco */
 }
 
 .label {
@@ -74,18 +73,19 @@
 }
 
 .start, .back {
-    -fx-background-color: #81b3a0;
-    -fx-text-fill: white;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
+    -fx-background-color: #3e4a4d; /* Fondo oscuro */
+    -fx-text-fill: #d1d5db;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
     -fx-padding: 10px 20px;
     -fx-cursor: hand;
+    -fx-border-color: #5a6567; /* Bordes sutiles */
 }
 
 .start:hover, .back:hover {
-    -fx-background-color: #639883;
+    -fx-background-color: #505c5e; /* Cambia a un gris más claro al pasar el ratón */
 }
 
-.container{
-    -fx-background-color: 2b3d3b;
+.container {
+    -fx-background-color: #1a1d1f; /* Fondo oscuro total */
 }

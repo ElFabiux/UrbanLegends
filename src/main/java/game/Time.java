@@ -21,12 +21,10 @@ import javafx.util.Duration;
  */
 public class Time {
 
+    private Duration elapsedTime;
     private boolean isDaytime;
     private boolean isRunning;
-
     private List<TimeObserver> observers;
-
-    private Duration elapsedTime;
     private Timeline timeLine;
 
     /**
@@ -55,14 +53,14 @@ public class Time {
     }
 
     /**
-     * Checks if it is currently daytime.
+     * Adds a new observer to the list of observers.
      *
-     * @return true if it is daytime or false otherwise.
+     * @param observer The observer to be added.
      */
-    public boolean isDaytime() {
-        return isDaytime;
+    public void addObserver(TimeObserver observer) {
+        observers.add(observer);
     }
-
+    
     /**
      * Returns the elapsed time formatted as a text string. The format is MM:SS
      * (minutes:seconds).
@@ -76,14 +74,14 @@ public class Time {
 
         return String.format("%02d:%02d", minutes, seconds);
     }
-
+    
     /**
-     * Adds a new observer to the list of observers.
+     * Checks if it is currently daytime.
      *
-     * @param observer The observer to be added.
+     * @return true if it is daytime or false otherwise.
      */
-    public void addObserver(TimeObserver observer) {
-        observers.add(observer);
+    public boolean isDaytime() {
+        return isDaytime;
     }
 
     /**
