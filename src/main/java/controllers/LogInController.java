@@ -49,14 +49,15 @@ public class LogInController implements Initializable {
     private Button newGame;
     @FXML
     private Button start;
+    
+    private Character character;
+    
     @FXML
     private TextField playerName;
     @FXML
     private ToggleGroup characterGroup;
     @FXML
     private VBox startMenuContainer;
-
-    private Character character;
     
     /**
      * Return from the player menu to the game menu

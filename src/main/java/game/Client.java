@@ -6,17 +6,30 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * Client Class: handles the connection and communication with the server in the 
+ * game.
+ * Allows you to send and receive commands to control the character on the map.
+ * 
+ * @author Melani
+ * @author Joxan
+ * @author Fabian
+ * @author Jorge
+ * @author Ismael
+ */
 public class Client {
 
     private static final int MAP_HEIGHT = 10;
     private static final int MAP_WIDTH = 10;
+    
+    private String[][] map = new String[MAP_HEIGHT][MAP_WIDTH];
+    
     private DataInputStream input;
     private DataOutputStream output;
-    private Socket socket;
     private static String character;
-    private String[][] map = new String[MAP_HEIGHT][MAP_WIDTH];
     private static String playerName;
-
+    private Socket socket;
+   
     /**
      * The constructor that initialize the client map
      */
@@ -25,71 +38,32 @@ public class Client {
     }
 
     /**
-     * Close the resources that the client have been used
-     */
-    public void closeResources() {
-        try {
-            if (input != null) {
-                input.close();
-            }
-            if (output != null) {
-                output.close();
-            }
-            if (socket != null) {
-                socket.close();
-            }
-        } catch (IOException e) {
-            System.out.println("Error closing client resources: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Method to connect to the server
-     *
-     * @param host the ip of the server
-     * @param port the port of the server
-     */
-    private void connectToServer(String host, int port) {
-        try {
-//            host = "192.168.27.159";
-//            port = 8000;
-            socket = new Socket(host, port);
-            output = new DataOutputStream(socket.getOutputStream());
-            input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-
-            System.out.println("Connected to server.");
-            output.writeUTF(playerName + "," + character);
-            output.flush();
-
-        } catch (IOException e) {
-            System.out.println("Error connecting to server: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Fill the map columns
-     *
-     * @param currentLine current line
-     * @param columns the array of columns
-     * @param currentColumn current column
-     */
-    private void fillMapColumns(int currentLine, String[] columns, 
-            int currentColumn) {
-        if (currentColumn >= MAP_WIDTH) {
-            return;
-        }
-
-        map[currentLine - 1][currentColumn] = String.valueOf(columns[currentColumn].charAt(0));
-
-        fillMapColumns(currentLine, columns, currentColumn + 1);
-    }
-
-    /**
      * Get the client map
      *
      * @return the client map
      */
     public String[][] getMap() {
+        return this.map;
+    }
+    
+    /**
+     * The principal comunication to the server for the move
+     *
+     * @param command "up", "down", "left", "right"
+     * @return a new map with the new information
+     */
+    public String[][] listenForCommands(String command) {
+        try {
+            sendMoveCommand(command);
+            String response = input.readUTF();
+            System.out.println(response);
+            String mapState = input.readUTF();
+            System.out.println("client_58: " + mapState);
+            updateLocalMap(mapState);
+
+        } catch (IOException e) {
+            System.out.println("Connection closed.");
+        }
         return this.map;
     }
     
@@ -127,6 +101,69 @@ public class Client {
         }
         return response;
     }
+    
+    /**
+     * Close the resources that the client have been used
+     */
+    public void closeResources() {
+        try {
+            if (input != null) {
+                input.close();
+            }
+            if (output != null) {
+                output.close();
+            }
+            if (socket != null) {
+                socket.close();
+            }
+        } catch (IOException e) {
+            System.out.println("Error closing client resources: " 
+                    + e.getMessage());
+        }
+    }
+
+    /**
+     * Method to connect to the server
+     *
+     * @param host the ip of the server
+     * @param port the port of the server
+     */
+    private void connectToServer(String host, int port) {
+        try {
+//            host = "192.168.27.159";
+//            port = 8000;
+            socket = new Socket(host, port);
+            output = new DataOutputStream(socket.getOutputStream());
+            input = new DataInputStream(new BufferedInputStream(socket
+                    .getInputStream()));
+
+            System.out.println("Connected to server.");
+            output.writeUTF(playerName + "," + character);
+            output.flush();
+
+        } catch (IOException e) {
+            System.out.println("Error connecting to server: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Fill the map columns
+     *
+     * @param currentLine current line
+     * @param columns the array of columns
+     * @param currentColumn current column
+     */
+    private void fillMapColumns(int currentLine, String[] columns, 
+            int currentColumn) {
+        if (currentColumn >= MAP_WIDTH) {
+            return;
+        }
+
+        map[currentLine - 1][currentColumn] = String.valueOf(
+                columns[currentColumn].charAt(0));
+
+        fillMapColumns(currentLine, columns, currentColumn + 1);
+    }
 
     /**
      * Initialize the map of the client
@@ -152,41 +189,6 @@ public class Client {
 
         map[row][col] = ".";
         initializeMapRecursive(row, col + 1);
-    }
-
-    /**
-     * The principal comunication to the server for the move
-     *
-     * @param command "up", "down", "left", "right"
-     * @return a new map with the new information
-     */
-    public String[][] listenForCommands(String command) {
-        try {
-            sendMoveCommand(command);
-            String response = input.readUTF();
-            System.out.println(response);
-            String mapState = input.readUTF();
-            System.out.println("client_58: " + mapState);
-            updateLocalMap(mapState);
-
-        } catch (IOException e) {
-            System.out.println("Connection closed.");
-        }
-        return this.map;
-    }
-
-    /**
-     * Conect to the server
-     *
-     * @param args [0] player name [1] character
-     * @return a new client
-     */
-    public static Client main(String[] args) {
-        Client client = new Client();
-        Client.playerName = args[0];
-        Client.character = args[1];
-        client.connectToServer("localhost", 8000);
-        return client;
     }
 
     /**
@@ -238,7 +240,8 @@ public class Client {
 
         String[] columns = lines[currentLine].split(" ");
         if (columns.length != MAP_WIDTH) {
-            System.out.println("Error: La fila " + (currentLine - 1) + " no tiene la longitud esperada.");
+            System.out.println("Error: La fila " + (currentLine - 1) 
+                    + " no tiene la longitud esperada.");
             return;
         }
 
@@ -295,5 +298,18 @@ public class Client {
 
         processMapLines(lines, 1);
     }
-
+    
+    /**
+     * Conect to the server
+     *
+     * @param args [0] player name [1] character
+     * @return a new client
+     */
+    public static Client main(String[] args) {
+        Client client = new Client();
+        Client.playerName = args[0];
+        Client.character = args[1];
+        client.connectToServer("localhost", 8000);
+        return client;
+    }
 }

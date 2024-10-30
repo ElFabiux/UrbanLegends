@@ -4,12 +4,19 @@
  */
 package game;
 
-/**
- *
- * @author joxan
- */
 import java.util.Random;
 
+/**
+ * Generates random positions within a predefined map boundary.
+ * This class provides methods to obtain random x and y coordinates 
+ * for placing game elements on a grid or map.
+ * 
+ * @author joxan
+ * @author melani
+ * @author fabian
+ * @author jorge
+ * @author ismael
+ */
 public class PositionGenerator {
 
     private static final int MAP_BOUNDARY = 35;
@@ -33,4 +40,3 @@ public class PositionGenerator {
         return random.nextInt(MAP_BOUNDARY);
     }
 }
-

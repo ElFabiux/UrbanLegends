@@ -4,7 +4,6 @@
  */
 package game;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,45 +12,21 @@ import java.util.List;
  * proximity to NPCs, and detect blocked paths on the map.
  *
  * @author jorge
+ * @author joxan
+ * @author melani
+ * @author fabian
+ * @author ismael
  */
 public class MovementsLogic {
-
+    private boolean isCloseToNpc = false;
     private final char characterNPC = 'N';
     private final char[] blockedGrids = {'R', 'T', 'H', 'O', 'C', 'S',
         'W', 'P', 'N', characterNPC};
-    private boolean isCloseToNpc = false;
 
     /**
      * Constructor for MovementsLogic class.
      */
     public MovementsLogic() {
-    }
-
-    /**
-     * Gets the array of blocked grid characters.
-     *
-     * @return An array of characters representing blocked grid elements
-     */
-    public char[] getBlockedGrids() {
-        return blockedGrids;
-    }
-
-    /**
-     * Checks if the player is close to an NPC
-     *
-     * @return true if the player is near an NPC, false otherwise.
-     */
-    public boolean isIsCloseToNpc() {
-        return isCloseToNpc;
-    }
-
-    /**
-     * Sets the proximity status to an NPC.
-     *
-     * @param isCloseToNpc true if the player is near an NPC, false otherwise
-     */
-    public void setIsCloseToNpc(boolean isCloseToNpc) {
-        this.isCloseToNpc = isCloseToNpc;
     }
 
     /**
@@ -85,68 +60,35 @@ public class MovementsLogic {
 
         return false;
     }
-
+    
     /**
-     * Checks if the player is close to an NPC in any of the adjacent tiles It
-     * inspects the tiles around the player's current position (up, down, left,
-     * right) o determine if any of them contain the NPC character
+     * This method checks if a grid contains a blocked character
      *
-     * @param mapA 2D array representing the game map.
-     * @param posX The player's current X-coordinate on the map
-     * @param posY The player's current Y-coordinate on the map
+     * @param grid The grid element to check
+     * @param index The current index in the blockedGrids array
+     * @return true if the grid is blocked, false otherwise
+     */
+    private boolean isBlocked(String grid, int index) {
+        if (index >= blockedGrids.length) {
+            return false;
+        }
+
+        if (grid.charAt(0) == blockedGrids[index]) {
+            return true;
+        }
+
+        return isBlocked(grid, index + 1);
+    }
+    
+    /**
+     * Checks if the player is close to an NPC
+     *
      * @return true if the player is near an NPC, false otherwise.
      */
-    private boolean playerCloseToNpc(String[][] map, int posX, int posY) {
-
-        if (!isOutOfBounds(map, posX + 1, posY)
-                && map[posY][posX + 1].charAt(0) == characterNPC
-                || !isOutOfBounds(map, posX - 1, posY)
-                && map[posY][posX - 1].charAt(0) == characterNPC
-                || !isOutOfBounds(map, posX, posY + 1)
-                && map[posY + 1][posX].charAt(0) == characterNPC
-                || !isOutOfBounds(map, posX, posY - 1)
-                && map[posY - 1][posX].charAt(0) == characterNPC) {
-            return true;
-        }
-        return false;
+    public boolean isIsCloseToNpc() {
+        return isCloseToNpc;
     }
-
-    /**
-     * This method checks if the new position is out of the map bounds
-     *
-     * @param map The game map
-     * @param posX The new X-coordinate of the player
-     * @param posY The new Y-coordinate of the player
-     * @return true if the position is out of bounds, false otherwise
-     */
-    private boolean isOutOfBounds(String[][] map, int posX, int posY) {
-        if (posX >= map.length || posX < 0 || posY >= map[0].length ||
-                posY < 0) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Checks if there is an NPC within close proximity to the player. If an NPC
-     * is found within a distance of one unit, it returns the NPC.
-     *
-     * @param npcs List of all NPCs on the map
-     * @param player The player object with current position data
-     * @return The nearby NPC if within proximity; null if no NPC is close
-     */
-    public Npc isNearNpc(List<Npc> npcs, Player player) {
-        int playerX = player.getPositionX();
-        int playerY = player.getPositionY();
-        for (Npc npc : npcs) {
-            if (Math.abs(npc.getPositionX() - playerX) <= 1
-                    && Math.abs(npc.getPositionY() - playerY) <= 1) {
-                return npc;
-            }
-        }
-        return null;
-    }
-
+    
     /**
      * Checks if the player is close to a specific legend on the map, such as
      * "La Llorona" near a river. Verifies adjacent tiles around the player's
@@ -171,6 +113,56 @@ public class MovementsLogic {
                 && map[posY - 1][posX].charAt(0) == legendSymbol;
     }
 
+    /**
+     * This method checks if the new position is out of the map bounds
+     *
+     * @param map The game map
+     * @param posX The new X-coordinate of the player
+     * @param posY The new Y-coordinate of the player
+     * @return true if the position is out of bounds, false otherwise
+     */
+    private boolean isOutOfBounds(String[][] map, int posX, int posY) {
+        if (posX >= map.length || posX < 0 || posY >= map[0].length ||
+                posY < 0) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Checks if the player is close to an NPC in any of the adjacent tiles It
+     * inspects the tiles around the player's current position (up, down, left,
+     * right) o determine if any of them contain the NPC character
+     *
+     * @param mapA 2D array representing the game map.
+     * @param posX The player's current X-coordinate on the map
+     * @param posY The player's current Y-coordinate on the map
+     * @return true if the player is near an NPC, false otherwise.
+     */
+    private boolean playerCloseToNpc(String[][] map, int posX, int posY) {
+
+        if (!isOutOfBounds(map, posX + 1, posY)
+                && map[posY][posX + 1].charAt(0) == characterNPC
+                || !isOutOfBounds(map, posX - 1, posY)
+                && map[posY][posX - 1].charAt(0) == characterNPC
+                || !isOutOfBounds(map, posX, posY + 1)
+                && map[posY + 1][posX].charAt(0) == characterNPC
+                || !isOutOfBounds(map, posX, posY - 1)
+                && map[posY - 1][posX].charAt(0) == characterNPC) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Gets the array of blocked grid characters.
+     *
+     * @return An array of characters representing blocked grid elements
+     */
+    public char[] getBlockedGrids() {
+        return blockedGrids;
+    }
+    
     /**
      * This method calculates the new position based on the current position and
      * the direction of movement
@@ -198,23 +190,33 @@ public class MovementsLogic {
         }
         return new int[]{posX, posY};
     }
-
+    
     /**
-     * This method checks if a grid contains a blocked character
+     * Checks if there is an NPC within close proximity to the player. If an NPC
+     * is found within a distance of one unit, it returns the NPC.
      *
-     * @param grid The grid element to check
-     * @param index The current index in the blockedGrids array
-     * @return true if the grid is blocked, false otherwise
+     * @param npcs List of all NPCs on the map
+     * @param player The player object with current position data
+     * @return The nearby NPC if within proximity; null if no NPC is close
      */
-    private boolean isBlocked(String grid, int index) {
-        if (index >= blockedGrids.length) {
-            return false;
+    public Npc isNearNpc(List<Npc> npcs, Player player) {
+        int playerX = player.getPositionX();
+        int playerY = player.getPositionY();
+        for (Npc npc : npcs) {
+            if (Math.abs(npc.getPositionX() - playerX) <= 1
+                    && Math.abs(npc.getPositionY() - playerY) <= 1) {
+                return npc;
+            }
         }
-
-        if (grid.charAt(0) == blockedGrids[index]) {
-            return true;
-        }
-
-        return isBlocked(grid, index + 1);
+        return null;
+    }
+    
+    /**
+     * Sets the proximity status to an NPC.
+     *
+     * @param isCloseToNpc true if the player is near an NPC, false otherwise
+     */
+    public void setIsCloseToNpc(boolean isCloseToNpc) {
+        this.isCloseToNpc = isCloseToNpc;
     }
 }

@@ -6,7 +6,11 @@ package game;
 
 /**
  *
- * @author Fabiux
+ * @author jorge
+ * @author joxan
+ * @author melani
+ * @author fabian
+ * @author ismael
  */
 public class GameMap {
 
@@ -50,28 +54,30 @@ public class GameMap {
         {"R1", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "G", "T6", "G", "O5", "G", "G", "G", "G", "G", "G", "G", "G", "G", "T3", "O5", "G", "O2", "G", "G", "G", "O5"},
         {"R1", "G", "G", "T7", "G", "T1", "G", "G", "G", "G", "G", "G", "G", "T5", "G", "G", "G", "G", "O5", "G", "T3", "T3", "G", "T3", "G", "G", "O1", "G", "G", "G", "G", "O3", "G", "O2", "O5", "O5"}
     };
-
+    
     /**
-     * Changes the time of day in the Time object, affecting the state of the
-     * observer tiles.
+     * Constructor that initializes the GameMap class with a Time object.
      *
-     * @param isDaytime Boolean value indicating if it’s daytime (true) or
-     * nighttime (false).
+     * @param time Time object used to manage the time in the game map.
      */
-    public void changeTime(boolean isDaytime) {
-        time.setTimeOfDay(isDaytime);  // Set time and notify tiles
+    public GameMap(Time time) {
+        this.time = time;
     }
 
     /**
-     * Creates a Tile object based on the character representing the tile type.
-     *
-     * @param tileChar The character representing the tile type.
-     * @return The Tile object corresponding to the tile character.
+     * Constructor that initializes the GameMap class.
      */
-    public Tile createTile(String tileChar) {
-        String tileType = getTileType(tileChar);
-        String imagePath = getTileImagePath(tileType);
-        return new Tile(tileType, imagePath);
+    public GameMap() {
+
+    }
+    
+    /**
+     * Gets the original game map matrix in its string format.
+     *
+     * @return The string matrix representing the game map.
+     */
+    public static String[][] getMap() {
+        return GameMap.gameMap;
     }
 
     /**
@@ -93,59 +99,6 @@ public class GameMap {
     }
 
     /**
-     * Recursively populates the tile matrix from the string matrix.
-     *
-     * This method uses recursion to iterate over the rows and columns of the
-     * string matrix, creating a Tile object for each entry in the matrix.
-     *
-     * @param stringMatrix The source matrix containing tile type strings.
-     * @param newTileMatrix The target matrix where Tile objects will be stored.
-     * @param row The current row being processed.
-     * @param col The current column being processed.
-     */
-    private void createTileMatrixRecursively(String[][] stringMatrix,
-            Tile[][] newTileMatrix, int row, int col) {
-        if (row >= stringMatrix.length) {
-            return;
-        }
-
-        if (newTileMatrix[row][col] == null) {
-            newTileMatrix[row][col] = createTile(stringMatrix[row][col]);
-        } else if (!stringMatrix[row][col].equals(newTileMatrix[row][col].getTileType())) {
-            newTileMatrix[row][col] = createTile(stringMatrix[row][col]);
-        }
-
-        if (col < stringMatrix[row].length - 1) {
-            createTileMatrixRecursively(stringMatrix, newTileMatrix, row, col + 1);
-        } else {
-            createTileMatrixRecursively(stringMatrix, newTileMatrix, row + 1, 0);
-        }
-    }
-
-    /**
-     * Fills a submatrix from the tileMatrix recursively.
-     *
-     * @param subMatrix The submatrix to fill.
-     * @param startRow The starting row in the main tileMatrix.
-     * @param startCol The starting column in the main tileMatrix.
-     * @param row The current row in the submatrix.
-     * @param col The current column in the submatrix.
-     */
-    private void fillSubMatrix(Tile[][] subMatrix, int startRow, int startCol, int row, int col) {
-        if (row >= subMatrix.length) {
-            return;
-        }
-
-        if (col >= subMatrix[row].length) {
-            fillSubMatrix(subMatrix, startRow, startCol, row + 1, 0);
-            return;
-        }
-
-        subMatrix[row][col] = tileMatrix[startRow + row][startCol + col];
-        fillSubMatrix(subMatrix, startRow, startCol, row, col + 1);
-    }
-
-    /**
      * Gets the 18x18 matrix of tiles representing the cemetery map.
      *
      * @return The 18x18 cemetery tile matrix.
@@ -155,7 +108,7 @@ public class GameMap {
         fillSubMatrix(cemeteryMap, 18, 18, 0, 0);
         return cemeteryMap;
     }
-
+    
     /**
      * Gets the 18x18 matrix of tiles representing the church map.
      *
@@ -166,7 +119,7 @@ public class GameMap {
         fillSubMatrix(churchMap, 0, 18, 0, 0);
         return churchMap;
     }
-
+    
     /**
      * Gets the 18x18 matrix of tiles representing the forest map.
      *
@@ -177,14 +130,16 @@ public class GameMap {
         fillSubMatrix(forestMap, 18, 0, 0, 0);
         return forestMap;
     }
-
+    
     /**
-     * Gets the original game map matrix in its string format.
+     * Gets the 18x18 matrix of tiles representing the village map.
      *
-     * @return The string matrix representing the game map.
+     * @return The 18x18 village tile matrix.
      */
-    public static String[][] getMap() {
-        return GameMap.gameMap;
+    public Tile[][] getVillageMap() {
+        Tile[][] villageMap = new Tile[18][18];
+        fillSubMatrix(villageMap, 0, 0, 0, 0);
+        return villageMap;
     }
 
     /**
@@ -381,6 +336,18 @@ public class GameMap {
                 return "1_1";
         }
     }
+    
+    /**
+     * Creates a Tile object based on the character representing the tile type.
+     *
+     * @param tileChar The character representing the tile type.
+     * @return The Tile object corresponding to the tile character.
+     */
+    public Tile createTile(String tileChar) {
+        String tileType = getTileType(tileChar);
+        String imagePath = getTileImagePath(tileType);
+        return new Tile(tileType, imagePath);
+    }
 
     /**
      * Retrieves the current Time object.
@@ -390,16 +357,73 @@ public class GameMap {
     public Time getTime() {
         return this.time;
     }
+    
+    /**
+     * Changes the time of day in the Time object, affecting the state of the
+     * observer tiles.
+     *
+     * @param isDaytime Boolean value indicating if it’s daytime (true) or
+     * nighttime (false).
+     */
+    public void changeTime(boolean isDaytime) {
+        time.setTimeOfDay(isDaytime);  // Set time and notify tiles
+    }
+    
+    /**
+     * Recursively populates the tile matrix from the string matrix.
+     *
+     * This method uses recursion to iterate over the rows and columns of the
+     * string matrix, creating a Tile object for each entry in the matrix.
+     *
+     * @param stringMatrix The source matrix containing tile type strings.
+     * @param newTileMatrix The target matrix where Tile objects will be stored.
+     * @param row The current row being processed.
+     * @param col The current column being processed.
+     */
+    private void createTileMatrixRecursively(String[][] stringMatrix,
+            Tile[][] newTileMatrix, int row, int col) {
+        if (row >= stringMatrix.length) {
+            return;
+        }
+
+        if (newTileMatrix[row][col] == null) {
+            newTileMatrix[row][col] = createTile(stringMatrix[row][col]);
+        } else if (!stringMatrix[row][col].equals(newTileMatrix[row][col]
+                .getTileType())) {
+            newTileMatrix[row][col] = createTile(stringMatrix[row][col]);
+        }
+
+        if (col < stringMatrix[row].length - 1) {
+            createTileMatrixRecursively(stringMatrix, newTileMatrix, row,
+                    col + 1);
+        } else {
+            createTileMatrixRecursively(stringMatrix, newTileMatrix, row + 1,
+                    0);
+        }
+    }
 
     /**
-     * Gets the 18x18 matrix of tiles representing the village map.
+     * Fills a submatrix from the tileMatrix recursively.
      *
-     * @return The 18x18 village tile matrix.
+     * @param subMatrix The submatrix to fill.
+     * @param startRow The starting row in the main tileMatrix.
+     * @param startCol The starting column in the main tileMatrix.
+     * @param row The current row in the submatrix.
+     * @param col The current column in the submatrix.
      */
-    public Tile[][] getVillageMap() {
-        Tile[][] villageMap = new Tile[18][18];
-        fillSubMatrix(villageMap, 0, 0, 0, 0);
-        return villageMap;
+    private void fillSubMatrix(Tile[][] subMatrix, int startRow, int startCol,
+            int row, int col) {
+        if (row >= subMatrix.length) {
+            return;
+        }
+
+        if (col >= subMatrix[row].length) {
+            fillSubMatrix(subMatrix, startRow, startCol, row + 1, 0);
+            return;
+        }
+
+        subMatrix[row][col] = tileMatrix[startRow + row][startCol + col];
+        fillSubMatrix(subMatrix, startRow, startCol, row, col + 1);
     }
 
     /**
@@ -433,21 +457,5 @@ public class GameMap {
         time.addObserver(tile);
 
         loadTileMatrixRecursively(mapMatrix, row, col + 1);
-    }
-
-    /**
-     * Constructor that initializes the GameMap class with a Time object.
-     *
-     * @param time Time object used to manage the time in the game map.
-     */
-    public GameMap(Time time) {
-        this.time = time;
-    }
-
-    /**
-     * Constructor that initializes the GameMap class.
-     */
-    public GameMap() {
-
     }
 }
