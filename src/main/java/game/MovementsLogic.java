@@ -18,10 +18,11 @@ import java.util.List;
  * @author ismael
  */
 public class MovementsLogic {
+
     private boolean isCloseToNpc = false;
     private final char characterNPC = 'N';
     private final char[] blockedGrids = {'R', 'T', 'H', 'O', 'C', 'S',
-        'W', 'P', 'N', characterNPC};
+        'W', 'P', 'w', 'r', 'h', characterNPC};
 
     /**
      * Constructor for MovementsLogic class.
@@ -39,7 +40,7 @@ public class MovementsLogic {
      * "down", "right", "left").
      * @return true if the movement is valid, false otherwise
      */
-    public boolean checkMovements(String[][] map, Player player, 
+    public boolean checkMovements(String[][] map, Player player,
             String direction) {
 
         int oldX = player.getPositionX();
@@ -54,13 +55,13 @@ public class MovementsLogic {
 
         isCloseToNpc = playerCloseToNpc(map, posX, posY);
 
-        if (isBlocked(map[posY][oldX], 0) || isBlocked(map[oldY][posX], 0)) {
+        if (isBlocked(map[posY][posX], 0)) {
             return true;
         }
 
         return false;
     }
-    
+
     /**
      * This method checks if a grid contains a blocked character
      *
@@ -79,7 +80,7 @@ public class MovementsLogic {
 
         return isBlocked(grid, index + 1);
     }
-    
+
     /**
      * Checks if the player is close to an NPC
      *
@@ -88,7 +89,7 @@ public class MovementsLogic {
     public boolean isIsCloseToNpc() {
         return isCloseToNpc;
     }
-    
+
     /**
      * Checks if the player is close to a specific legend on the map, such as
      * "La Llorona" near a river. Verifies adjacent tiles around the player's
@@ -122,13 +123,13 @@ public class MovementsLogic {
      * @return true if the position is out of bounds, false otherwise
      */
     private boolean isOutOfBounds(String[][] map, int posX, int posY) {
-        if (posX >= map.length || posX < 0 || posY >= map[0].length ||
-                posY < 0) {
+        if (posX >= map.length || posX < 0 || posY >= map[0].length
+                || posY < 0) {
             return true;
         }
         return false;
     }
-    
+
     /**
      * Checks if the player is close to an NPC in any of the adjacent tiles It
      * inspects the tiles around the player's current position (up, down, left,
@@ -153,7 +154,7 @@ public class MovementsLogic {
         }
         return false;
     }
-    
+
     /**
      * Gets the array of blocked grid characters.
      *
@@ -162,7 +163,7 @@ public class MovementsLogic {
     public char[] getBlockedGrids() {
         return blockedGrids;
     }
-    
+
     /**
      * This method calculates the new position based on the current position and
      * the direction of movement
@@ -190,7 +191,7 @@ public class MovementsLogic {
         }
         return new int[]{posX, posY};
     }
-    
+
     /**
      * Checks if there is an NPC within close proximity to the player. If an NPC
      * is found within a distance of one unit, it returns the NPC.
@@ -210,7 +211,7 @@ public class MovementsLogic {
         }
         return null;
     }
-    
+
     /**
      * Sets the proximity status to an NPC.
      *
