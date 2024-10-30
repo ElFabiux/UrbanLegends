@@ -15,14 +15,11 @@ import game.GameMap;
 import game.Tile;
 import game.Time;
 import game.TimeObserver;
-import java.util.Timer;
-import java.util.TimerTask;
 import javafx.application.Platform;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import static javafx.scene.input.KeyCode.A;
 import static javafx.scene.input.KeyCode.D;
@@ -35,7 +32,6 @@ import static javafx.scene.input.KeyCode.W;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 
 /**
  * FXML Controller class
@@ -53,48 +49,45 @@ import javafx.scene.layout.StackPane;
  * @author Joxan Portilla
  * @author Melani Barrantes
  */
-public class MapController implements Initializable, TimeObserver  {
+public class MapController implements Initializable, TimeObserver {
 
     private static int HEIGHT = 30;
     private int playerCol;
     private int playerRow;
     private static int SIZE = 10;
     private static int WIDTH = 30;
+
     private ArrayList<ClientPlayer> nearPlayers = new ArrayList<>();
-    private static Client client;
-    private static String character;
     private static String[][] map;
     private static String[][] oldMap;
-    private GameMap gameMap;
-    private ImageView playerIcon;
-    private static MapController instance;
     private Tile[][] tileMatrix = new Tile[SIZE][SIZE];
+
     @FXML
     private AnchorPane playerView;
+    private static Client client;
+    private GameMap gameMap;
     @FXML
     private static GridPane sceneGrid = new GridPane();
-    private boolean isDaytime = true;
+    private ImageView playerIcon;
+    private static MapController instance;
+    private static String character;
     Time time;
 
     /**
-     * Adds all the near player to an arrayList
+     * Obtains the node from the gridPane
      *
-     * @param character the character of each player
+     * @param gridPane the view of the player
      * @param row current row
      * @param col current col
+     * @return the corresponding node
      */
-    private void addNearPlayer(String character, int row, int col) {
-        String playerCharacter = character.substring(0, 1).toLowerCase();
-        ImageView icon = new ImageView(getCharacterRoute(character));
-        ClientPlayer clientPlayer = new ClientPlayer(col, row, icon);
-        instance.nearPlayers.add(clientPlayer);
-    }
+    public Node getNodeFromGridPane(GridPane gridPane, int row, int col) {
+        int index = (row * gridPane.getColumnCount()) + col;
 
-    @Override
-    public void update(boolean isDaytime) {
-        Platform.runLater(() -> {
-            loadMap(gameMap.getCemeteryMap());
-        });
+        if (index < gridPane.getChildren().size()) {
+            return gridPane.getChildren().get(index);
+        }
+        return null;
     }
 
     /**
@@ -117,50 +110,19 @@ public class MapController implements Initializable, TimeObserver  {
     }
 
     /**
-     * Obtains the node from the gridPane
+     * Adds all the near player to an arrayList
      *
-     * @param gridPane the view of the player
+     * @param character the character of each player
      * @param row current row
      * @param col current col
-     * @return the corresponding node
      */
-    public Node getNodeFromGridPane(GridPane gridPane, int row, int col) {
-        int index = (row * gridPane.getColumnCount()) + col;
-
-        if (index < gridPane.getChildren().size()) {
-            return gridPane.getChildren().get(index);
-        }
-        return null;
+    private void addNearPlayer(String character, int row, int col) {
+        String playerCharacter = character.substring(0, 1)
+                .toLowerCase();
+        ImageView icon = new ImageView(getCharacterRoute(character));
+        ClientPlayer clientPlayer = new ClientPlayer(col, row, icon);
+        instance.nearPlayers.add(clientPlayer);
     }
-
-    /**
-     * Initializes the controller class and add focus to the map for the player
-     * inputs.
-     *
-     * @param url Indicates the search source
-     * @param rb ResourceBundle
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        this.playerView.getChildren().add(sceneGrid);
-        MapController.sceneGrid.setFocusTraversable(true);
-        MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED,
-                this::movePlayer);
-    }
-    //    @Override
-//    public void initialize(URL url, ResourceBundle rb) {
-//        this.playerView.getChildren().add(sceneGrid);
-//        MapController.sceneGrid.setFocusTraversable(true);
-//        MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED, this::movePlayer);
-//        
-//        time = new Time();
-//        gameMap = new GameMap(time);
-//        gameMap.loadTileMatrix();
-//        time.addObserver(this);
-//        time.startTime();
-//        loadMap(gameMap.getCemeteryMap());
-//    }
-    
 
     /**
      * Initialize all the constanst
@@ -211,8 +173,10 @@ public class MapController implements Initializable, TimeObserver  {
         ImageView image
                 = (ImageView) getNodeFromGridPane(MapController.sceneGrid,
                         row, col);
-        if (image == null || !image.equals(tileMatrix[row][col].getImageView())) {
-            sceneGrid.add(tileMatrix[row][col].getImageView(), col, row);
+        if (image == null || !image.equals(tileMatrix[row][col]
+                .getImageView())) {
+            sceneGrid.add(tileMatrix[row][col].getImageView(), col,
+                    row);
         }
         loadMapRecursively(tileMatrix, row, col + 1);
     }
@@ -236,15 +200,18 @@ public class MapController implements Initializable, TimeObserver  {
                     break;
                 case DOWN:
                 case S:
-                    newMap = MapController.client.listenForCommands("down");
+                    newMap = MapController.client.listenForCommands(
+                            "down");
                     break;
                 case LEFT:
                 case A:
-                    newMap = MapController.client.listenForCommands("left");
+                    newMap = MapController.client.listenForCommands(
+                            "left");
                     break;
                 case RIGHT:
                 case D:
-                    newMap = MapController.client.listenForCommands("right");
+                    newMap = MapController.client.listenForCommands(
+                            "right");
                     break;
                 default:
                     break;
@@ -303,12 +270,12 @@ public class MapController implements Initializable, TimeObserver  {
 
     /**
      * Render all the near players
-     * 
+     *
      * @param nearPlayers arrayList of near players
      * @param head the current near player
      */
-    private void renderPlayers(ArrayList<ClientPlayer> nearPlayers){
-        if(nearPlayers.isEmpty()){
+    private void renderPlayers(ArrayList<ClientPlayer> nearPlayers) {
+        if (nearPlayers.isEmpty()) {
             return;
         }
         ClientPlayer currentPlayer = nearPlayers.get(0);
@@ -319,7 +286,7 @@ public class MapController implements Initializable, TimeObserver  {
 
     /**
      * Render the visible players
-     * 
+     *
      * @param map current map
      */
     private void renderVisiblePlayers(String[][] map) {
@@ -355,7 +322,8 @@ public class MapController implements Initializable, TimeObserver  {
         if (col >= SIZE) {
             return;
         }
-        if (newMap[row][col].equals("r") || newMap[row][col].equals("w")
+        if (newMap[row][col].equals("r") || newMap[row][col].equals(
+                "w")
                 || newMap[row][col].equals("h")) {
             renderPlayers(newMap[row][col], row, col);
         }
@@ -399,8 +367,44 @@ public class MapController implements Initializable, TimeObserver  {
         if (sceneGrid.getChildren().contains(clientPlayer.getIcon())) {
             sceneGrid.getChildren().remove(clientPlayer.getIcon());
         }
-        sceneGrid.add(clientPlayer.getIcon(), clientPlayer.getCol(), 
+        sceneGrid.add(clientPlayer.getIcon(), clientPlayer.getCol(),
                 clientPlayer.getRow());
         clientPlayer.getIcon().toFront();
     }
+
+    /**
+     * Initializes the controller class and add focus to the map for the player
+     * inputs.
+     *
+     * @param url Indicates the search source
+     * @param rb ResourceBundle
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        this.playerView.getChildren().add(sceneGrid);
+        MapController.sceneGrid.setFocusTraversable(true);
+        MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED,
+                this::movePlayer);
+    }
+
+    @Override
+    public void update(boolean isDaytime) {
+        Platform.runLater(() -> {
+            loadMap(gameMap.getCemeteryMap());
+        });
+    }
+    //    @Override
+//    public void initialize(URL url, ResourceBundle rb) {
+//        this.playerView.getChildren().add(sceneGrid);
+//        MapController.sceneGrid.setFocusTraversable(true);
+//        MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED, 
+    //    this::movePlayer);
+//        
+//        time = new Time();
+//        gameMap = new GameMap(time);
+//        gameMap.loadTileMatrix();
+//        time.addObserver(this);
+//        time.startTime();
+//        loadMap(gameMap.getCemeteryMap());
+//    }
 }

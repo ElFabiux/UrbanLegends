@@ -5,14 +5,16 @@ package game;
  * mission. NPCs assign missions to players who interact with them.
  *
  * @author joxan
+ * @author ismael
+ * @author melani
+ * @author fabian
+ * @author jorge
  */
 public class Npc {
 
-    
     private int positionX;
     private int positionY;
 
-  
     private Mission mission;
     private String name;
 
@@ -32,6 +34,24 @@ public class Npc {
     }
 
     /**
+     * Gets the x-coordinate of the NPC's position on the map.
+     *
+     * @return The x-coordinate of the NPC.
+     */
+    public int getPositionX() {
+        return positionX;
+    }
+
+    /**
+     * Gets the y-coordinate of the NPC's position on the map.
+     *
+     * @return The y-coordinate of the NPC.
+     */
+    public int getPositionY() {
+        return positionY;
+    }
+    
+    /**
      * Returns the mission assigned to the NPC, which the NPC can offer to the
      * player.
      *
@@ -49,24 +69,7 @@ public class Npc {
     public String getName() {
         return name;
     }
-
-    /**
-     * Gets the x-coordinate of the NPC's position on the map.
-     *
-     * @return The x-coordinate of the NPC.
-     */
-    public int getPositionX() {
-        return positionX;
-    }
-
-    /**
-     * Gets the y-coordinate of the NPC's position on the map.
-     *
-     * @return The y-coordinate of the NPC.
-     */
-    public int getPositionY() {
-        return positionY;
-    }
+    
     /**
      * Transfer the data of the npc to a string
      * @return the data
@@ -76,8 +79,4 @@ public class Npc {
         return "Npc{" + "positionX=" + positionX + ", positionY=" + positionY 
                 + ", mission=" + mission.toString() + ", name=" + name + '}';
     }
-    
-    
-
-      
 }

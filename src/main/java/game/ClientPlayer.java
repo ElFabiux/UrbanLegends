@@ -43,14 +43,6 @@ public class ClientPlayer {
         return col;
     }
 
-    /**
-     * Set the column to a new value
-     *
-     * @param col new value for col
-     */
-    public void setCol(int col) {
-        this.col = col;
-    }
 
     /**
      * Get the current row
@@ -59,6 +51,24 @@ public class ClientPlayer {
      */
     public int getRow() {
         return row;
+    }
+    
+    /**
+     * Set the column to a new value
+     *
+     * @param col new value for col
+     */
+    public void setCol(int col) {
+        this.col = col;
+    }
+    
+    /**
+     * Change the player Icon
+     *
+     * @param icon new icon
+     */
+    public void setIcon(ImageView icon) {
+        this.icon = icon;
     }
 
     /**
@@ -78,14 +88,4 @@ public class ClientPlayer {
     public ImageView getIcon() {
         return icon;
     }
-
-    /**
-     * Change the player Icon
-     *
-     * @param icon new icon
-     */
-    public void setIcon(ImageView icon) {
-        this.icon = icon;
-    }
-
 }

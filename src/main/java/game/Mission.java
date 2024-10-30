@@ -9,14 +9,18 @@ import java.util.List;
 /**
  * Represents a Mission in the game with an ID, title, description, and reward.
  * Provides functionality to load missions from a file recursively.
+ *
+ * @author jorge
+ * @author joxan
+ * @author melani
+ * @author fabian
+ * @author ismael
  */
 public class Mission {
 
-    // Primitive variables in alphabetical order
     private boolean completed;
     private int id;
 
-    // Other variables in alphabetical order
     private String description;
     private String reward;
     private String title;
@@ -37,52 +41,22 @@ public class Mission {
         this.completed = false;
     }
 
-    // Primitive variable methods in alphabetical order
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    /**
+     * Checks if the mission is completed.
+     *
+     * @return true if the mission is completed, otherwise false.
+     */
     public boolean isCompleted() {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
-    /*
-     * Marks the mission as completed.
+    /**
+     * Gets the unique ID of the mission.
+     *
+     * @return Mission ID.
      */
-    public void markAsCompleted() {
-        this.completed = true;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getReward() {
-        return reward;
-    }
-
-    public void setReward(String reward) {
-        this.reward = reward;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public int getId() {
+        return id;
     }
 
     /**
@@ -109,6 +83,76 @@ public class Mission {
     }
 
     /**
+     * Gets the title of the mission.
+     *
+     * @return The mission's title.
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Gets the description of the mission.
+     *
+     * @return The mission's description.
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Gets the reward for completing the mission.
+     *
+     * @return The mission's reward.
+     */
+    public String getReward() {
+        return reward;
+    }
+
+    /**
+     * Sets the unique ID for the mission.
+     *
+     * @param id Mission ID to set.
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Marks the mission as completed.
+     */
+    public void markAsCompleted() {
+        this.completed = true;
+    }
+
+    /**
+     * Sets the mission description.
+     *
+     * @param description The mission's description.
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * Sets the reward for the mission.
+     *
+     * @param reward The mission's reward.
+     */
+    public void setReward(String reward) {
+        this.reward = reward;
+    }
+
+    /**
+     * Sets the title of the mission.
+     *
+     * @param title The mission's title.
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
      * Reads each line from the BufferedReader and adds a mission to the list.
      *
      * @param reader BufferedReader to read mission lines.
@@ -116,39 +160,41 @@ public class Mission {
      * @param idCounter Counter for assigning mission IDs.
      * @throws Exception If there is an error reading from the file.
      */
- private static void readMissions(BufferedReader reader, List<Mission> missions, 
-         int idCounter) throws Exception {
-    String line = reader.readLine();
-    if (line == null) {
-        return;  
-    }
-  
-
-    String[] parts = line.split("\\|");
-    if (parts.length == 4) {  
-        try {
-            int id = Integer.parseInt(parts[0].trim());  
-            String title = parts[1].trim();
-            String description = parts[2].trim();
-            String reward = parts[3].trim();
-
-            missions.add(new Mission(id, title, description, reward));
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid ID format in line: " + line);
+    private static void readMissions(BufferedReader reader, List<Mission> missions,
+            int idCounter) throws Exception {
+        String line = reader.readLine();
+        if (line == null) {
+            return;
         }
-    } else {
-        System.out.println("Invalid line format: " + line);
+
+        String[] parts = line.split("\\|");
+        if (parts.length == 4) {
+            try {
+                int id = Integer.parseInt(parts[0].trim());
+                String title = parts[1].trim();
+                String description = parts[2].trim();
+                String reward = parts[3].trim();
+
+                missions.add(new Mission(id, title, description, reward));
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid ID format in line: " + line);
+            }
+        } else {
+            System.out.println("Invalid line format: " + line);
+        }
+
+        readMissions(reader, missions, idCounter + 1);
     }
 
-    readMissions(reader, missions, idCounter + 1);
-}
-
-
+    /**
+     * Returns a string representation of the mission with title, description,
+     * and reward.
+     *
+     * @return String representation of the mission.
+     */
     @Override
     public String toString() {
         return "Mission: " + title + "\nDescription: " + description
                 + "\nReward: " + reward;
     }
-
-    
 }

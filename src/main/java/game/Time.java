@@ -2,8 +2,6 @@ package game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -11,34 +9,33 @@ import javafx.event.EventHandler;
 import javafx.util.Duration;
 
 /**
- * Clase Time que gestiona un temporizador que cuenta tiempo en minutos y 
- * segundos.
- * Utiliza la clase Timeline de JavaFX para actualizar el tiempo transcurrido 
- * cada segundo.
- * El temporizador se reinicia automáticamente después de un minuto.
- * 
+ * Class Time that manages a timer that counts time in minutes and seconds. Use
+ * JavaFX's Timeline class to update elapsed time every second. The timer
+ * automatically resets after one minute.
+ *
  * @author Melani
- * @author Joxan 
+ * @author Joxan
  * @author Ismael
  * @author Jorge
  * @author Fabian
  */
 public class Time {
 
+    private boolean isDaytime;
+    private boolean isRunning;
+
+    private List<TimeObserver> observers;
+
     private Duration elapsedTime;
     private Timeline timeLine;
-    private boolean isRunning;
-    private boolean isDaytime;
-    private List<TimeObserver> observers;
-    
+
     /**
-     * Constructor de la clase Time.
-     * Inicializa el temporizador con un tiempo transcurrido de 0 y configura
-     * un Timeline que actualiza el tiempo cada segundo.
+     * Time class constructor. Initialize the timer with an elapsed time of 0
+     * and set a Timeline that updates the time every second.
      */
     public Time() {
         elapsedTime = Duration.ZERO;
-        timeLine = new Timeline(new KeyFrame(Duration.millis(1000), 
+        timeLine = new Timeline(new KeyFrame(Duration.millis(1000),
                 new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -52,44 +49,25 @@ public class Time {
         }));
         timeLine.setCycleCount(Timeline.INDEFINITE);
         isRunning = false;
-        
+
         this.isDaytime = true;
         observers = new ArrayList<>();
     }
-    
+
     /**
-     * Inicia el temporizador si no está corriendo.
+     * Checks if it is currently daytime.
+     *
+     * @return true if it is daytime or false otherwise.
      */
-    public void startTime() {
-        if (!isRunning) {
-            timeLine.play();
-            isRunning = true;
-        }
+    public boolean isDaytime() {
+        return isDaytime;
     }
-    
+
     /**
-     * Detiene el temporizador si está corriendo.
-     */
-    public void stopTime() {
-        if (isRunning) {
-            timeLine.pause();
-            isRunning = false;
-        }
-    }
-    
-    /**
-     * Reinicia el temporizador y el tiempo transcurrido a cero.
-     */
-    public void resetTime() {
-        timeLine.stop();
-        elapsedTime = Duration.ZERO;
-    }
-    
-    /**
-     * Devuelve el tiempo transcurrido formateado como una cadena de texto.
-     * El formato es MM:SS (minutos:segundos).
-     * 
-     * @return El tiempo transcurrido formateado.
+     * Returns the elapsed time formatted as a text string. The format is MM:SS
+     * (minutes:seconds).
+     *
+     * @return The formatted elapsed time.
      */
     public String getFormattedTime() {
         long seconds = (long) elapsedTime.toSeconds();
@@ -98,19 +76,42 @@ public class Time {
 
         return String.format("%02d:%02d", minutes, seconds);
     }
-    
+
+    /**
+     * Adds a new observer to the list of observers.
+     *
+     * @param observer The observer to be added.
+     */
     public void addObserver(TimeObserver observer) {
         observers.add(observer);
     }
-    
-    public void removeObserver(TimeObserver observer) {
-        observers.remove(observer);
-    }
 
+    /**
+     * Notifies all registered observers of changes in the state. This method
+     * calls the update method on each observer, passing the current state
+     * (isDaytime) as a parameter.
+     */
     private void notifyObservers() {
         for (TimeObserver observer : observers) {
             observer.update(isDaytime);
         }
+    }
+
+    /**
+     * Removes an observer from the list of observers.
+     *
+     * @param observer The observer to be removed.
+     */
+    public void removeObserver(TimeObserver observer) {
+        observers.remove(observer);
+    }
+
+    /**
+     * Resets the timer and elapsed time to zero.
+     */
+    public void resetTime() {
+        timeLine.stop();
+        elapsedTime = Duration.ZERO;
     }
 
     public void setTimeOfDay(boolean isDaytime) {
@@ -118,32 +119,23 @@ public class Time {
         notifyObservers();
     }
 
-    public boolean isDaytime() {
-        return isDaytime;
+    /**
+     * Start the timer if it is not running.
+     */
+    public void startTime() {
+        if (!isRunning) {
+            timeLine.play();
+            isRunning = true;
+        }
+    }
+
+    /**
+     * Stops the timer if it is running.
+     */
+    public void stopTime() {
+        if (isRunning) {
+            timeLine.pause();
+            isRunning = false;
+        }
     }
 }
-
-/**
- * ESTO SOLO LO COLOCO PARA QUE SEPAN COMO USARLO.
- * public class PRUEBAController implements Initializable {
-
-        @FXML
-        private Label lbl_cantTiempo;
-        private Time time;
-
-        @Override
-        public void initialize(URL url, ResourceBundle rb) {
-            time = new Time();
-
-            Timeline updateTime = new Timeline(new KeyFrame(Duration
-                    .seconds(1), e -> {
-                if (time != null) {
-                    lbl_cantTiempo.setText(time.getFormattedTime());
-                }
-            }));
-            time.startTime();
-            updateTime.setCycleCount(Animation.INDEFINITE);
-            updateTime.play();
-        } 
-    }
- */
