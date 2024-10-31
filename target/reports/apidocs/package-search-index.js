@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"com.mycompany.urbanlegends","l":"com.mycompany.urbanlegends"},{"m":"com.mycompany.urbanlegends","l":"controllers"},{"m":"com.mycompany.urbanlegends","l":"game"},{"m":"com.mycompany.urbanlegends","l":"playableCharacters"},{"m":"com.mycompany.urbanlegends","l":"server"}];updateSearchResults();
