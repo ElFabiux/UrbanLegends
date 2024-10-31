@@ -1,0 +1,4 @@
+--patch-module
+com.mycompany.urbanlegends=_
+--add-reads
+com.mycompany.urbanlegends=ALL-UNNAMED

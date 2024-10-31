@@ -63,8 +63,7 @@ public class Server {
             serverSocket = new ServerSocket(PORT);
             System.out.println("Server has started... waiting for players.");
               Game.getInstance().spawnNpcsWithMissions(10);
-              int npcs = Game.getInstance().getNpcsList().size();
-              System.out.println("cantidad npcs" + npcs);
+              
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 DataInputStream input = new DataInputStream(
@@ -89,7 +88,7 @@ public class Server {
                         Game.getInstance());
                 flow.start();
                 
-                System.out.println("cantidad npcs" + npcs);
+                
             }
         } catch (IOException e) {
             System.out.println("Server error: " + e.getMessage());

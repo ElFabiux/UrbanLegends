@@ -17,10 +17,13 @@ import game.Time;
 import game.TimeObserver;
 import javafx.application.Platform;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import static javafx.scene.input.KeyCode.A;
 import static javafx.scene.input.KeyCode.D;
@@ -33,6 +36,8 @@ import static javafx.scene.input.KeyCode.W;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -108,6 +113,7 @@ public class MapController implements Initializable, TimeObserver {
             default:
                 throw new AssertionError();
         }
+
     }
 
     /**
@@ -339,7 +345,8 @@ public class MapController implements Initializable, TimeObserver {
     /**
      * Save the current client to be use and the identification for the
      * character
-     *...........................................................................................................................................
+     * .........................................................................
+     *
      * @param client client fromt the server
      * @param character char that identificates the player in the map
      */
@@ -359,6 +366,47 @@ public class MapController implements Initializable, TimeObserver {
                 = instance.gameMap.createTileMatrix(MapController.map,
                         instance.tileMatrix);
         instance.loadMap(instance.tileMatrix);
+    }
+
+    /**
+     * Show a windown with a welcome message 
+     */
+    private void showWelcomeMessage() {
+        Stage welcomeStage = new Stage();
+        welcomeStage.setTitle("🎃 Welcome to PelonesLand 🎃");
+
+        VBox layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
+        layout.setStyle("-fx-background-color: black; -fx-padding: 20px;");
+
+        Label headerLabel = new Label("Investigate, interact, and "
+                + "find the treasure!");
+        headerLabel.setStyle("-fx-text-fill: orange; -fx-font-size: 18px;"
+                + " -fx-font-weight: bold;");
+
+        Label contentLabel = new Label(
+                "Welcome to PelonesLand! Explore the map, "
+                + "interact with the environment, "
+                + "and try to find the hidden treasure... but be careful,"
+                        + " you might not "
+                + "be alone! 👻🕸️\n\n"
+                + "Happy Halloween and good luck!\n\nUSE A W S D or arrow"
+                        + " keys to move."
+        );
+        contentLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+        contentLabel.setWrapText(true);
+
+        Button closeButton = new Button("Start Exploring");
+        closeButton.setStyle("-fx-background-color: orange; -fx-text-fill: "
+                + "black; -fx-font-weight: bold;");
+        closeButton.setOnAction(e -> welcomeStage.close());
+
+        layout.getChildren().addAll(headerLabel, contentLabel, 
+                closeButton);
+        Scene scene = new Scene(layout, 600, 400);
+
+        welcomeStage.setScene(scene);
+        welcomeStage.showAndWait();
     }
 
     /**
@@ -386,6 +434,7 @@ public class MapController implements Initializable, TimeObserver {
         MapController.sceneGrid.setFocusTraversable(true);
         MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED,
                 this::movePlayer);
+        showWelcomeMessage();
     }
 
     @Override
