@@ -107,7 +107,7 @@ public class Server {
      *
      * @param characterName characterName the name of the character to be
      * created.
-     * @returna Character object representing the player's selected character.
+     * @return Character object representing the player's selected character.
      * @throws AssertionError if the character name does not correspond to a
      * valid character type.
      */
