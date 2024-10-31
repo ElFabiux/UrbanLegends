@@ -1,0 +1,7 @@
+-------------------------------------------------------------------------------
+Test set: UnitTest_UrbanLegends.PositionGeneratorTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.044 s <<< FAILURE! - in UnitTest_UrbanLegends.PositionGeneratorTest
+UnitTest_UrbanLegends.PositionGeneratorTest.testRandomPositionBounds(int, int)  Time elapsed: 0.02 s  <<< ERROR!
+org.junit.jupiter.api.extension.ParameterResolutionException: No ParameterResolver registered for parameter [int x] in method [public void UnitTest_UrbanLegends.PositionGeneratorTest.testRandomPositionBounds(int,int)].
+

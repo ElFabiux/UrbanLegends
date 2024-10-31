@@ -60,6 +60,17 @@ public class Npc {
     public Mission assignMission() {
         return mission;
     }
+    
+    /**
+     * Get the assing mission 
+     * @return mission 
+     */
+
+    public Mission getMission() {
+        return mission;
+    }
+    
+    
 
     /**
      * Gets the name of the NPC.
@@ -69,6 +80,7 @@ public class Npc {
     public String getName() {
         return name;
     }
+    
     
     /**
      * Transfer the data of the npc to a string

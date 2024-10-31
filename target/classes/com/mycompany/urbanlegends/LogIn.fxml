@@ -14,7 +14,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="container" stylesheets="@../../../css/style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LogInController">
    <children>
-      <ImageView fitHeight="408.0" fitWidth="717.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="408.0" fitWidth="714.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../Menu/menu.jpg" />
          </image>

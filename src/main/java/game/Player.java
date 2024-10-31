@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import playableCharacters.Character;
+import playableCharacters.*;
 
 /**
  * Represents a player in the game with attributes such as name, position, 
@@ -107,6 +108,8 @@ public class Player {
     public String getPosition() {
         return "(" + positionX + "," + positionY + ")";
     }
+    
+    
     
     /**
      * Accepts a mission and adds it to the player's list of active missions.

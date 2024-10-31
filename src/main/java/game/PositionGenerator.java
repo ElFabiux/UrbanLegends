@@ -19,11 +19,11 @@ import java.util.Random;
  */
 public class PositionGenerator {
 
-    private static final int MAP_BOUNDARY = 35;
+    private static final int MAP_BOUNDARY = 10;
     private static final Random random = new Random();
 
     /**
-     * Generates a random x-coordinate within the map boundaries (0 to 35).
+     * Generates a random x-coordinate within the map boundaries (0 to 10).
      * 
      * @return a random x-coordinate within 0 and MAP_BOUNDARY - 1
      */
@@ -32,7 +32,7 @@ public class PositionGenerator {
     }
 
     /**
-     * Generates a random y-coordinate within the map boundaries (0 to 35).
+     * Generates a random y-coordinate within the map boundaries (0 to 10).
      * 
      * @return a random y-coordinate within 0 and MAP_BOUNDARY - 1
      */

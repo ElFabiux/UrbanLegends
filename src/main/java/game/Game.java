@@ -21,6 +21,8 @@ import server.Server;
  */
 public class Game {
 
+    // private final int COMPLETE_MAP_HEIGHT = 36;
+    // private final int COMPLETE_MAP_WIDTH = 36;
     private final int MAP_HEIGHT = 10;
     private final int MAP_WIDTH = 10;
 
@@ -50,7 +52,8 @@ public class Game {
      * @return if its valid or not
      */
     public boolean isValidPosition(int x, int y) {
-        return (x >= 0 && x < MAP_WIDTH && y >= 0 && y < MAP_HEIGHT);
+        return (x >= 0 && x < MAP_WIDTH && y >= 0 && y
+                < MAP_HEIGHT);
     }
 
     /**
@@ -90,7 +93,7 @@ public class Game {
         }
         return new int[]{startRow, endRow};
     }
-    
+
     /**
      * Extract a submatrix from the map clone
      *
@@ -150,7 +153,7 @@ public class Game {
 
         return miniMap;
     }
-    
+
     /**
      * Gets all the npcs
      *
@@ -161,9 +164,27 @@ public class Game {
         generateNpcString(this.npcs, response);
         return response;
     }
-    
+
     /**
-     * Ge a player by searching it by its name.
+     * Gets a List with all Npcs
+     *
+     * @return npcs list
+     */
+    public ArrayList<Npc> getNpcsList() {
+        return npcs;
+    }
+
+    /**
+     * Gets all the players
+     *
+     * @return A list of players in game
+     */
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    /**
+     * Get a player by searching it by its name.
      *
      * @param name of the player to be search.
      * @return the player.
@@ -251,8 +272,13 @@ public class Game {
         }
         return instance;
     }
-
+/**
+ * Add a npc to the map
+ * 
+ * @param npc npc that that will be added to the game map.
+ */
     public void addNpcToMap(Npc npc) {
+
         if (isValidPosition(npc.getPositionX(), npc.getPositionY())) {
             map[npc.getPositionY()][npc.getPositionX()] = "N";
             npcs.add(npc);
@@ -431,7 +457,7 @@ public class Game {
         response = ";" + response + npc.toString();
         generateNpcString(npcs, response);
     }
-    
+
     /**
      * Initialize the map clone
      */
@@ -448,7 +474,7 @@ public class Game {
     private static void printMatrix(String[][] matrix) {
         printMatrix(matrix, 0, 0);
     }
-    
+
     /**
      * Print a matrix
      *
@@ -472,16 +498,39 @@ public class Game {
 
     public void spawnNpcsWithMissions(int npcCount) {
         List<Mission> missions = Mission.loadMissions();
-        Random random = new Random();
 
-        for (int i = 0; i < npcCount && i < missions.size(); i++) {
-            int x = PositionGenerator.getRandomPositionX();
-            int y = PositionGenerator.getRandomPositionY();
-
-            Mission mission = missions.get(i);
-            Npc npc = new Npc("NPC " + (i + 1), x, y, mission);
-            addNpcToMap(npc);
+        if (missions.isEmpty()) {
+            System.out.println("No missions loaded. Cannot spawn NPCs.");
+            return;
+        } else {
+            System.out.println("Misiones cargadas" + missions.size());
         }
+        spawnNpc(npcCount, missions, 0);
+    }
+
+    /**
+     * Recursive method to spawn NPCs with missions.
+     *
+     * @param npcCount The number of NPCs to spawn.
+     * @param missions The list of missions to assign to NPCs.
+     * @param currentIndex The current index for NPC creation.
+     */
+    private void spawnNpc(int npcCount, List<Mission> missions,
+            int currentIndex) {
+
+        if (npcCount == 0 || currentIndex >= missions.size()) {
+            return;
+        }
+
+        int x = PositionGenerator.getRandomPositionX();
+        int y = PositionGenerator.getRandomPositionY();
+
+        Mission mission = missions.get(currentIndex);
+        Npc npc = new Npc("NPC " + (currentIndex + 1), x, y,
+                mission);
+        addNpcToMap(npc);
+
+        spawnNpc(npcCount - 1, missions, currentIndex + 1);
     }
 
     /**
@@ -504,6 +553,7 @@ public class Game {
                         .toLowerCase();
 
         this.map = extractSubmatrix(this.mapClone, player
-                .getPositionY(),player.getPositionX(), 10);
+                .getPositionY(), player.getPositionX(), 10);
     }
+
 }

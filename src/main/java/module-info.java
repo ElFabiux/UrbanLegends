@@ -13,6 +13,10 @@ module com.mycompany.urbanlegends {
     
      opens playableCharacters to javafx.fxml;
      exports playableCharacters;
+     
+     exports game;
+     exports server;
+     
 
 
    
