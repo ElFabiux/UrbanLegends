@@ -168,9 +168,11 @@ public class LogInController implements Initializable {
             playerName.requestFocus();
             return;
         }
+        if (checkCharacterNull()) return;
+
         String[] player = new String[2];
         player[0] = this.playerName.getText();
-        player[1] = this.character.getName();
+        player[1] = this.character.getName(); // Aquí puede ocurrir el NPE si character es null
         Client client = Client.main(player);
         MapController.setClient(client, player[1]);
 
@@ -180,11 +182,12 @@ public class LogInController implements Initializable {
     /**
      * Displays the "About" container and hides the start menu.
      *
-     * @param event The action event that is generated when the button
-     *              to show the information is clicked.
+     * @param event The action event that is generated when the button to show
+     * the information is clicked.
      */
     @FXML
-    private void showAbout(ActionEvent event) {
+    private void showAbout(ActionEvent event
+    ) {
         this.startMenuContainer.setVisible(false);
         this.startMenuContainer.setDisable(true);
         this.bg.setVisible(false);
@@ -193,11 +196,30 @@ public class LogInController implements Initializable {
     }
 
     /**
+     * Checks if the character has been selected.
+     *
+     * @return true if the character is null (not selected); false otherwise.
+     */
+    public boolean checkCharacterNull() {
+        if (this.character == null) {
+            Stage currentStage = (Stage) playerName.getScene().getWindow();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initOwner(currentStage);
+            alert.setTitle("Error");
+            alert.setHeaderText("Personaje no seleccionado");
+            alert.setContentText("Por favor, selecciona un personaje antes de continuar.");
+            alert.showAndWait();
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Checks if the player's name is valid.
-     * 
+     *
      * @param playerNameText The name of the player to verify.
      * @return true if the player's name is valid (not null and not empty),
-     *         false otherwise.
+     * false otherwise.
      */
     public boolean checkPlayerName(String playerNameText) {
         if (playerNameText == null || playerNameText.trim().isEmpty()) {

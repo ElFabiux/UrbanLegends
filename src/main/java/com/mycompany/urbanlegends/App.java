@@ -109,6 +109,6 @@ public class App extends Application {
                 "/Legends/8_2.png")));
 
         stage.show();
-      //  playSoundLoop("audio/horror.mp3");
+        playSoundLoop("audio/horror.mp3");
     }
 }
