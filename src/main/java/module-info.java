@@ -3,6 +3,7 @@ module com.mycompany.urbanlegends {
     requires javafx.fxml;
     requires java.base;
     
+    requires javafx.media;
 
     opens com.mycompany.urbanlegends to javafx.fxml;
     exports com.mycompany.urbanlegends;
