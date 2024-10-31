@@ -72,31 +72,66 @@ public class Game {
         }
     }
 
+    /**
+     * Spawn npcs with missions.
+     *
+     * @param npcCount how many npcs will be spawn.
+     */
     public void spawnNpcsWithMissions(int npcCount) {
         List<Mission> missions = Mission.loadMissions();
-        Random random = new Random();
-
-        for (int i = 0; i < npcCount && i < missions.size(); i++) {
-            int x = PositionGenerator.getRandomPositionX();
-            int y = PositionGenerator.getRandomPositionY();
-
-            Mission mission = missions.get(i);
-            Npc npc = new Npc("NPC " + (i + 1), x, y, mission);
-            addNpcToMap(npc);
+        spawnNpcsWithMissionsHelper(npcCount, missions, 0);
+    }
+/**
+ * Spawn the npcs with mission.
+ * 
+ * @param npcCount amount of npcs.
+ * @param missions list of missions.
+ * @param index index.
+ */
+    private void spawnNpcsWithMissionsHelper(int npcCount, 
+            List<Mission> missions, int index) {
+        if (index >= npcCount || index >= missions.size()) {
+            return; 
         }
+
+        int x = PositionGenerator.getRandomPositionX();
+        int y = PositionGenerator.getRandomPositionY();
+        Mission mission = missions.get(index);
+        Npc npc = new Npc("NPC " + (index + 1), x, y, mission);
+
+        addNpcToMap(npc);
+
+        spawnNpcsWithMissionsHelper(npcCount, missions, index + 1);
     }
 
+    /**
+     * Add the npcs to the map.
+     *
+     * @param npc the npc to be add.
+     */
     public void addNpcToMap(Npc npc) {
         if (isValidPosition(npc.getPositionX(), npc.getPositionY())) {
-            mapClone[npc.getPositionY()][npc.getPositionX()] = "n";
+            map[npc.getPositionY()][npc.getPositionX()] = "n";
             npcs.add(npc);
         }
     }
 
+    /**
+     * Check if theres a npc near the player.
+     *
+     * @param player player to check.
+     */
     public void checkNearbyNpcs(Player player) {
         checkNearbyNpc(npcs, player, 0);
     }
 
+    /**
+     * Check the near npcs to the player.
+     *
+     * @param npcs list of t
+     * @param player
+     * @param index
+     */
     private void checkNearbyNpc(List<Npc> npcs, Player player, int index) {
         if (index >= npcs.size()) {
             return;
@@ -125,6 +160,15 @@ public class Game {
         checkNearbyNpc(npcs, player, index + 1);
     }
 
+    /**
+     * Check if is near.
+     * 
+     * @param x1 x1.
+     * @param y1 y1.
+     * @param x2 x2.
+     * @param y2 y2.
+     * @return 
+     */
     private boolean isNear(int x1, int y1, int x2, int y2) {
         return Math.abs(x1 - x2) <= 1 && Math.abs(y1 - y2) <= 1;
     }
@@ -217,6 +261,12 @@ public class Game {
         printMatrix(matrix, 0, 0);
     }
 
+    /**
+     * Print a matrix.
+     * @param matrix matrix.
+     * @param i current i.
+     * @param j current j.
+     */
     private static void printMatrix(String[][] matrix, int i, int j) {
         if (i >= matrix.length) {
             return;
@@ -438,7 +488,7 @@ public class Game {
 
     /**
      * Print each cell by it self.
-     * 
+     *
      * @param row current row.
      * @param col current column.
      * @param sb StringBuilder.
@@ -466,7 +516,7 @@ public class Game {
 
     /**
      * Creates a copy of the original map.
-     * 
+     *
      * @param original original map.
      * @param clone clone map.
      * @param row current row.
@@ -488,7 +538,7 @@ public class Game {
 
     /**
      * Gets the npcs list.
-     * 
+     *
      * @return the npcs.
      */
     public ArrayList<Npc> getNpcsList() {
@@ -500,7 +550,7 @@ public class Game {
 
     /**
      * Creates a string with the npcs info.
-     * 
+     *
      * @return a string with the data.
      */
     public String getNpcs() {
@@ -508,15 +558,15 @@ public class Game {
         getNpcs(this.npcs, response);
         return response;
     }
-    
+
     /**
      * Creates a string with the npcs data.
-     * 
+     *
      * @param npcs arraylist of npcs.
      * @param response response.
      */
-    public void getNpcs(ArrayList<Npc> npcs, String response){
-        if(npcs.isEmpty()){
+    public void getNpcs(ArrayList<Npc> npcs, String response) {
+        if (npcs.isEmpty()) {
             return;
         }
         Npc npc = npcs.get(0);

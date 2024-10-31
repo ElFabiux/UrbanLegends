@@ -195,26 +195,6 @@ public class MovementsLogic {
     }
 
     /**
-     * Checks if there is an NPC within close proximity to the player. If an NPC
-     * is found within a distance of one unit, it returns the NPC.
-     *
-     * @param npcs List of all NPCs on the map
-     * @param player The player object with current position data
-     * @return The nearby NPC if within proximity; null if no NPC is close
-     */
-    public Npc isNearNpc(List<Npc> npcs, Player player) {
-        int playerX = player.getPositionX();
-        int playerY = player.getPositionY();
-        for (Npc npc : npcs) {
-            if (Math.abs(npc.getPositionX() - playerX) <= 1
-                    && Math.abs(npc.getPositionY() - playerY) <= 1) {
-                return npc;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Sets the proximity status to an NPC.
      *
      * @param isCloseToNpc true if the player is near an NPC, false otherwise

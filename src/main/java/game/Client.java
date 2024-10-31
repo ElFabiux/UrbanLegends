@@ -131,8 +131,8 @@ public class Client {
      */
     private void connectToServer(String host, int port) {
         try {
-//            host = "192.168.27.159";
-//            port = 8000;
+            host = "192.168.127.21";
+            port = 8000;
             socket = new Socket(host, port);
             output = new DataOutputStream(socket.getOutputStream());
             input = new DataInputStream(new BufferedInputStream(socket

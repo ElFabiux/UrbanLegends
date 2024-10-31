@@ -23,7 +23,7 @@
         <VBox fx:id="startMenuContainer" alignment="CENTER" layoutX="281.0" layoutY="183.0" prefHeight="200.0" prefWidth="168.0" styleClass="startMenuContainer">
             <children>
                 <Button fx:id="newGame" mnemonicParsing="false" onAction="#newGame" text="New Game" />
-                <Button fx:id="about" mnemonicParsing="false" onAction="#showAbout" text="Acerca de" />
+                <Button fx:id="about" mnemonicParsing="false" onAction="#showAbout" text="About" />
                 <Button fx:id="exit" mnemonicParsing="false" onAction="#exit" text="Exit" />
             </children>
         </VBox>
