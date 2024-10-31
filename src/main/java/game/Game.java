@@ -88,7 +88,7 @@ public class Game {
 
     public void addNpcToMap(Npc npc) {
         if (isValidPosition(npc.getPositionX(), npc.getPositionY())) {
-            map[npc.getPositionY()][npc.getPositionX()] = "N";
+            mapClone[npc.getPositionY()][npc.getPositionX()] = "n";
             npcs.add(npc);
         }
     }

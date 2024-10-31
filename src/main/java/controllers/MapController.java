@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import game.Client;
 import game.ClientPlayer;
 import game.GameMap;
+import game.Npc;
 import game.Tile;
 import game.Time;
 import game.TimeObserver;
