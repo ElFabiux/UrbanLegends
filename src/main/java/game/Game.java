@@ -1,7 +1,6 @@
 package game;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -305,6 +304,9 @@ public class Game {
         return instance;
     }
 
+    /**
+     * Add a legends to a list.
+     */
     public void addLegends() {
         legends.add(new Llorona("6", 0, 0));
         legends.add(new Cadejo("9", 0, 0));
@@ -326,7 +328,7 @@ public class Game {
             legends.add(legend);
         }
     }
-    
+
     /**
      * Add a npc to the map
      *
@@ -355,6 +357,16 @@ public class Game {
         }
     }
 
+    /**
+     ** This method examines each NPC in the list to determine if it is close
+     * enough to the player. If an NPC is within range, it attempts to assign a
+     * mission to the player. If a mission is available, a confirmation dialog
+     * is shown, allowing the player to accept the mission.
+     *
+     * @param npcs The list of NPCs to check for proximity to the player.
+     * @param player The player whose surroundings are being checked.
+     * @param index The current index in the NPC list for recursive checking.
+     */
     private void checkNearbyNpc(List<Npc> npcs, Player player, int index) {
         if (index >= npcs.size()) {
             return;
@@ -376,13 +388,22 @@ public class Game {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     player.acceptMission(mission);
-                    System.out.println("Mission accepted: " + mission.getTitle());
+                    System.out.println("Mission accepted: " + mission
+                            .getTitle());
                 }
             }
         }
         checkNearbyNpc(npcs, player, index + 1);
     }
 
+    /**
+     * This method initiates a recursive search to find NPCs close to the
+     * player's current position. If an NPC is found nearby, it may trigger
+     * interactions such as assigning missions to the player.
+     *
+     * @param player The player whose surroundings will be checked for nearby
+     * NPCs.
+     */
     public void checkNearbyNpcs(Player player) {
         checkNearbyNpc(npcs, player, 0);
     }
@@ -521,11 +542,26 @@ public class Game {
         copyMapRecursively(GameMap.getMap(), mapClone, 0, 0);
     }
 
+    /**
+     * Initializes the spawning process for all legends in the game.
+     *
+     * This method creates a copy of the list of legends and initiates the
+     * recursive placement of each legend on the map.
+     */
     public void spawnLegends() {
         List<Legend> legendsCopy = new ArrayList<>(legends);
         spawnLegendsRecursively(legendsCopy);
     }
 
+    /**
+     * Recursively places each legend in a specified area on the map.
+     *
+     * The method checks the specified area for each legend, generates a random
+     * position within that area, and places the legend on the map if the
+     * position is valid.
+     *
+     * @param legendsList The list of legends to be placed on the map.
+     */
     public void spawnLegendsRecursively(List<Legend> legendsList) {
         if (legendsList.isEmpty()) {
             return;
@@ -585,6 +621,13 @@ public class Game {
         }
     }
 
+    /**
+     * Spawns a specified number of NPCs on the game map, each with an assigned
+     * mission. This method loads available missions and associates each NPC
+     * with a unique mission.
+     *
+     * @param npcCount The number of NPCs to spawn with missions.
+     */
     public void spawnNpcsWithMissions(int npcCount) {
         List<Mission> missions = Mission.loadMissions();
 
@@ -644,5 +687,4 @@ public class Game {
         this.map = extractSubmatrix(this.mapClone, player
                 .getPositionY(), player.getPositionX(), 10);
     }
-
 }
