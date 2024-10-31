@@ -17,6 +17,7 @@ import game.Time;
 import game.TimeObserver;
 import javafx.application.Platform;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -338,7 +339,7 @@ public class MapController implements Initializable, TimeObserver {
     /**
      * Save the current client to be use and the identification for the
      * character
-     *
+     *...........................................................................................................................................
      * @param client client fromt the server
      * @param character char that identificates the player in the map
      */
@@ -347,7 +348,6 @@ public class MapController implements Initializable, TimeObserver {
         MapController.character = character;
         initializeConstanst();
         startMap();
-
     }
 
     /**
@@ -394,18 +394,4 @@ public class MapController implements Initializable, TimeObserver {
             loadMap(gameMap.getCemeteryMap());
         });
     }
-    //    @Override
-//    public void initialize(URL url, ResourceBundle rb) {
-//        this.playerView.getChildren().add(sceneGrid);
-//        MapController.sceneGrid.setFocusTraversable(true);
-//        MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED, 
-    //    this::movePlayer);
-//        
-//        time = new Time();
-//        gameMap = new GameMap(time);
-//        gameMap.loadTileMatrix();
-//        time.addObserver(this);
-//        time.startTime();
-//        loadMap(gameMap.getCemeteryMap());
-//    }
 }
