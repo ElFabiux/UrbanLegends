@@ -65,9 +65,8 @@ public class Server {
         try {
             serverSocket = new ServerSocket(PORT);
             System.out.println("Server has started... waiting for players.");
-            Game.getInstance().spawnNpcsWithMissions(10);
-            int npcs = Game.getInstance().getNpcsList().size();
-            System.out.println("cantidad npcs" + npcs);
+              Game.getInstance().spawnNpcsWithMissions(10);
+              
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 DataInputStream input = new DataInputStream(
