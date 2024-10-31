@@ -74,7 +74,8 @@ public class App extends Application {
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             mediaPlayer.play();
         } else {
-            System.out.println("No se pudo encontrar el archivo de sonido: " + soundFile);
+            System.out.println("No se pudo encontrar el archivo de sonido: "
+                    + soundFile);
         }
     }
 
