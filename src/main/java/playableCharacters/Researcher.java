@@ -45,7 +45,7 @@ public class Researcher extends Character {
      */
     @Override
     public Character createCharacter() {
-        return new Researcher("Researcher", 70, 100, 40);
+        return new Researcher("Researcher", 100, 100, 0);
     }
 
 }

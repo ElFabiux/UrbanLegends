@@ -44,7 +44,7 @@ public class Hunter extends Character {
      */
     @Override
     public Character createCharacter() {
-        return new Hunter("Hunter", 100, 80, 50);
+        return new Hunter("Hunter", 100, 100, 0);
     }
 
 }

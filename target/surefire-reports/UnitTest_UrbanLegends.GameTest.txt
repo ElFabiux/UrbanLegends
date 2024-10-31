@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: UnitTest_UrbanLegends.GameTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.221 s <<< FAILURE! - in UnitTest_UrbanLegends.GameTest
+UnitTest_UrbanLegends.GameTest.testCheckNearbyNpcs  Time elapsed: 0.21 s  <<< ERROR!
+java.lang.ExceptionInInitializerError
+	at com.mycompany.urbanlegends/UnitTest_UrbanLegends.GameTest.testCheckNearbyNpcs(GameTest.java:122)
+Caused by: java.lang.IllegalStateException: Toolkit not initialized
+	at com.mycompany.urbanlegends/UnitTest_UrbanLegends.GameTest.testCheckNearbyNpcs(GameTest.java:122)
+

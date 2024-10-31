@@ -45,7 +45,7 @@ public class Witch extends Character {
      */
     @Override
     public Character createCharacter() {
-        return new Witch("Witch", 80, 90, 70);
+        return new Witch("Witch", 100, 100, 0);
     }
 
 }
