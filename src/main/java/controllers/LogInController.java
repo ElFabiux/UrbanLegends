@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -38,11 +39,17 @@ import javafx.scene.layout.VBox;
 public class LogInController implements Initializable {
 
     @FXML
+    private AnchorPane aboutContainer;
+    @FXML
     private AnchorPane createPlayerMenuContainer;
     @FXML
     private AnchorPane container;
     @FXML
+    private Button about;
+    @FXML
     private Button back;
+    @FXML
+    private Button back1;
     @FXML
     private Button exit;
     @FXML
@@ -51,6 +58,8 @@ public class LogInController implements Initializable {
     private Button start;
     
     private Character character;
+    @FXML
+    private ImageView bg;
     
     @FXML
     private TextField playerName;
@@ -58,7 +67,7 @@ public class LogInController implements Initializable {
     private ToggleGroup characterGroup;
     @FXML
     private VBox startMenuContainer;
-    
+  
     /**
      * Return from the player menu to the game menu
      * 
@@ -66,10 +75,13 @@ public class LogInController implements Initializable {
      */
     @FXML
     private void back(ActionEvent event) {
+        this.bg.setVisible(true);
         this.startMenuContainer.setVisible(true);
         this.startMenuContainer.setDisable(false);
         this.createPlayerMenuContainer.setVisible(false);
         this.createPlayerMenuContainer.setDisable(true);
+        this.aboutContainer.setVisible(false);
+        this.aboutContainer.setDisable(true);
     }
     
     /**
@@ -154,5 +166,14 @@ public class LogInController implements Initializable {
         MapController.setClient(client, player[1]);
 
         App.setRoot("Map");
+    }
+
+    @FXML
+    private void showAbout(ActionEvent event) {
+        this.startMenuContainer.setVisible(false);
+        this.startMenuContainer.setDisable(true);
+        this.bg.setVisible(false);
+        this.aboutContainer.setVisible(true);
+        this.aboutContainer.setDisable(false);
     }
 }
