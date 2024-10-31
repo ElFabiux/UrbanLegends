@@ -12,15 +12,15 @@ import playableCharacters.Character;
 import playableCharacters.Witch;
 
 /**
- * The Server class initializes the game server, allowing clients
- * (players) to connect, create their character, and join the game.
+ * The Server class initializes the game server, allowing clients (players) to
+ * connect, create their character, and join the game.
  *
  * The server listens for incoming player connections on a specified port
  * (8000). For each new connection:
  * <ul>
  * <li>It reads the player's name from the input stream.</li>
- * <li>Initializes a Player instance with the character and adds it to
- * the game.</li>
+ * <li>Initializes a Player instance with the character and adds it to the
+ * game.</li>
  * <li>Creates a new Flow thread to handle the player's actions.</li>
  * </ul>
  *
@@ -34,12 +34,12 @@ import playableCharacters.Witch;
  * @author Melani Barrantes
  */
 public class Server {
-    
+
     private static final int PORT = 8000;
 
     /**
      * Returns the instance of the Game class.
-     * 
+     *
      * @return the singleton instance of Game.
      */
     public static Game getGameInstance() {
@@ -49,22 +49,25 @@ public class Server {
     /**
      * Main method to start the game server.
      * <p>
-     * This method creates a ServerSocket to listen for player connections
-     * on port 8000. For each connection, it processes player data, initializes
-     * their character, and starts a new Flow thread for handling player actions.
+     * This method creates a ServerSocket to listen for player connections on
+     * port 8000. For each connection, it processes player data, initializes
+     * their character, and starts a new Flow thread for handling player
+     * actions.
      * </p>
-     * 
+     *
      * @param args command line arguments.
      */
     public static void main(String[] args) {
         ServerSocket serverSocket = null;
-           
+
         try {
             serverSocket = new ServerSocket(PORT);
             System.out.println("Server has started... waiting for players.");
-              Game.getInstance().spawnNpcsWithMissions(10);
-              int npcs = Game.getInstance().getNpcsList().size();
-              System.out.println("cantidad npcs" + npcs);
+            Game.getInstance().spawnNpcsWithMissions(10);
+            int npcs = Game.getInstance().getNpcsList().size();
+            System.out.println("cantidad npcs" + npcs);
+            Game.getInstance().addLegends();
+            Game.getInstance().spawnLegends();
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 DataInputStream input = new DataInputStream(
@@ -88,7 +91,7 @@ public class Server {
                 Flow flow = new Flow(clientSocket, player,
                         Game.getInstance());
                 flow.start();
-                
+
                 System.out.println("cantidad npcs" + npcs);
             }
         } catch (IOException e) {

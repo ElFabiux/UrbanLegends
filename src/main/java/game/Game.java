@@ -1,12 +1,22 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import legends.Cadejo;
+import legends.Duende;
+import legends.Legend;
+import legends.Llorona;
+import legends.PadreSinCabeza;
+import legends.Segua;
+import legends.Sombreron;
 
 import server.Server;
 
@@ -28,10 +38,23 @@ public class Game {
 
     private ArrayList<Npc> npcs = new ArrayList<>();
     private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Legend> legends = new ArrayList<>();
+
+    private static final Map<String, int[][]> legendAreas = new HashMap<>() {
+        {
+            put("6", new int[][]{{2, 5}, {10, 15}});
+            put("7", new int[][]{{7, 8}, {12, 14}});
+            put("5", new int[][]{{3, 1}, {6, 4}});
+            put("9", new int[][]{{9, 0}, {11, 3}});
+            put("8", new int[][]{{1, 6}, {4, 9}});
+            put("0", new int[][]{{6, 6}, {9, 9}});
+        }
+    };
     private String[][] map = new String[MAP_HEIGHT][MAP_WIDTH];
     private String[][] mapClone;
 
     private static Game instance;
+    private static final Random random = new Random();
 
     /**
      * Contructor for game and initialize the map
@@ -170,6 +193,15 @@ public class Game {
      *
      * @return npcs list
      */
+    public ArrayList<Legend> getLegendList() {
+        return legends;
+    }
+
+    /**
+     * Gets a List with all Npcs
+     *
+     * @return npcs list
+     */
     public ArrayList<Npc> getNpcsList() {
         return npcs;
     }
@@ -272,11 +304,34 @@ public class Game {
         }
         return instance;
     }
-/**
- * Add a npc to the map
- * 
- * @param npc npc that that will be added to the game map.
- */
+
+    public void addLegends() {
+        legends.add(new Llorona("6", 0, 0));
+        legends.add(new Cadejo("9", 0, 0));
+        legends.add(new Duende("7", 0, 0));
+        legends.add(new PadreSinCabeza("5", 0,
+                0));
+        legends.add(new Segua("8", 0, 0));
+        legends.add(new Sombreron("0", 0, 0));
+    }
+
+    /**
+     * Add a legend to the map
+     *
+     * @param legend The legend to be added to the game map.
+     */
+    public void addLegendToMap(Legend legend) {
+        if (isValidPosition(legend.getPositionX(), legend.getPositionY())) {
+            map[legend.getPositionY()][legend.getPositionX()] = legend.getName();
+            legends.add(legend);
+        }
+    }
+    
+    /**
+     * Add a npc to the map
+     *
+     * @param npc npc that that will be added to the game map.
+     */
     public void addNpcToMap(Npc npc) {
 
         if (isValidPosition(npc.getPositionX(), npc.getPositionY())) {
@@ -464,6 +519,40 @@ public class Game {
     private void initializeMap() {
         this.mapClone = new String[36][36];
         copyMapRecursively(GameMap.getMap(), mapClone, 0, 0);
+    }
+
+    public void spawnLegends() {
+        List<Legend> legendsCopy = new ArrayList<>(legends);
+        spawnLegendsRecursively(legendsCopy);
+    }
+
+    public void spawnLegendsRecursively(List<Legend> legendsList) {
+        if (legendsList.isEmpty()) {
+            return;
+        }
+
+        Legend legend = legendsList.get(0);
+        int[][] area = legendAreas.get(legend.getName());
+
+        if (area != null) {
+            int xMin = area[0][0];
+            int xMax = area[1][0];
+            int yMin = area[0][1];
+            int yMax = area[1][1];
+
+            int x = random.nextInt(xMax - xMin + 1) + xMin;
+            int y = random.nextInt(yMax - yMin + 1) + yMin;
+
+            if (isValidPosition(x, y)) {
+                legend.setPositionX(x);
+                legend.setPositionY(y);
+                map[y][x] = legend.getName();
+                addLegendToMap(legend);
+            }
+        }
+
+        spawnLegendsRecursively(legendsList.subList(1,
+                legendsList.size()));
     }
 
     /**
