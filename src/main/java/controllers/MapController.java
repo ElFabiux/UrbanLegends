@@ -65,6 +65,8 @@ public class MapController implements Initializable, TimeObserver {
 
     @FXML
     private AnchorPane playerView;
+    @FXML
+    private AnchorPane howToPlay;
     private static Client client;
     private GameMap gameMap;
     @FXML
@@ -73,6 +75,7 @@ public class MapController implements Initializable, TimeObserver {
     private static MapController instance;
     private static String character;
     Time time;
+    
 
     /**
      * Obtains the node from the gridPane
@@ -192,8 +195,6 @@ public class MapController implements Initializable, TimeObserver {
     @FXML
     private void movePlayer(KeyEvent event) {
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
-            System.out.println("npc: ");
-            System.out.println(MapController.client.getNpcs("npc"));
             String[][] newMap = null;
             switch (event.getCode()) {
                 case UP:
@@ -339,7 +340,7 @@ public class MapController implements Initializable, TimeObserver {
     /**
      * Save the current client to be use and the identification for the
      * character
-     *...........................................................................................................................................
+     *......................................................................
      * @param client client fromt the server
      * @param character char that identificates the player in the map
      */
@@ -387,7 +388,12 @@ public class MapController implements Initializable, TimeObserver {
         MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED,
                 this::movePlayer);
     }
-
+    
+    /**
+     * Update the the game map.
+     * 
+     * @param isDaytime the current time.
+     */
     @Override
     public void update(boolean isDaytime) {
         Platform.runLater(() -> {
