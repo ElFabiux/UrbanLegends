@@ -60,6 +60,7 @@ public class Client {
             String mapState = input.readUTF();
             System.out.println("client_58: " + mapState);
             updateLocalMap(mapState);
+            printLocalMap();
 
         } catch (IOException e) {
             System.out.println("Connection closed.");

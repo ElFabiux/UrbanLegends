@@ -9,6 +9,8 @@ import java.net.Socket;
 import game.Game;
 import game.Player;
 import playableCharacters.Character;
+import playableCharacters.Hunter;
+import playableCharacters.Researcher;
 import playableCharacters.Witch;
 
 /**
@@ -66,8 +68,6 @@ public class Server {
             Game.getInstance().spawnNpcsWithMissions(10);
             int npcs = Game.getInstance().getNpcsList().size();
             System.out.println("cantidad npcs" + npcs);
-            Game.getInstance().addLegends();
-            Game.getInstance().spawnLegends();
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 DataInputStream input = new DataInputStream(
@@ -80,8 +80,8 @@ public class Server {
                 String characterName = data[1];
                 System.out.println("Connection accepted from: " + playerName);
 
-                Character character = new Witch(characterName, 100,
-                        100, 0);
+                Character character = setPlayerCharacter(characterName);
+
                 Player player = new Player(playerName,
                         clientSocket.getInetAddress().getHostAddress(),
                         0, 0, character);
@@ -91,11 +91,44 @@ public class Server {
                 Flow flow = new Flow(clientSocket, player,
                         Game.getInstance());
                 flow.start();
-
-                System.out.println("cantidad npcs" + npcs);
             }
         } catch (IOException e) {
             System.out.println("Server error: " + e.getMessage());
         }
+    }
+
+    /**
+     * Sets the player character based on the provided character name. his
+     * method creates and returns a new character instance based on the first
+     * letter of the provided character name. The supported character types are:
+     * - Witch: If the character name starts with 'W'. - Hunter: If the
+     * character name starts with 'H'. - Researcher: If the character name
+     * starts with 'R'.
+     *
+     * @param characterName characterName the name of the character to be
+     * created.
+     * @returna Character object representing the player's selected character.
+     * @throws AssertionError if the character name does not correspond to a
+     * valid character type.
+     */
+    public static Character setPlayerCharacter(String characterName) throws AssertionError {
+        Character character;
+        switch (characterName.charAt(0)) {
+            case 'W':
+                character = new Witch(characterName, 100,
+                        100, 0);
+                break;
+            case 'H':
+                character = new Hunter(characterName, 100,
+                        100, 0);
+                break;
+            case 'R':
+                character = new Researcher(characterName, 100,
+                        100, 0);
+                break;
+            default:
+                throw new AssertionError();
+        }
+        return character;
     }
 }

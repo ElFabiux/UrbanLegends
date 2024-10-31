@@ -12,11 +12,13 @@ import java.util.ResourceBundle;
 import game.Client;
 import game.ClientPlayer;
 import game.GameMap;
+import game.Npc;
 import game.Tile;
 import game.Time;
 import game.TimeObserver;
 import javafx.application.Platform;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -64,6 +66,8 @@ public class MapController implements Initializable, TimeObserver {
 
     @FXML
     private AnchorPane playerView;
+    @FXML
+    private AnchorPane howToPlay;
     private static Client client;
     private GameMap gameMap;
     @FXML
@@ -72,6 +76,7 @@ public class MapController implements Initializable, TimeObserver {
     private static MapController instance;
     private static String character;
     Time time;
+    
 
     /**
      * Obtains the node from the gridPane
@@ -191,8 +196,6 @@ public class MapController implements Initializable, TimeObserver {
     @FXML
     private void movePlayer(KeyEvent event) {
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
-            System.out.println("npc: ");
-            System.out.println(MapController.client.getNpcs("npc"));
             String[][] newMap = null;
             switch (event.getCode()) {
                 case UP:
@@ -338,7 +341,7 @@ public class MapController implements Initializable, TimeObserver {
     /**
      * Save the current client to be use and the identification for the
      * character
-     *
+     *......................................................................
      * @param client client fromt the server
      * @param character char that identificates the player in the map
      */
@@ -347,7 +350,6 @@ public class MapController implements Initializable, TimeObserver {
         MapController.character = character;
         initializeConstanst();
         startMap();
-
     }
 
     /**
@@ -387,25 +389,16 @@ public class MapController implements Initializable, TimeObserver {
         MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED,
                 this::movePlayer);
     }
-
+    
+    /**
+     * Update the the game map.
+     * 
+     * @param isDaytime the current time.
+     */
     @Override
     public void update(boolean isDaytime) {
         Platform.runLater(() -> {
             loadMap(gameMap.getCemeteryMap());
         });
     }
-    //    @Override
-//    public void initialize(URL url, ResourceBundle rb) {
-//        this.playerView.getChildren().add(sceneGrid);
-//        MapController.sceneGrid.setFocusTraversable(true);
-//        MapController.sceneGrid.addEventHandler(KeyEvent.KEY_PRESSED, 
-    //    this::movePlayer);
-//        
-//        time = new Time();
-//        gameMap = new GameMap(time);
-//        gameMap.loadTileMatrix();
-//        time.addObserver(this);
-//        time.startTime();
-//        loadMap(gameMap.getCemeteryMap());
-//    }
 }

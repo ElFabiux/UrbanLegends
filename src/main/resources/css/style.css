@@ -55,6 +55,13 @@
     -fx-padding: 20px;
 }
 
+.aboutMenuContainer{
+    -fx-background-color: #1a1d1f; /* Fondo oscuro */
+    -fx-border-color: #3e4a4d; /* Bordes oscuros */
+    -fx-border-width: 2px;
+    -fx-background-radius: 15px;
+}
+
 .playerName {
     -fx-background-color: #2e3335; /* Tono oscuro */
     -fx-text-fill: #d1d5db;
