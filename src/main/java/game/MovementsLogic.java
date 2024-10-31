@@ -20,9 +20,11 @@ import java.util.List;
 public class MovementsLogic {
 
     private boolean isCloseToNpc = false;
-    private final char characterNPC = 'N';
-    private final char[] blockedGrids = {'R', 'T', 'H', 'O', 'C', 'S',
-        'W', 'P', 'w', 'r', 'h', characterNPC};
+    private final char characterNPC = 'n';
+    private final char[] blockedGrids = {'T', 'C', 'V', 'B', 'N', 'M', 
+        'Y', 'R', 'S', 'Z', 'A', 'Q', 'K','J', 'U', 'I', 'O', 'P', 
+        'E', 'D', 'F', '1', 'W', 'X', '2', '3', '4', '@', '$', 
+        'w', 'r', 'h', characterNPC};
 
     /**
      * Constructor for MovementsLogic class.
