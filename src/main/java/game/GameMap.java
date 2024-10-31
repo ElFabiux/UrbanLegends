@@ -6,6 +6,8 @@ package game;
 
 /**
  *
+ * Class GameMap
+ * 
  * @author jorge
  * @author joxan
  * @author melani
