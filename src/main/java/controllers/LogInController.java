@@ -17,16 +17,18 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * The controller for the login interface
- * 
+ *
  * Implements Initializable interface to handle the initialization process.
  *
  * @author Ismael Marchena
@@ -49,20 +51,20 @@ public class LogInController implements Initializable {
     private Button newGame;
     @FXML
     private Button start;
-    
+
     private Character character;
-    
+
     @FXML
     private TextField playerName;
     @FXML
     private ToggleGroup characterGroup;
     @FXML
     private VBox startMenuContainer;
-    
+
     /**
      * Return from the player menu to the game menu
-     * 
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void back(ActionEvent event) {
@@ -71,10 +73,10 @@ public class LogInController implements Initializable {
         this.createPlayerMenuContainer.setVisible(false);
         this.createPlayerMenuContainer.setDisable(true);
     }
-    
+
     /**
      * Exit the program
-     * 
+     *
      * @param event ActionEvent
      */
     @FXML
@@ -94,17 +96,17 @@ public class LogInController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        playerName.requestFocus();
         hunter = new Hunter();
         researcher = new Researcher();
         witch = new Witch();
     }
-    
+
     /**
      * Change from game menu to player menu
-     * 
+     *
      * @param event ActionEvent
      */
-    
     @FXML
     private void newGame(ActionEvent event) {
         this.startMenuContainer.setVisible(false);
@@ -112,17 +114,17 @@ public class LogInController implements Initializable {
         this.createPlayerMenuContainer.setVisible(true);
         this.createPlayerMenuContainer.setDisable(false);
     }
-    
+
     /**
      * Set the character to be use
-     * 
+     *
      * @param event ActionEvent
      */
     @FXML
     private void setChracter(ActionEvent event) {
         String name = this.playerName.getText();
-        RadioButton selectedRadioButton = 
-                (RadioButton) this.characterGroup.getSelectedToggle();
+        RadioButton selectedRadioButton
+                = (RadioButton) this.characterGroup.getSelectedToggle();
         String value = selectedRadioButton.getText();
         switch (value) {
             case "Witch":
@@ -138,15 +140,21 @@ public class LogInController implements Initializable {
             default:
                 throw new AssertionError();
         }
+        playerName.requestFocus();
     }
-    
+
     /**
      * Start the client and chage the view to the map
-     * 
+     *
      * @param event ActionEvent
      */
     @FXML
     private void start(ActionEvent event) {
+        String playerNameText = this.playerName.getText();
+        if (!checkPlayerName(playerNameText)) {
+            playerName.requestFocus();
+            return;
+        }
         String[] player = new String[2];
         player[0] = this.playerName.getText();
         player[1] = this.character.getName();
@@ -155,4 +163,20 @@ public class LogInController implements Initializable {
 
         App.setRoot("Map");
     }
+
+    public boolean checkPlayerName(String playerNameText) {
+        if (playerNameText == null || playerNameText.trim().isEmpty()) {
+            Stage currentStage = (Stage) playerName.getScene().getWindow();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initOwner(currentStage);
+            alert.setTitle("Error");
+            alert.setHeaderText("Nombre de jugador vacío");
+            alert.setContentText("Por favor, ingrese un nombre de jugador"
+                    + " antes de continuar.");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
+    }
+
 }
