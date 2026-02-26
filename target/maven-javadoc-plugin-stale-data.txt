@@ -1,0 +1,54 @@
+-J-Duser.language=
+-J-Duser.country=
+@options
+@packages
+@argfile
+--class-path
+'C:/Users/jorge/.m2/repository/org/openjfx/javafx-media/16/javafx-media-16.jar;C:/Users/jorge/.m2/repository/org/openjfx/javafx-graphics/16/javafx-graphics-16.jar;C:/Users/jorge/.m2/repository/org/openjfx/javafx-base/16/javafx-base-16.jar;C:/Users/jorge/.m2/repository/org/openjfx/javafx-controls/13/javafx-controls-13.jar;C:/Users/jorge/.m2/repository/org/openjfx/javafx-fxml/13/javafx-fxml-13.jar'
+--module-path
+'C:/Users/jorge/.m2/repository/org/openjfx/javafx-controls/13/javafx-controls-13-win.jar;C:/Users/jorge/.m2/repository/org/openjfx/javafx-fxml/13/javafx-fxml-13-win.jar;C:/Users/jorge/.m2/repository/org/openjfx/javafx-media/16/javafx-media-16-win.jar;C:/Users/jorge/.m2/repository/org/openjfx/javafx-graphics/16/javafx-graphics-16-win.jar;C:/Users/jorge/.m2/repository/org/openjfx/javafx-base/16/javafx-base-16-win.jar;C:/Users/jorge/OneDrive/Documentos/GitHub/UrbanLegends/target/classes'
+--patch-module
+com.mycompany.urbanlegends='C:/Users/jorge/OneDrive/Documentos/GitHub/UrbanLegends/src/main/java'
+-encoding
+'UTF-8'
+-protected
+-source
+'11'
+--module-source-path
+'C:/Users/jorge/OneDrive/Documentos/GitHub/UrbanLegends/target/reports/apidocs/src'
+-author
+-bottom
+'Copyright &#169; 2026. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/jorge/OneDrive/Documentos/GitHub/UrbanLegends/target/reports/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'UrbanLegends 1.0-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/en/java/javase/11/docs/api' 'C:/Users/jorge/OneDrive/Documentos/GitHub/UrbanLegends/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'UrbanLegends 1.0-SNAPSHOT API'
+com.mycompany.urbanlegends
+controllers
+game
+playableCharacters
+server
+'C:/Users/jorge/OneDrive/Documentos/GitHub/UrbanLegends/src/main/java/module-info.java'
+C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\target\reports\apidocs\allclasses-index.html = 1772070814869
+C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\target\reports\apidocs\allpackages-index.html = 1772070814874
+C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\target\reports\apidocs\element-list = 1772070814487
+C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\target\reports\apidocs\help-doc.html = 1772070814967
+C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\target\reports\apidocs\index-all.html = 1772070814941
+C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\target\reports\apidocs\index.html = 1772070814952
+C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\target\reports\apidocs\member-search-index.js = 1772070814891
+C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\target\reports\apidocs\module-search-index.js = 1772070814880
+C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\target\reports\apidocs\overview-tree.html = 1772070814836
+C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\target\reports\apidocs\package-search-index.js = 1772070814882
+C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\target\reports\apidocs\search.html = 1772070814947
+C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\target\reports\apidocs\tag-search-index.js = 1772070814893
+C:\Users\jorge\OneDrive\Documentos\GitHub\UrbanLegends\target\reports\apidocs\type-search-index.js = 1772070814886

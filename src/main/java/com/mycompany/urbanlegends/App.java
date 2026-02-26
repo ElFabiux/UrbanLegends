@@ -20,7 +20,7 @@ import javafx.scene.media.MediaPlayer;
  * @author Jorge Rojas
  * @author Fabian Arguedas
  * @author Joxan Portilla
- * @author Melani Barrantes
+ * @author Melani Barrantes 
  */
 public class App extends Application {
 
